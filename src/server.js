@@ -6,4 +6,6 @@ const port = 3000;
 
 app.use(mainRoute);
 
+app.use(express.static('client/src'));
+
 app.listen(port, () => console.log(`Server running on port ${port}`));
