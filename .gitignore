@@ -15,6 +15,9 @@ dist-ssr
 coverage
 *.local
 .idea/
+.env
+postgresql
+mongo
 
 /cypress/videos/
 /cypress/screenshots/
