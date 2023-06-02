@@ -2,17 +2,17 @@
   "name": "challenge-semestriel-2",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.js",
+  "main": "server/server.js",
   "type": "module",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node server/server.js",
     "build": "vite build",
-    "dev": "nodemon src/server.js && vite",
+    "dev": "nodemon server/server.js && vite",
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:e2e": "playwright test",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/client"
+    "format": "prettier --write server/client"
   },
   "repository": {
     "type": "git",
