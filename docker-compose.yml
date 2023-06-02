@@ -9,6 +9,10 @@ services:
     volumes:
       - ./mongo:/data/db
     command: --auth
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER:? mongo user is needed}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:? mongo password is needed}
+      - MONGO_INITDB_DATABASE=${MONGO_DB:? mongo db name is needed}
   postgresql:
     image: postgres:latest
     container_name: postgresql
@@ -17,6 +21,11 @@ services:
     volumes:
       - ./postgresql:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_USER=${POSTGRES_USER:? postgres user is needed}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:? postgres password is needed}
+      - POSTGRES_DB=${POSTGRES_DB:? postgres db name is needed}
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
