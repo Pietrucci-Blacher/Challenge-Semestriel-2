@@ -6,7 +6,6 @@ dotenv.config();
 const { MONGO_USER, MONGO_PASSWORD, MONGO_DB } = process.env;
 
 const uri = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1/${MONGO_DB}`;
-console.log('uri', uri);
 const mongo = await mongoose.connect(uri);
 console.log('Connected to mongoDB');
 
