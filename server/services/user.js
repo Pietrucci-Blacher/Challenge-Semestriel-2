@@ -83,7 +83,7 @@ export default function UserService() {
             return nbDeleted;
         },
     };
-};
+}
 
 function compare(a, b, order, index = 0) {
     const [key, direction] = Object.entries(order)[index];

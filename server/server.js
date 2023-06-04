@@ -1,7 +1,6 @@
 import express from 'express';
 const app = express();
 import UserRouter from './routes/user.js';
-// import mongoose from './database/mongo.js';
 
 app.use((req, res, next) => {
     if (
