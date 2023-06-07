@@ -1,19 +1,7 @@
 {
-  "name": "challenge-semestriel-2",
+  "name": "challange-vue",
   "version": "1.0.0",
   "description": "",
-  "main": "server/server.js",
-  "type": "module",
-  "scripts": {
-    "start": "node server/server.js",
-    "build": "vite build",
-    "dev": "nodemon server/server.js && vite",
-    "preview": "vite preview",
-    "test:unit": "vitest",
-    "test:e2e": "playwright test",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write server/client"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Pietrucci-Blacher/Challenge-Semestriel-2.git"
@@ -23,6 +11,16 @@
     "url": "https://github.com/Pietrucci-Blacher/Challenge-Semestriel-2/issues"
   },
   "homepage": "https://github.com/Pietrucci-Blacher/Challenge-Semestriel-2#readme",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "test:e2e": "playwright test",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.33.0",
     "@rushstack/eslint-patch": "^1.2.0",
@@ -34,21 +32,13 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.11.0",
     "jsdom": "^22.0.0",
-    "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
     "vite": "^4.3.5",
     "vitest": "^0.31.0"
   },
   "dependencies": {
     "dotenv": "^16.1.3",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "mongodb": "^5.6.0",
-    "mongoose": "^7.2.2",
-    "pg": "^8.11.0",
-    "pg-hstore": "^2.3.4",
     "pinia": "^2.0.36",
-    "sequelize": "^6.32.0",
     "vue": "^3.3.2"
   }
 }
