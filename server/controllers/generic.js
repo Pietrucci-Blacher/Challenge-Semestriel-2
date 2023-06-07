@@ -86,4 +86,4 @@ export default function Controller(Service, options = {}) {
             }
         },
     };
-};
+}
