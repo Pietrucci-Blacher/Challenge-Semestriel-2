@@ -2,6 +2,9 @@ import express from 'express';
 const app = express();
 import UserRouter from './routes/user.js';
 import AuthRouter from './routes/auth.js';
+import cors from 'cors';
+
+app.use(cors());
 
 app.use((req, res, next) => {
     if (
