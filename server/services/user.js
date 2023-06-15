@@ -1,5 +1,6 @@
 import UserModel from '../models/user.js';
 import bcrypt from 'bcrypt';
+import { checkEmail } from '../utils/utils.js';
 
 export const findAll = async (filters, options = {}) => {
     let users = await UserModel.findAll(filters);
@@ -17,7 +18,7 @@ export const findOne = async (filters) => {
 };
 
 export const create = async (data) => {
-    if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    if (!data.email || !checkEmail(data.email)) {
         const error = new Error();
         error.name = 'ValidationError';
         error.errors = {

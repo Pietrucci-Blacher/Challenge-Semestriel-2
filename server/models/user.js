@@ -6,7 +6,12 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
 
-const { JWT_SECRET } = process.env;
+const {
+    JWT_ACCESS_SECRET,
+    JWT_ACCESS_EXPIRE,
+    JWT_REFRESH_SECRET,
+    JWT_REFRESH_EXPIRE,
+} = process.env;
 
 class User extends Model {
     async checkPassword(password) {
@@ -18,9 +23,16 @@ class User extends Model {
     }
 
     generateToken() {
-        return jwt.sign({ id: this.id }, JWT_SECRET, {
-            expiresIn: 3600,
+        const payload = { id: this.id };
+
+        const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, {
+            expiresIn: JWT_ACCESS_EXPIRE,
         });
+        const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, {
+            expiresIn: JWT_REFRESH_EXPIRE,
+        });
+
+        return { accessToken, refreshToken };
     }
 }
 
@@ -44,6 +56,11 @@ User.init(
             type: DataTypes.STRING(50),
             allowNull: false,
         },
+        role: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+            defaultValue: 'user',
+        },
     },
     {
         sequelize,
@@ -53,6 +70,6 @@ User.init(
     },
 );
 
-User.sync();
+User.sync({ force: false });
 
 export default User;

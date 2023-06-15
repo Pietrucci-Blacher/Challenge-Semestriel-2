@@ -41,6 +41,6 @@ Token.init(
     },
 );
 
-Token.sync();
+Token.sync({ force: false });
 
 export default Token;
