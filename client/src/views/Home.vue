@@ -4,7 +4,7 @@ import Register from '@/components/Register.vue';
 </script>
 
 <template>
-    <h1>It's Me Mario</h1>
     <Login />
+    <br />
     <Register />
 </template>
