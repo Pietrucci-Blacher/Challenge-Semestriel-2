@@ -14,14 +14,32 @@ const {
 } = process.env;
 
 class User extends Model {
+    /**
+     * check clear password with hashed password
+     *
+     * @async
+     * @param {string} password - clear password
+     * @returns {Promise<boolean>} - true if password is correct
+     */
     async checkPassword(password) {
         return bcrypt.compare(password, this.password);
     }
 
+    /**
+     * hash a password
+     *
+     * @async
+     * @returns {Promise<string>} - hashed password
+     */
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);
     }
 
+    /**
+     * generate access token and refresh token
+     *
+     * @returns {{accessToken: string, refreshToken: string}} - access token and refresh token
+     */
     generateToken() {
         const payload = { id: this.id };
 

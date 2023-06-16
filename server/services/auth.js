@@ -73,6 +73,11 @@ export const register = async (username, email, password) => {
     await UserService.create({ username, email, password });
 };
 
+export const logout = async (userId) => {
+    const foundedToken = await Token.findOne({ where: { userId } });
+    foundedToken.destroy();
+};
+
 export const refresh = async (refreshToken) => {
     const decoded = await verifyRefreshToken(refreshToken);
 

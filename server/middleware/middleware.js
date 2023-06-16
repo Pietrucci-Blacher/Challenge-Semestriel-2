@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import * as UserService from '../services/user.js';
+import Token from '../models/token.js';
 
 dotenv.config({ path: '../.env' });
 
@@ -8,9 +9,13 @@ const { JWT_ACCESS_SECRET } = process.env;
 
 export const isAuthenticated = async (req, res, next) => {
     const token = (req.headers.authorization || '').split(' ')[1];
-    console.log('token', token, 'secret', JWT_ACCESS_SECRET);
-
     if (!token) return res.status(403).json({ message: 'No token provided' });
+
+    const foundedToken = await Token.findOne({
+        where: { access_token: token },
+    });
+    if (!foundedToken)
+        return res.status(404).json({ message: 'Token not found' });
 
     try {
         const decoded = jwt.verify(token, JWT_ACCESS_SECRET);

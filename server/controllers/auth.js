@@ -1,5 +1,20 @@
 import * as AuthService from '../services/auth.js';
 
+/**
+ * login route
+ *
+ * @route POST /auth/login
+ * @group auth - Operations about auth
+ *
+ * @param {string} email.body.required - email
+ * @param {string} password.body.required - password
+ *
+ * @returns {object} 200 - An object with accessToken and refreshToken
+ * @returns {Error}  400 - Invalid data
+ * @returns {Error}  404 - User not found
+ * @returns {Error}  422 - Validation error
+ * @returns {Error}  500 - Unexpected error
+ */
 export const login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -21,6 +36,21 @@ export const login = async (req, res) => {
     }
 };
 
+/**
+ * register route
+ *
+ * @route POST /auth/register
+ * @group auth - Operations about auth
+ *
+ * @param {string} username.body.required - username
+ * @param {string} email.body.required - email
+ * @param {string} password.body.required - password
+ *
+ * @returns {object} 201 - An empty object
+ * @returns {Error}  400 - Invalid data
+ * @returns {Error}  422 - Validation error
+ * @returns {Error}  500 - Unexpected error
+ */
 export const register = async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -36,8 +66,42 @@ export const register = async (req, res) => {
     }
 };
 
-export const logout = async (req, res) => {};
+/**
+ * logout route
+ *
+ * @route GET /auth/logout
+ * @group auth - Operations about auth
+ *
+ * @param {string} authorization.header.required - access token
+ *
+ * @returns {object} 200 - An empty object
+ * @returns {Error}  400 - Invalid data
+ * @returns {Error}  500 - Unexpected error
+ */
+export const logout = async (req, res) => {
+    if (!req.userId) return res.status(400).json({ message: 'Invalid data' });
+    try {
+        await AuthService.logout(req.userId);
+        res.status(200).json({});
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
 
+/**
+ * refresh route
+ *
+ * @route POST /auth/refresh
+ * @group auth - Operations about auth
+ *
+ * @param {string} refreshToken.body.required - refresh token
+ *
+ * @returns {object} 200 - An object with accessToken
+ * @returns {Error}  422 - Validation error
+ * @returns {Error}  500 - Unexpected error
+ * @returns {Error}  404 - Refresh token not found
+ * @returns {Error}  401 - Invalid refresh token
+ */
 export const refresh = async (req, res) => {
     const { refreshToken } = req.body;
 
