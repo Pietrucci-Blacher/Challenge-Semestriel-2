@@ -54,16 +54,20 @@ export default {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
+            }).then(async (response) => {
+              if (response.ok) {
+                // Successful login
+                const {accessToken, refreshToken} = JSON.parse(await response.text());
+
+                document.cookie = `userAccessToken=${accessToken}`;
+                document.cookie = `userRefreshToken=${refreshToken}`;
+                window.location.reload();
+
+              } else {
+                // Failed login
+                console.error('Failed to log in');
+              }
             })
-                .then((response) => {
-                    if (response.ok) {
-                        // Successful login
-                        console.log('User logged in successfully');
-                    } else {
-                        // Failed login
-                        console.error('Failed to log in');
-                    }
-                })
                 .catch((error) => {
                     console.error('An error occurred:', error);
                 });
