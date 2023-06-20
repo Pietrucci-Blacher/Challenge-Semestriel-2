@@ -2,32 +2,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 mt-5 mx-auto">
-                <form novalidate @submit.prevent="submitForm">
-                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                    <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input
-                            type="email"
-                            class="form-control"
-                            name="email"
-                            placeholder="Enter email"
-                            v-model="email"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input
-                            type="password"
-                            class="form-control"
-                            name="password"
-                            placeholder="Password"
-                            v-model="password"
-                        />
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">
-                        Sign in
-                    </button>
-                </form>
+                
+
+            <modal 
+            v-bind:revele="revele"
+            v-bind:toggleModale="toggleModale">
+            </modal>
+            <div v-on:click="toggleModale" class="btn">Ouvre modale</div>
+                
             </div>
         </div>
     </div>
@@ -38,6 +20,21 @@ import { ref } from 'vue';
 import Cookie from 'js-cookie';
 
 export default {
+    name: 'Login', 
+    data(){
+        return {
+            revele: false
+        }
+    },
+    components: {
+        'modal': Modale
+    },
+    methods: {
+        toggleModale: function(){
+            this.revele = !this.revele;
+        }
+    },
+
     setup() {
         const email = ref('');
         const password = ref('');
@@ -90,12 +87,6 @@ export default {
             email.value = '';
             password.value = '';
         }
-
-        return {
-            email,
-            password,
-            submitForm,
-        };
     },
 };
 </script>
