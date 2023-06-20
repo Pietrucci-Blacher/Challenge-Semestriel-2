@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 mt-5 mx-auto">
-                
+                <form novalidate @submit.prevent="submitForm">
 
             <modal 
             v-bind:revele="revele"
@@ -30,6 +30,8 @@ import Modale from './Modale.vue'
 import ModaleRegister from './Register.vue'
 import { ref } from 'vue';
 import Cookie from 'js-cookie';
+
+import Modale from './Modale.vue'
 
 export default {
     name: 'Login', 
