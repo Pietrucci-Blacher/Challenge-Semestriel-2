@@ -1,6 +1,11 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../database/postgres.js';
 import User from './user.js';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '../.env' });
+
+const { DB_FORCE } = process.env;
 
 class Token extends Model {}
 
@@ -41,6 +46,6 @@ Token.init(
     },
 );
 
-Token.sync({ force: false });
+Token.sync({ force: DB_FORCE });
 
 export default Token;
