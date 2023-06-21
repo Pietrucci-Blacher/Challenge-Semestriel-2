@@ -15,8 +15,7 @@
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview",
-    "test:unit": "vitest",
-    "test:e2e": "playwright test",
+    "test": "playwright test",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "author": "",
