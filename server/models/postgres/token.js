@@ -1,12 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
 import UserFunc from './user.js';
-import sequelize from '../database/postgres.js';
-import User from './user.js';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '../.env' });
-
-const { DB_FORCE } = process.env;
 
 export default (sequelize) => {
     const User = UserFunc(sequelize);
@@ -47,11 +40,7 @@ export default (sequelize) => {
             tableName: 'token',
             timestamps: true,
         },
-
     );
 
-    Token.sync({ force: DB_FORCE });
-    Token.sync({ force: DB_FORCE === 'true' });
-
-        return Token;
+    return Token;
 };

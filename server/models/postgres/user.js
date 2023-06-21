@@ -6,13 +6,12 @@ import dotenv from 'dotenv';
 export default (sequelize) => {
     dotenv.config({ path: '../.env' });
 
-const {
-    JWT_ACCESS_SECRET,
-    JWT_ACCESS_EXPIRE,
-    JWT_REFRESH_SECRET,
-    JWT_REFRESH_EXPIRE,
-    DB_FORCE,
-} = process.env;
+    const {
+        JWT_ACCESS_SECRET,
+        JWT_ACCESS_EXPIRE,
+        JWT_REFRESH_SECRET,
+        JWT_REFRESH_EXPIRE,
+    } = process.env;
 
     class User extends Model {
         /**
@@ -22,18 +21,18 @@ const {
          * @param {string} password - clear password
          * @returns {Promise<boolean>} - true if password is correct
          */
-        checkPassword(password) {
+        async checkPassword(password) {
             return bcrypt.compare(password, this.password);
         }
 
-    /**
-     * hash a password
-     *
-     * @async
-     */
-    async hashPassword() {
-        this.password = await bcrypt.hash(this.password, 10);
-    }
+        /**
+         * hash a password
+         *
+         * @async
+         */
+        async hashPassword() {
+            this.password = await bcrypt.hash(this.password, 10);
+        }
 
         /**
          * generate access token and refresh token
@@ -94,9 +93,7 @@ const {
             tableName: 'user',
             timestamps: true,
         },
-);
-
-User.sync({ force: DB_FORCE === 'true' });
+    );
 
     return User;
 };
