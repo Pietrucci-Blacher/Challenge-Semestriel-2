@@ -7,17 +7,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+            version: latest
       - name: Use Node.js 20.x
         uses: actions/setup-node@v3
         with:
           node-version: 20.x
+          cache: 'pnpm'
+
 
       - name: Run tests in parallel for back and front
         run: |
           for dir in client server; do
             echo "Testing $dir"
             cd $dir
-            npm ci
-            npm test
+            pnpm install
+            pnpm test
             cd ..
           done
