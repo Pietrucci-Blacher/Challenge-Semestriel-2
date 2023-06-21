@@ -2,7 +2,7 @@ on:
   pull_request:
 
 jobs:
-  ci:
+  CI:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,5 +27,6 @@ jobs:
         working-directory: ${{ matrix.directory }}
         run: |
           echo "Testing ${{ matrix.directory }}"
+          cd ${{ matrix.directory }}
           pnpm install
           pnpm test
