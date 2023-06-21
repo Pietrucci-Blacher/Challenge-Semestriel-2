@@ -1,6 +1,6 @@
 <template>
         <div class="bloc-modale" v-if="showRegister">
-            <div class="overlay" >
+            <div class="overlay" v-on:click="toggleModaleRegister">
                 <div class="modale">
                     <div v-on:click="toggleModaleRegister" class="btn-modale cursor-pointer" >&times;</div>
                     <div>

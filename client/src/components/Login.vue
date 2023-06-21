@@ -30,6 +30,7 @@ import { ref } from 'vue';
 import Cookie from 'js-cookie';
 
 import Modale from './Modale.vue'
+import ModaleRegister from './Register.vue'
 
 export default {
 
