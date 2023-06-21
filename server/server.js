@@ -1,6 +1,10 @@
 import express from 'express';
 const app = express();
 import UserRouter from './routes/user.js';
+import AuthRouter from './routes/auth.js';
+import cors from 'cors';
+
+app.use(cors());
 
 app.use((req, res, next) => {
     if (
@@ -16,6 +20,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.use('/users', UserRouter);
+app.use('/auth', AuthRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');

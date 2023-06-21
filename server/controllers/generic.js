@@ -1,3 +1,4 @@
+// TODO: remork this file to use the new Service class
 export default function Controller(Service, options = {}) {
     return {
         getAll: async (req, res) => {
@@ -86,4 +87,4 @@ export default function Controller(Service, options = {}) {
             }
         },
     };
-};
+}
