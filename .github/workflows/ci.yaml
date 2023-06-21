@@ -29,6 +29,9 @@ jobs:
           echo "Building front-end"
           pnpm install
           pnpm run build
+          echo "Installing Playwright deps"
+          npx playwright install --with-deps
+          
 
       - name: Run tests
         working-directory: ${{ matrix.directory }}
