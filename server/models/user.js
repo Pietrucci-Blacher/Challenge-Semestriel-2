@@ -11,7 +11,7 @@ const {
     JWT_ACCESS_EXPIRE,
     JWT_REFRESH_SECRET,
     JWT_REFRESH_EXPIRE,
-    DB_FORCE
+    DB_FORCE,
 } = process.env;
 
 class User extends Model {
@@ -30,7 +30,6 @@ class User extends Model {
      * hash a password
      *
      * @async
-     * @returns {Promise<string>} - hashed password
      */
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);
@@ -89,6 +88,6 @@ User.init(
     },
 );
 
-User.sync({ force: DB_FORCE });
+User.sync({ force: DB_FORCE === 'true' });
 
 export default User;

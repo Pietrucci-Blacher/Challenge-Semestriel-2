@@ -46,6 +46,6 @@ Token.init(
     },
 );
 
-Token.sync({ force: DB_FORCE });
+Token.sync({ force: DB_FORCE === 'true' });
 
 export default Token;
