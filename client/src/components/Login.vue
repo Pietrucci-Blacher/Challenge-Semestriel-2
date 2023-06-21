@@ -8,8 +8,15 @@
             v-bind:revele="revele"
             v-bind:toggleModale="toggleModale">
             </modal>
-            <div v-on:click="toggleModale" class="btn">Ouvre modale</div>
-                
+
+            <modalRegister
+                v-bind:showRegister="showRegister"
+                v-bind:toggleModaleRegister="toggleModaleRegister">
+            </modalRegister>
+            
+            <div v-on:click="toggleModale" class="btn">Ouvre modale Login</div>
+            <div v-on:click="toggleModaleRegister" v-onclick="console.log(showRegister)" class="btn">Ouvre modale Register</div>
+
             </div>
         </div>
     </div>
@@ -19,20 +26,29 @@
 import { ref } from 'vue';
 import Cookie from 'js-cookie';
 
+import Modale from './Modale.vue'
+import ModaleRegister from './Register.vue'
+
 export default {
     name: 'Login', 
     data(){
         return {
-            revele: false
+            revele: false,
+            showRegister: false
         }
     },
     components: {
-        'modal': Modale
+        'modal': Modale,
+        'modalRegister': ModaleRegister
     },
     methods: {
         toggleModale: function(){
             this.revele = !this.revele;
+        },
+        toggleModaleRegister: function(){
+            this.showRegister = !this.showRegister;
         }
+        
     },
 
     setup() {
