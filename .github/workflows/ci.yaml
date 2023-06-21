@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        directory: [front, server]
+        directory: [client, server]
 
     steps:
       - name: Checkout
@@ -23,7 +23,6 @@ jobs:
           sudo apt-get install -y nodejs
 
       - name: Run tests
-        working-directory: ${{ matrix.directory }}
         run: |
           echo "Testing ${{ matrix.directory }}"
           cd ${{ matrix.directory }}
