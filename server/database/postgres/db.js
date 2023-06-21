@@ -4,14 +4,14 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 
 const { POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, MODE } = process.env;
-let sequelize;
+let connection;
 
 if (MODE === 'test') {
-    sequelize = new Sequelize('sqlite::memory:', {
+    connection = new Sequelize('sqlite::memory:', {
         logging: false,
     });
 } else {
-    sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
+    connection = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
         host: 'localhost',
         dialect: 'postgres',
         logging: false,
@@ -19,10 +19,10 @@ if (MODE === 'test') {
 }
 
 try {
-    await sequelize.authenticate();
+    await connection.authenticate();
     console.log('Connected to postgres');
 } catch (error) {
     console.error('Unable to connect to the database:', error);
 }
 
-export default sequelize;
+export default connection;
