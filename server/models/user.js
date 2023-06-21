@@ -6,12 +6,22 @@ import dotenv from 'dotenv';
 export default (sequelize) => {
     dotenv.config({ path: '../.env' });
 
+<<<<<<< HEAD
     const {
         JWT_ACCESS_SECRET,
         JWT_ACCESS_EXPIRE,
         JWT_REFRESH_SECRET,
         JWT_REFRESH_EXPIRE,
     } = process.env;
+=======
+const {
+    JWT_ACCESS_SECRET,
+    JWT_ACCESS_EXPIRE,
+    JWT_REFRESH_SECRET,
+    JWT_REFRESH_EXPIRE,
+    DB_FORCE
+} = process.env;
+>>>>>>> e96d292... [fix] change db config
 
     class User extends Model {
         /**
@@ -89,7 +99,29 @@ export default (sequelize) => {
             tableName: 'user',
             timestamps: true,
         },
+<<<<<<< HEAD
     );
+=======
+        email: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+        },
+        role: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+            defaultValue: 'user',
+        },
+    },
+    {
+        sequelize,
+        modelName: 'User',
+        tableName: 'user',
+        timestamps: true,
+    },
+);
+
+User.sync({ force: DB_FORCE });
+>>>>>>> e96d292... [fix] change db config
 
     return User;
 };
