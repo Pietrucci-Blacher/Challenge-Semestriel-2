@@ -1,4 +1,5 @@
-import UserModel from '../models/user.js';
+import db from '../database/postgres/postgres.js';
+const UserModel = db.User;
 import bcrypt from 'bcrypt';
 import { checkEmail } from '../utils/utils.js';
 
