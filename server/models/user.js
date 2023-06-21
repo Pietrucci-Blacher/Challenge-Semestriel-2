@@ -6,22 +6,13 @@ import dotenv from 'dotenv';
 export default (sequelize) => {
     dotenv.config({ path: '../.env' });
 
-<<<<<<< HEAD
-    const {
-        JWT_ACCESS_SECRET,
-        JWT_ACCESS_EXPIRE,
-        JWT_REFRESH_SECRET,
-        JWT_REFRESH_EXPIRE,
-    } = process.env;
-=======
 const {
     JWT_ACCESS_SECRET,
     JWT_ACCESS_EXPIRE,
     JWT_REFRESH_SECRET,
     JWT_REFRESH_EXPIRE,
-    DB_FORCE
+    DB_FORCE,
 } = process.env;
->>>>>>> e96d292... [fix] change db config
 
     class User extends Model {
         /**
@@ -35,14 +26,14 @@ const {
             return bcrypt.compare(password, this.password);
         }
 
-        /**
-         * hash a password
-         *
-         * @async
-         */
-        async hashPassword() {
-            this.password = await bcrypt.hash(this.password, 10);
-        }
+    /**
+     * hash a password
+     *
+     * @async
+     */
+    async hashPassword() {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
 
         /**
          * generate access token and refresh token
@@ -99,29 +90,9 @@ const {
             tableName: 'user',
             timestamps: true,
         },
-<<<<<<< HEAD
-    );
-=======
-        email: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-        },
-        role: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-            defaultValue: 'user',
-        },
-    },
-    {
-        sequelize,
-        modelName: 'User',
-        tableName: 'user',
-        timestamps: true,
-    },
 );
 
-User.sync({ force: DB_FORCE });
->>>>>>> e96d292... [fix] change db config
+User.sync({ force: DB_FORCE === 'true' });
 
     return User;
 };

@@ -1,7 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-<<<<<<< HEAD
 import UserFunc from './user.js';
-=======
 import sequelize from '../database/postgres.js';
 import User from './user.js';
 import dotenv from 'dotenv';
@@ -9,7 +7,6 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 
 const { DB_FORCE } = process.env;
->>>>>>> e96d292... [fix] change db config
 
 export default (sequelize) => {
     const User = UserFunc(sequelize);
@@ -50,20 +47,11 @@ export default (sequelize) => {
             tableName: 'token',
             timestamps: true,
         },
-<<<<<<< HEAD
+
     );
-=======
-    },
-    {
-        sequelize,
-        modelName: 'Token',
-        tableName: 'token',
-        timestamps: true,
-    },
-);
 
-Token.sync({ force: DB_FORCE });
->>>>>>> e96d292... [fix] change db config
+    Token.sync({ force: DB_FORCE });
+    Token.sync({ force: DB_FORCE === 'true' });
 
-    return Token;
+        return Token;
 };
