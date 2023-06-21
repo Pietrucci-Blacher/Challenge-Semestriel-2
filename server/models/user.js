@@ -11,6 +11,7 @@ const {
     JWT_ACCESS_EXPIRE,
     JWT_REFRESH_SECRET,
     JWT_REFRESH_EXPIRE,
+    DB_FORCE
 } = process.env;
 
 class User extends Model {
@@ -88,6 +89,6 @@ User.init(
     },
 );
 
-User.sync({ force: false });
+User.sync({ force: DB_FORCE });
 
 export default User;
