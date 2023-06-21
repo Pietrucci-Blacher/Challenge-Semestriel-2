@@ -8,7 +8,8 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "migration": "node database/postgres/migration.js"
   },
   "repository": {
     "type": "git",
