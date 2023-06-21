@@ -1,0 +1,12 @@
+[
+  {
+    "path": "/",
+    "name": "Home",
+    "component": "Home"
+  },
+  {
+    "path": "/404",
+    "name": "404 Error",
+    "component": "NotFound"
+  }
+]
