@@ -66,11 +66,11 @@ export const replace = async (newData, filters) => {
     return create(data);
 };
 
-export const update = (newData, filters) => {
+export const update = async (newData, filters) => {
     return UserModel.update(newData, { where: filters });
 };
 
-export const destroy = (filters) => {
+export const destroy = async (filters) => {
     return UserModel.destroy({ where: filters });
 };
 
