@@ -5,16 +5,15 @@ import { checkEmail } from '../utils/utils.js';
 
 export const findAll = async (filters, options = {}) => {
     let users = await UserModel.findAll({ where: filters });
-
-    if (options.order)
-        users = users.sort((a, b) => compare(a, b, options.order));
+    if (options.order) {
+        users = users.sort((a, b) => compare(a, b, options.order)); }
 
     if (options.limit) users = users.slice(0, options.limit);
 
     return users;
 };
 
-export const findOne = (filters) => {
+export const findOne = async (filters) => {
     return UserModel.findOne({ where: filters });
 };
 
@@ -56,11 +55,11 @@ export const replace = async (newData, filters) => {
     return create(data);
 };
 
-export const update = (newData, filters) => {
+export const update = async (newData, filters) => {
     return UserModel.update(newData, { where: filters });
 };
 
-export const destroy = (filters) => {
+export const destroy = async (filters) => {
     return UserModel.destroy({ where: filters });
 };
 
