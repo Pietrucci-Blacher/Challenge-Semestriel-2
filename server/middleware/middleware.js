@@ -32,7 +32,7 @@ export const isAdmin = async (req, res, next) => {
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     if (user.role !== 'admin')
-        return res.status(401).json({ message: 'Require Admin Role' });
+        return res.status(403).json({ message: 'Require Admin Role' });
 
     next();
 };

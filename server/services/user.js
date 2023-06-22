@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { checkEmail } from '../utils/utils.js';
 
 export const findAll = async (filters, options = {}) => {
-    let users = await UserModel.findAll(filters);
+    let users = await UserModel.findAll({ where: filters });
     if (options.order) {
         users = users.sort((a, b) => compare(a, b, options.order));
     }
@@ -15,7 +15,7 @@ export const findAll = async (filters, options = {}) => {
 };
 
 export const findOne = async (filters) => {
-    return UserModel.findOne(filters);
+    return UserModel.findOne({ where: filters });
 };
 
 export const create = async (data) => {
@@ -54,12 +54,12 @@ export const replace = async (filters, newData) => {
     // TODO: faire la fonction replace
 };
 
-export const update = async (filters, newData) => {
-    return UserModel.update(newData, filters);
+export const update = async (newData, filters) => {
+    return UserModel.update(newData, { where: filters });
 };
 
 export const destroy = async (filters) => {
-    return UserModel.destroy(filters);
+    return UserModel.destroy({ where: filters });
 };
 
 function compare(a, b, order, index = 0) {

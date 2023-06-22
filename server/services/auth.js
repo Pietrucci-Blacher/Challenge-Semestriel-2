@@ -21,7 +21,7 @@ export const login = async (email, password) => {
         throw error;
     }
 
-    const user = await UserService.findOne({ where: { email } });
+    const user = await UserService.findOne({ email });
     if (!user) {
         const error = new Error();
         error.name = 'NotFound';
@@ -58,9 +58,7 @@ export const login = async (email, password) => {
 
 export const register = async (username, email, password) => {
     const user = await UserService.findOne({
-        where: {
-            [Op.or]: [{ username }, { email }],
-        },
+        [Op.or]: [{ username }, { email }],
     });
 
     if (user) {
