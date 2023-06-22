@@ -5,8 +5,9 @@ import { checkEmail } from '../utils/utils.js';
 
 export const findAll = async (filters, options = {}) => {
     let users = await UserModel.findAll({ where: filters });
-    if (options.order) {
-        users = users.sort((a, b) => compare(a, b, options.order)); }
+
+    if (options.order)
+        users = users.sort((a, b) => compare(a, b, options.order));
 
     if (options.limit) users = users.slice(0, options.limit);
 

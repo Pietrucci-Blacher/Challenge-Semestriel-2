@@ -9,8 +9,8 @@
     "dev": "nodemon server.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write .",
-    "migration": "node database/postgres/migration.js"
-    "test": "vitest --config ./vitest.config.ts"
+    "migration": "node database/postgres/migration.js",
+    "test": "MODE=test vitest --config ./vitest.config.ts"
   },
   "repository": {
     "type": "git",
