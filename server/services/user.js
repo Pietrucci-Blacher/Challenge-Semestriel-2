@@ -5,12 +5,12 @@ import { checkEmail } from '../utils/utils.js';
 
 export const findAll = async (filters, options = {}) => {
     let users = await UserModel.findAll({ where: filters });
-    if (options.order) {
+
+    if (options.order)
         users = users.sort((a, b) => compare(a, b, options.order));
-    }
-    if (options.limit) {
-        users = users.slice(0, options.limit);
-    }
+
+    if (options.limit) users = users.slice(0, options.limit);
+
     return users;
 };
 
@@ -37,7 +37,7 @@ export const create = async (data) => {
         throw error;
     }
 
-    if (!data.username || data.username.length < 3) {
+    if (!data.username || data.username.length < 4) {
         const error = new Error();
         error.name = 'ValidationError';
         error.errors = {

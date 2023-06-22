@@ -9,8 +9,8 @@
     "dev": "nodemon server.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write .",
-    "migration": "node database/postgres/migration.js"
-    "test": "vitest --config ./vitest.config.ts"
+    "migration": "node database/postgres/migration.js",
+    "test": "MODE=test vitest --config ./vitest.config.ts"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Pietrucci-Blacher/Challenge-Semestriel-2#readme",
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
