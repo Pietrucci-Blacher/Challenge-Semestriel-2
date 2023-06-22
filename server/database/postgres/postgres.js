@@ -1,6 +1,11 @@
 import connection from './db.js';
 import fs from 'fs';
 import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '../../.env' });
+
+const { MODE } = process.env;
 
 const db = { connection };
 const dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -12,5 +17,7 @@ for (const file of files) {
     const model = modelFile(connection);
     db[model.name] = model;
 }
+
+if (MODE === 'test') await connection.sync();
 
 export default db;
