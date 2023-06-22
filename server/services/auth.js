@@ -2,7 +2,8 @@ import * as UserService from './user.js';
 import { Op } from 'sequelize';
 import { checkEmail, verifyRefreshToken } from '../utils/utils.js';
 import dotenv from 'dotenv';
-import Token from '../models/token.js';
+import db from '../database/postgres/postgres.js';
+const Token = db.Token;
 import jwt from 'jsonwebtoken';
 
 dotenv.config({ path: '../.env' });

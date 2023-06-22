@@ -8,7 +8,9 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "migration": "node database/postgres/migration.js",
+    "test": "MODE=test vitest --config ./vitest.config.ts"
   },
   "repository": {
     "type": "git",
@@ -20,24 +22,26 @@
   },
   "homepage": "https://github.com/Pietrucci-Blacher/Challenge-Semestriel-2#readme",
   "devDependencies": {
-    "eslint": "^8.42.0",
+    "eslint": "^8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.14.1",
+    "eslint-plugin-vue": "^9.15.0",
     "jsdom": "^22.1.0",
     "nodemon": "^2.0.22",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "vitest": "^0.32.2"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.1.4",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.6.0",
-    "mongoose": "^7.2.2",
+    "mongoose": "^7.3.0",
     "pg": "^8.11.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.32.0"
+    "sqlite3": "^5.1.6",
+    "sequelize": "^6.32.1"
   }
 }

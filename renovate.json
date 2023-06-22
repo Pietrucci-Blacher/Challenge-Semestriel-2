@@ -8,5 +8,10 @@
   "confidential": true,
   "baseBranches": [
     "develop"
+  ],
+  "packageRules": [
+      {
+        "matchPaths": ["**/package.json"]
+      }
   ]
 }
