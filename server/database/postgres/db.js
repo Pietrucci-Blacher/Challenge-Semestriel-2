@@ -6,7 +6,7 @@ dotenv.config({ path: '../.env' });
 const { POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, MODE } = process.env;
 let connection;
 
-if (MODE === 'test' || MODE === 'test-ci') {
+if (MODE === 'test') {
     connection = new Sequelize('sqlite::memory:', {
         logging: false,
     });
