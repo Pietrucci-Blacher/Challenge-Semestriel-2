@@ -35,9 +35,6 @@ jobs:
 
       - name: Run tests
         working-directory: ${{ matrix.directory }}
-        env:
-          JWT_ACCESS_SECRET: somethingsecret
-          JWT_REFRESH_SECRET: anothersecret
         run: |
           echo "Testing ${{ matrix.directory }}"
           pnpm install
