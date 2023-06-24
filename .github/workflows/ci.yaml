@@ -42,4 +42,4 @@ jobs:
         run: |
           echo "Testing ${{ matrix.directory }}"
           pnpm install
-          pnpm test-ci
+          pnpm test
