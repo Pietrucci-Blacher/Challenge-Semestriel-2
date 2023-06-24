@@ -8,7 +8,8 @@ import jwt from 'jsonwebtoken';
 
 dotenv.config({ path: '../.env' });
 
-const { JWT_REFRESH_EXPIRE } = process.env;
+const { JWT_REFRESH_EXPIRE, JWT_ACCESS_SECRET, JWT_ACCESS_EXPIRE } =
+    process.env;
 
 export const login = async (email, password) => {
     if (!checkEmail(email)) {
@@ -20,7 +21,7 @@ export const login = async (email, password) => {
         throw error;
     }
 
-    const user = await UserService.findOne({ where: { email } });
+    const user = await UserService.findOne({ email });
     if (!user) {
         const error = new Error();
         error.name = 'NotFound';
@@ -57,9 +58,7 @@ export const login = async (email, password) => {
 
 export const register = async (username, email, password) => {
     const user = await UserService.findOne({
-        where: {
-            [Op.or]: [{ username }, { email }],
-        },
+        [Op.or]: [{ username }, { email }],
     });
 
     if (user) {
@@ -82,8 +81,8 @@ export const logout = async (userId) => {
 export const refresh = async (refreshToken) => {
     const decoded = await verifyRefreshToken(refreshToken);
 
-    const token = jwt.sign({ id: decoded.id }, process.env.JWT_ACCESS_SECRET, {
-        expiresIn: process.env.JWT_ACCESS_EXPIRE,
+    const token = jwt.sign({ id: decoded.id }, JWT_ACCESS_SECRET, {
+        expiresIn: JWT_ACCESS_EXPIRE,
     });
 
     await Token.update(

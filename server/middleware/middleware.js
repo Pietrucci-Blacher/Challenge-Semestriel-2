@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import * as UserService from '../services/user.js';
-import Token from '../models/token.js';
+import db from '../database/postgres/postgres.js';
+const Token = db.Token;
 
 dotenv.config({ path: '../.env' });
 
@@ -31,7 +32,7 @@ export const isAdmin = async (req, res, next) => {
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     if (user.role !== 'admin')
-        return res.status(401).json({ message: 'Require Admin Role' });
+        return res.status(403).json({ message: 'Require Admin Role' });
 
     next();
 };

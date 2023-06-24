@@ -4,18 +4,18 @@ import bcrypt from 'bcrypt';
 import { checkEmail } from '../utils/utils.js';
 
 export const findAll = async (filters, options = {}) => {
-    let users = await UserModel.findAll(filters);
-    if (options.order) {
+    let users = await UserModel.findAll({ where: filters });
+
+    if (options.order)
         users = users.sort((a, b) => compare(a, b, options.order));
-    }
-    if (options.limit) {
-        users = users.slice(0, options.limit);
-    }
+
+    if (options.limit) users = users.slice(0, options.limit);
+
     return users;
 };
 
 export const findOne = async (filters) => {
-    return UserModel.findOne(filters);
+    return UserModel.findOne({ where: filters });
 };
 
 export const create = async (data) => {
@@ -37,7 +37,7 @@ export const create = async (data) => {
         throw error;
     }
 
-    if (!data.username || data.username.length < 3) {
+    if (!data.username || data.username.length < 4) {
         const error = new Error();
         error.name = 'ValidationError';
         error.errors = {
@@ -54,12 +54,12 @@ export const replace = async (filters, newData) => {
     // TODO: faire la fonction replace
 };
 
-export const update = async (filters, newData) => {
-    return UserModel.update(newData, filters);
+export const update = async (newData, filters) => {
+    return UserModel.update(newData, { where: filters });
 };
 
 export const destroy = async (filters) => {
-    return UserModel.destroy(filters);
+    return UserModel.destroy({ where: filters });
 };
 
 function compare(a, b, order, index = 0) {
