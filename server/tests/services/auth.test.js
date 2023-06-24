@@ -26,10 +26,15 @@ describe('Auth Service', () => {
                 where: { email },
             });
 
+            const comperedPassword = await bcrypt.compare(
+                password,
+                userInDb.password,
+            );
+
             expect(userInDb).toBeDefined();
             expect(userInDb.email).toEqual(email);
             expect(userInDb.username).toEqual(username);
-            expect(bcrypt.compareSync(password, userInDb.password)).toBe(true);
+            expect(comperedPassword).toBeTruthy();
         });
         it('should throw an error if user already exists', async () => {
             const email = faker.internet.email();
