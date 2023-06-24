@@ -71,9 +71,10 @@ describe('User Service', () => {
 
     describe('create()', () => {
         it('should create a user', async () => {
+            const password = faker.internet.password();
             const user = {
                 username: faker.internet.userName(),
-                password: await bcrypt.hash(faker.internet.password(), 10),
+                password,
                 email: faker.internet.email(),
             };
 
@@ -89,7 +90,7 @@ describe('User Service', () => {
             expect(userInDb).toBeDefined();
             expect(userInDb.username).toEqual(user.username);
             expect(userInDb.email).toEqual(user.email);
-            expect(userInDb.password).toEqual(user.password);
+            expect(bcrypt.compareSync(password, userInDb.password)).toBe(true);
         });
         it('should not create a user for not valid email', async () => {
             const user = {

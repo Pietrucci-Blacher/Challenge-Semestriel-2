@@ -21,7 +21,7 @@ export default (sequelize) => {
          * @param {string} password - clear password
          * @returns {Promise<boolean>} - true if password is correct
          */
-        async checkPassword(password) {
+        checkPassword(password) {
             return bcrypt.compare(password, this.password);
         }
 
