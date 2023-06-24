@@ -7,6 +7,9 @@ jobs:
     strategy:
       matrix:
         directory: [client, server]
+    env:
+      JWT_ACCESS_SECRET: somethingsecret
+      JWT_REFRESH_SECRET: somethingsecret
 
     steps:
       - name: Checkout
@@ -31,13 +34,10 @@ jobs:
           pnpm run build
           echo "Installing Playwright deps"
           npx playwright install --with-deps
-          
 
       - name: Run tests
         working-directory: ${{ matrix.directory }}
         run: |
-          export JWT_ACCESS_SECRET=somethingsecret
-          export JWT_REFRESH_SECRET=somethingsecret
           echo "Testing ${{ matrix.directory }}"
           pnpm install
           pnpm test
