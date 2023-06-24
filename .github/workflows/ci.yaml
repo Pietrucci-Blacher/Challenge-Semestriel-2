@@ -37,6 +37,8 @@ jobs:
         env:
           JWT_ACCESS_SECRET: somethingsecret
           JWT_REFRESH_SECRET: somethingsecret
+          JWT_ACCESS_EXPIRE: 86400
+          JWT_REFRESH_EXPIRE: 2592000
         run: |
           echo "Testing ${{ matrix.directory }}"
           pnpm install
