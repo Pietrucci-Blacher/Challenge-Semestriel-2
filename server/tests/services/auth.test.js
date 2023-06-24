@@ -95,4 +95,85 @@ describe('Auth Service', () => {
             await expect(result).rejects.toThrow();
         });
     });
+
+    describe('refresh()', () => {
+        it('should refresh a token', async () => {
+            const password = faker.internet.password();
+            const email = faker.internet.email();
+            const username = faker.internet.userName();
+
+            const createdUser = await UserService.create({
+                username,
+                email,
+                password,
+            });
+
+            const accessToken = faker.string.alphanumeric(64);
+            const refreshToken = jwt.sign(
+                { id: createdUser.id },
+                JWT_REFRESH_SECRET,
+                { expiresIn: '1h' },
+            );
+
+            await TokenModel.create({
+                userId: createdUser.id,
+                refresh_token: refreshToken,
+                access_token: accessToken,
+                expire: new Date(),
+            });
+
+            const newAccessToken = await AuthService.refresh(refreshToken);
+
+            const decodedAccessToken = jwt.verify(
+                newAccessToken,
+                JWT_ACCESS_SECRET,
+            );
+
+            const tokenInDb = await TokenModel.findOne({
+                where: { userId: createdUser.id },
+            });
+
+            expect(newAccessToken).toBeDefined();
+            expect(decodedAccessToken.id).toEqual(createdUser.id);
+            expect(newAccessToken).not.toEqual(accessToken);
+            expect(newAccessToken).toEqual(tokenInDb.access_token);
+        });
+
+        it('should throw an error if token is invalid', async () => {
+            const refreshToken = faker.string.alphanumeric(64);
+
+            const result = AuthService.refresh(refreshToken);
+
+            await expect(result).rejects.toThrow();
+        });
+    });
+
+    describe('logout()', () => {
+        it('should logout a user', async () => {
+            const password = faker.internet.password();
+            const email = faker.internet.email();
+            const username = faker.internet.userName();
+
+            const createdUser = await UserService.create({
+                username,
+                email,
+                password,
+            });
+
+            await TokenModel.create({
+                userId: createdUser.id,
+                refresh_token: faker.string.alphanumeric(64),
+                access_token: faker.string.alphanumeric(64),
+                expire: new Date(),
+            });
+
+            await AuthService.logout(createdUser.id);
+
+            const tokenInDb = await TokenModel.findOne({
+                where: { userId: createdUser.id },
+            });
+
+            expect(tokenInDb).toBeNull();
+        });
+    });
 });
