@@ -18,6 +18,6 @@ for (const file of files) {
     db[model.name] = model;
 }
 
-if (MODE === 'test') await connection.sync();
+if (MODE === 'test' || MODE === 'test-ci') await connection.sync();
 
 export default db;

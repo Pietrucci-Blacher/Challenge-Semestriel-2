@@ -7,9 +7,6 @@ jobs:
     strategy:
       matrix:
         directory: [client, server]
-    env:
-      JWT_ACCESS_SECRET: somethingsecret
-      JWT_REFRESH_SECRET: somethingsecret
 
     steps:
       - name: Checkout
@@ -37,7 +34,10 @@ jobs:
 
       - name: Run tests
         working-directory: ${{ matrix.directory }}
+        env:
+          JWT_ACCESS_SECRET: somethingsecret
+          JWT_REFRESH_SECRET: somethingsecret
         run: |
           echo "Testing ${{ matrix.directory }}"
           pnpm install
-          pnpm test
+          pnpm test-ci
