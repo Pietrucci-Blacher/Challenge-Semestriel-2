@@ -9,7 +9,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
-// if (process.env.MODE === 'test') dotenv.config({ path: '../../../.env' });
 dotenv.config({ path: '../../../.env' });
 
 const { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } = process.env;
