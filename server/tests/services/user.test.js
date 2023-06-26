@@ -159,6 +159,32 @@ describe('User Service', () => {
         });
     });
 
+    describe('replace()', () => {
+        it('should replace a user', async () => {
+            const user = users[0];
+            const newData = {
+                username: faker.internet.userName(),
+                email: faker.internet.email(),
+                password: faker.internet.password(),
+            };
+
+            const result = await UserService.replace(newData, { id: user.id });
+            const userInDb = await UserModel.findOne({
+                where: { id: user.id },
+            });
+
+            expect(result).toBeDefined();
+            expect(result.username).toEqual(newData.username);
+            expect(result.email).toEqual(newData.email);
+            expect(userInDb).toBeDefined();
+            expect(userInDb.username).toEqual(newData.username);
+            expect(userInDb.email).toEqual(newData.email);
+            expect(
+                bcrypt.compareSync(newData.password, userInDb.password),
+            ).toBeTruthy();
+        });
+    });
+
     describe('destroy', () => {
         it('should destroy a user', async () => {
             const user = users[0];

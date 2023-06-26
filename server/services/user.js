@@ -14,7 +14,7 @@ export const findAll = async (filters, options = {}) => {
     return users;
 };
 
-export const findOne = async (filters) => {
+export const findOne = (filters) => {
     return UserModel.findOne({ where: filters });
 };
 
@@ -56,11 +56,11 @@ export const replace = async (newData, filters) => {
     return create(data);
 };
 
-export const update = async (newData, filters) => {
+export const update = (newData, filters) => {
     return UserModel.update(newData, { where: filters });
 };
 
-export const destroy = async (filters) => {
+export const destroy = (filters) => {
     return UserModel.destroy({ where: filters });
 };
 
