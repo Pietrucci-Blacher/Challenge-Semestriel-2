@@ -14,7 +14,7 @@ export const findAll = async (filters, options = {}) => {
     return users;
 };
 
-export const findOne = async (filters) => {
+export const findOne = (filters) => {
     return UserModel.findOne({ where: filters });
 };
 
@@ -50,15 +50,17 @@ export const create = async (data) => {
     return UserModel.create(data);
 };
 
-export const replace = async (filters, newData) => {
-    // TODO: faire la fonction replace
+export const replace = async (newData, filters) => {
+    await UserModel.destroy({ where: filters });
+    const data = { ...newData, id: filters.id };
+    return create(data);
 };
 
-export const update = async (newData, filters) => {
+export const update = (newData, filters) => {
     return UserModel.update(newData, { where: filters });
 };
 
-export const destroy = async (filters) => {
+export const destroy = (filters) => {
     return UserModel.destroy({ where: filters });
 };
 
