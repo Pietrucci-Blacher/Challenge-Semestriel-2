@@ -36,6 +36,6 @@
   },
   {"path": "/error",
     "name": "Error",
-    "component": "Error"
+    "component": "404"
   }
 ]
