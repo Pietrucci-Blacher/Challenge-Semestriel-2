@@ -1,0 +1,45 @@
+on:
+  pull_request:
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: [client, server]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Install Node.js 20.x
+        run: |
+          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+
+      - name: Build front-end
+        if: matrix.directory == 'client'
+        working-directory: client
+        run: |
+          echo "Building front-end"
+          pnpm install
+          pnpm run build
+          echo "Installing Playwright deps"
+          npx playwright install --with-deps
+
+      - name: Run tests
+        working-directory: ${{ matrix.directory }}
+        env:
+          JWT_ACCESS_SECRET: somethingsecret
+          JWT_REFRESH_SECRET: somethingsecret
+          JWT_ACCESS_EXPIRE: 86400
+          JWT_REFRESH_EXPIRE: 2592000
+        run: |
+          echo "Testing ${{ matrix.directory }}"
+          pnpm install
+          pnpm test

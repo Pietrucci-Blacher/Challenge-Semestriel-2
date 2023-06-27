@@ -16,7 +16,6 @@ coverage
 *.local
 .idea/
 .env
-pnpm-lock.yaml
 postgresql
 mongo
 

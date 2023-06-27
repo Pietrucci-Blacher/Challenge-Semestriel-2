@@ -3,6 +3,8 @@ import { Router } from 'express';
 export default function (Controller, options = {}) {
     const router = new Router();
 
+    //TODO: add security middleware
+
     router.get('/', Controller.getAll);
     router.post('/', Controller.create);
 

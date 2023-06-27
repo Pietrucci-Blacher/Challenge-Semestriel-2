@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import Token from '../models/token.js';
+import db from '../database/postgres/postgres.js';
+const Token = db.Token;
 
 dotenv.config({ path: '../.env' });
 
