@@ -8,5 +8,19 @@
     "path": "/404",
     "name": "404 Error",
     "component": "NotFound"
+  },
+  {
+    "path": "/stripe",
+    "name": "Stripe",
+    "component": "Stripe"
+  },
+  {
+    "path": "/success",
+    "name": "Success",
+    "component": "Success"
+  },
+  {"path": "/error",
+    "name": "Error",
+    "component": "Error"
   }
 ]
