@@ -27,5 +27,19 @@
   {"path": "/error",
     "name": "Error",
     "component": "404"
+  },
+  {
+    "path": "/stripe",
+    "name": "Stripe",
+    "component": "Stripe"
+  },
+  {
+    "path": "/success",
+    "name": "Success",
+    "component": "Success"
+  },
+  {"path": "/error",
+    "name": "Error",
+    "component": "Error"
   }
 ]

@@ -7,6 +7,9 @@ import Error from '@/views/Error.vue';
 import Chat from "@/components/Chat.vue";
 import Chat from '@/components/Chat.vue';
 import Navbar from '@/components/Navbar/Navbar.vue';
+import Stripe from '@/views/Stripe.vue';
+import Success from '@/views/Success.vue';
+import Error from '@/views/Error.vue';
 </script>
 
 <template>
@@ -24,6 +27,13 @@ import Navbar from '@/components/Navbar/Navbar.vue';
             <br />
             <Error />
             <Chat />
+                <br />
+            <Stripe />
+            <br />
+            <Success />
+            <br />
+            <Error />
         </main>
     </section>
+
 </template>
