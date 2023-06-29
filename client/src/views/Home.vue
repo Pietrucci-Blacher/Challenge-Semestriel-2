@@ -47,4 +47,5 @@ const isUserAuthenticated = ref(false);
             <a :href="LoginUrlGoogle">Login with Google</a>
         </main>
     </section>
+
 </template>
