@@ -69,6 +69,8 @@ export default class ChessBoard {
     }
 
     movePiece(fromX, fromY, toX, toY) {
+        if (fromX === toX && fromY === toY) return false;
+
         const piece = this.getPieceAt(fromX, fromY);
 
         if (
