@@ -28,12 +28,17 @@ import { reactive } from 'vue';
                 v-for="(square, colIndex) in reverseTab(row, reverse)"
                 :key="colIndex"
                 class="square"
-                :class="{ 'black-square': (rowIndex + colIndex) % 2 === 1 }"
+                :class="{
+                    'selected-square':
+                        clicked?.x === reverseCoord(colIndex, reverse) &&
+                        clicked?.y === reverseCoord(rowIndex, reverse),
+                    'black-square': (rowIndex + colIndex) % 2 === 1,
+                }"
                 :style="{ width: squareSize, height: squareSize }"
                 @click="
                     onSquareClick(
-                        reverse ? 7 - colIndex : colIndex,
-                        reverse ? 7 - rowIndex : rowIndex,
+                        reverseCoord(colIndex, reverse),
+                        reverseCoord(rowIndex, reverse),
                     )
                 "
             >
@@ -102,6 +107,9 @@ export default {
         },
         reverseLabel(index, rev = false) {
             return rev ? 1 + index : 8 - index;
+        },
+        reverseCoord(coord, rev = false) {
+            return rev ? 7 - coord : coord;
         },
         chessPiece(piece) {
             return `/images/chess-piece-classic/${piece}`;

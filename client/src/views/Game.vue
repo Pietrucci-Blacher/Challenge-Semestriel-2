@@ -4,6 +4,6 @@ import Board from '@/components/Board.vue';
 
 <template>
     <div class="game">
-        <Board width="400" />
+        <Board width="500" />
     </div>
 </template>
