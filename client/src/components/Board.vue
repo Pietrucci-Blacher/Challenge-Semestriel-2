@@ -3,7 +3,7 @@ import ChessBoard from '@/components/Board.js';
 import { reactive } from 'vue';
 </script>
 <template>
-    <div class="board" :style="{ width: boardDim }">
+    <div class="board noselect" :style="{ width: boardDim }">
         <div class="row">
             <div class="equalizer"></div>
             <div
