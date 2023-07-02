@@ -11,7 +11,7 @@ export default class Piece {
         this.color = color;
         this.board = board;
         this.name = name;
-        this.imageName = `${this.color}-${this.name}.png`;
+        this.imageName = `${this.color}-${this.name}.svg`;
         this.notation = notation;
         this.setCoords(row, col);
     }

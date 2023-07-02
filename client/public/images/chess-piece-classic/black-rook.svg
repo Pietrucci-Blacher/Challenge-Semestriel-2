@@ -1,1 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45" height="45" xml:space="preserve"><image width="45" height="45" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAtCAYAAAA6GuKaAAAAAXNSR0IArs4c6QAAA/hJREFUaEOtWT1PFFEUPaOt0bVhYugkMXbaqSQsoAkRUX6AS0JICK2hNLE0sSS2hkhIWH8AsmBI+Ng1osZGSwro0CyNq7HVMTPzmHnf977d3YrM3I9zz7vvvPuGCOkvApBkfxU/yyPPywgRkiKE4esNxssqh0j/dqPVLbXCDN8+PLCnVKvOQWfP2HSQq1FGcsXkPHcvv8k0b7W8nHohhbaiJZMfNHu5zeWjOqlc3ABfYdon0MQmDu88O1020GGKwVkGTu+Gx/Grh4jX5T7loOnCJkIUsHK3AIxpWfYBfJaE3rAR8YVdcSZ4YtF1MHq6KGsHwF1NXHYT4J70zLAR73ZB25U2hMIooAnW9yxMHwN4JQn3AhJctXCl2gELgGGXrsY4R3FD2sMAHdBa9JoDBmh5bijHhHRk4P/2gGjMGFJcc4Brid2VekCbksqCXalUvg4NDd3wGqcnSggNmX06aEU4Pjr61ul0brriy7U6U+iE1Gq19uLi4gBdYXdNs7S0dFqv1+OeQFucLwF4A+ABDVyzoIV+E8BjAL9YG9Fu5GTrHIDnExMTT+fn5x3Y+UwvLy9je3v7BYBnAP65yTDnkwDicufBwcHD4eHhay5HurVzi4MPB4cn30+u88vMM+Y9rXc5NaLl8jQqSxJbVdSlbSIxTlmSRFOnialJ6KUG2npj8yQvkjTTAyuUM7Z6aAhK0CIje4lV+ww0Sa1lX4f6pPYG0/ZWcXGoMs1RDDm+xDSPK2HlAR0EQWOagyHsGJfReEFzUotgRnuUvu5ODzl0ZaHZB6JRr2LwkNNMW/ZMMGjBELM9yEO5143Io8YF2uVNRPWC9sW00EHqWFc6bQHR5I27AmIWgNqIwsjSuz22R8FTr+3Bl+upqamfs7OzFa+Hu+DCbXV1tdNoNC4bcQh5N2cPGvvDOI7fVqsjjomfHpfOUrSaLbRP248AbNBp1eMrwD4amZy8vzk3N3ehcCJmFWqQWll5/Wdr6106o79XgbgDKyei/Ruz4vxxII5vj1arAYX6TVutFtrt9icAd3QiAtXDmSi/kQeoI9OUfalNkYUeLrZvH/JJaa+W3pRW0EbBkhK7dTp/U3zCmp6efjIzM3NFceBQSdisra39WF9ffymuXGkBX3wTusK0PXa0AyTZ57A4jlHtpp8NQVEfiL4+u0Lpn9CsimhdUqkAqY/9O5q+pbH2L9kqjJ6O9oCkuF3Q7SkfuaHXsMx3HxHG9f+2yeUyQKMuvkmwaOqDUfptpeaLwwF9HsBFFhjOpnRt+9z3L4DfVC4G6F762DIt+k4M1qagpjyqZMZ7mnzaQk+jHOPUnEBi5OTn2BCJ/O1hSIWcsQ/ZSRZKAznbf6MGVkPykro1AAAAAElFTkSuQmCC"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="45" height="45">
+  <g style="opacity:1; fill:#000000; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;" transform="translate(0,0.3)">
+    <path
+      d="M 9,39 L 36,39 L 36,36 L 9,36 L 9,39 z "
+      style="stroke-linecap:butt;" />
+    <path
+      d="M 12.5,32 L 14,29.5 L 31,29.5 L 32.5,32 L 12.5,32 z "
+      style="stroke-linecap:butt;" />
+    <path
+      d="M 12,36 L 12,32 L 33,32 L 33,36 L 12,36 z "
+      style="stroke-linecap:butt;" />
+    <path
+      d="M 14,29.5 L 14,16.5 L 31,16.5 L 31,29.5 L 14,29.5 z "
+      style="stroke-linecap:butt;stroke-linejoin:miter;" />
+    <path
+      d="M 14,16.5 L 11,14 L 34,14 L 31,16.5 L 14,16.5 z "
+      style="stroke-linecap:butt;" />
+    <path
+      d="M 11,14 L 11,9 L 15,9 L 15,11 L 20,11 L 20,9 L 25,9 L 25,11 L 30,11 L 30,9 L 34,9 L 34,14 L 11,14 z "
+      style="stroke-linecap:butt;" />
+    <path
+      d="M 12,35.5 L 33,35.5 L 33,35.5"
+      style="fill:none; stroke:#ffffff; stroke-width:1; stroke-linejoin:miter;" />
+    <path
+      d="M 13,31.5 L 32,31.5"
+      style="fill:none; stroke:#ffffff; stroke-width:1; stroke-linejoin:miter;" />
+    <path
+      d="M 14,29.5 L 31,29.5"
+      style="fill:none; stroke:#ffffff; stroke-width:1; stroke-linejoin:miter;" />
+    <path
+      d="M 14,16.5 L 31,16.5"
+      style="fill:none; stroke:#ffffff; stroke-width:1; stroke-linejoin:miter;" />
+    <path
+      d="M 11,14 L 34,14"
+      style="fill:none; stroke:#ffffff; stroke-width:1; stroke-linejoin:miter;" />
+  </g>
+</svg>

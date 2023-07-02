@@ -117,7 +117,7 @@ export default {
         onSquareClick(x, y) {
             if (this.clicked) {
                 const { x: x1, y: y1 } = this.clicked;
-                this.chessBoard.movePiece(x1, y1, x, y);
+                this.chessBoard.movePiece(y1, x1, y, x);
                 this.clicked = null;
                 return;
             }

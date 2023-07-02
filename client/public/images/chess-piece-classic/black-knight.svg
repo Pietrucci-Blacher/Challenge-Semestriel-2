@@ -1,1 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45" height="45" xml:space="preserve"><image width="45" height="45" xlink:href="data:image/png;base64,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"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="45" height="45">
+  <g style="opacity:1; fill:none; fill-opacity:1; fill-rule:evenodd; stroke:#000000; stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;" transform="translate(0,0.3)">
+    <path
+      d="M 22,10 C 32.5,11 38.5,18 38,39 L 15,39 C 15,30 25,32.5 23,18"
+      style="fill:#000000; stroke:#000000;" />
+    <path
+      d="M 24,18 C 24.38,20.91 18.45,25.37 16,27 C 13,29 13.18,31.34 11,31 C 9.958,30.06 12.41,27.96 11,28 C 10,28 11.19,29.23 10,30 C 9,30 5.997,31 6,26 C 6,24 12,14 12,14 C 12,14 13.89,12.1 14,10.5 C 13.27,9.506 13.5,8.5 13.5,7.5 C 14.5,6.5 16.5,10 16.5,10 L 18.5,10 C 18.5,10 19.28,8.008 21,7 C 22,7 22,10 22,10"
+      style="fill:#000000; stroke:#000000;" />
+    <path
+      d="M 9.5 25.5 A 0.5 0.5 0 1 1 8.5,25.5 A 0.5 0.5 0 1 1 9.5 25.5 z"
+      style="fill:#ffffff; stroke:#ffffff;" />
+    <path
+      d="M 15 15.5 A 0.5 1.5 0 1 1  14,15.5 A 0.5 1.5 0 1 1  15 15.5 z"
+      transform="matrix(0.866,0.5,-0.5,0.866,9.693,-5.173)"
+      style="fill:#ffffff; stroke:#ffffff;" />
+    <path
+      d="M 24.55,10.4 L 24.1,11.85 L 24.6,12 C 27.75,13 30.25,14.49 32.5,18.75 C 34.75,23.01 35.75,29.06 35.25,39 L 35.2,39.5 L 37.45,39.5 L 37.5,39 C 38,28.94 36.62,22.15 34.25,17.66 C 31.88,13.17 28.46,11.02 25.06,10.5 L 24.55,10.4 z "
+      style="fill:#ffffff; stroke:none;" />
+  </g>
+</svg>

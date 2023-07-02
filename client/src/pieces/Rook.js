@@ -5,8 +5,10 @@ export default class Rook extends Piece {
         super('rook', 'R', board, color, row, col);
     }
 
-    canMove(toX, toY) {
-        // TODO: Implement canMove() for Rook
-        return true;
+    canMove(toRow, toCol) {
+        const relativeCol = toCol - this.col;
+        const relativeRow = toRow - this.row;
+
+        return relativeCol === 0 || relativeRow === 0;
     }
 }

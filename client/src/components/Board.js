@@ -19,8 +19,8 @@ export default class ChessBoard {
             new Rook(this, 'black', 0, 0),
             new Knight(this, 'black', 0, 1),
             new Bishop(this, 'black', 0, 2),
-            new King(this, 'black', 0, 3),
-            new Queen(this, 'black', 0, 4),
+            new Queen(this, 'black', 0, 3),
+            new King(this, 'black', 0, 4),
             new Bishop(this, 'black', 0, 5),
             new Knight(this, 'black', 0, 6),
             new Rook(this, 'black', 0, 7),
@@ -51,40 +51,77 @@ export default class ChessBoard {
         ];
     }
 
-    addMoveToHistory(notation, fromX, fromY, toX, toY) {
+    addMoveToHistory(notation, fromRow, fromCol, toRow, toCol, taken = null) {
         this.moveHistory.push({
             player: this.getTurn(),
-            from: { x: fromX, y: fromY },
-            to: { x: toX, y: toY },
+            from: { row: fromRow, col: fromCol },
+            to: { row: toRow, col: toCol },
             piece: notation,
+            taken,
         });
     }
 
-    getPieceAt(x, y) {
-        return this.board[y][x];
+    getPieceAt(row, col) {
+        return this.board[row][col];
     }
 
-    setPieceAt(x, y, piece) {
-        this.board[y][x] = piece;
+    setPieceAt(row, col, piece) {
+        this.board[row][col] = piece;
     }
 
-    movePiece(fromX, fromY, toX, toY) {
-        if (fromX === toX && fromY === toY) return false;
+    movePiece(fromRow, fromCol, toRow, toCol) {
+        if (fromRow === toRow && fromRow === toCol) return false;
 
-        const piece = this.getPieceAt(fromX, fromY);
+        const piece = this.getPieceAt(fromRow, fromCol);
 
         if (
             !piece ||
             piece.color !== this.getTurn() ||
-            !piece.canMove(toX, toY)
+            !piece.canMove(toRow, toCol) ||
+            !this.trajectoryIsClear(fromRow, fromCol, toRow, toCol)
         )
             return false;
 
-        piece.setCoords(toX, toY);
-        this.setPieceAt(toX, toY, piece);
-        this.setPieceAt(fromX, fromY, null);
-        this.addMoveToHistory(piece.notation, fromX, fromY, toX, toY);
+        const destPiece = this.getPieceAt(toRow, toCol);
+
+        if (destPiece && destPiece.color === piece.color) return false;
+
+        piece.setCoords(toRow, toCol);
+        this.setPieceAt(toRow, toCol, piece);
+        this.setPieceAt(fromRow, fromCol, null);
+        this.addMoveToHistory(
+            piece.notation,
+            fromRow,
+            fromCol,
+            toRow,
+            toCol,
+            destPiece?.name || null,
+        );
         this.move++;
+
+        return true;
+    }
+
+    trajectoryIsClear(fromRow, fromCol, toRow, toCol) {
+        const piece = this.getPieceAt(fromRow, fromCol);
+
+        if (!piece) return false;
+        if (piece.name === 'knight') return true;
+
+        const relativeRow = toRow - fromRow;
+        const relativeCol = toCol - fromCol;
+
+        const dirRow = relativeRow < 0 ? -1 : relativeRow > 0 ? 1 : 0;
+        const dirCol = relativeCol < 0 ? -1 : relativeCol > 0 ? 1 : 0;
+
+        for (
+            let i = 1;
+            i < Math.max(Math.abs(relativeRow), Math.abs(relativeCol));
+            i++
+        ) {
+            if (this.getPieceAt(fromRow + i * dirRow, fromCol + i * dirCol))
+                return false;
+        }
 
         return true;
     }
