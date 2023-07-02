@@ -5,8 +5,14 @@ export default class Queen extends Piece {
         super('queen', 'Q', board, color, row, col);
     }
 
-    canMove(toX, toY) {
-        // TODO: Implement canMove() for Queen
-        return true;
+    canMove(toRow, toCol) {
+        const relativeCol = toCol - this.col;
+        const relativeRow = toRow - this.row;
+
+        return (
+            relativeCol === 0 ||
+            relativeRow === 0 ||
+            Math.abs(relativeCol) === Math.abs(relativeRow)
+        );
     }
 }

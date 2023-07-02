@@ -1,1 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45" height="45" xml:space="preserve"><image width="45" height="45" xlink:href="data:image/png;base64,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"/></svg>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="45"
+height="45">
+  <g style="fill:#000000;stroke:#000000;stroke-width:1.5; stroke-linecap:round;stroke-linejoin:round">
+
+    <path d="M 9,26 C 17.5,24.5 30,24.5 36,26 L 38.5,13.5 L 31,25 L 30.7,10.9 L 25.5,24.5 L 22.5,10 L 19.5,24.5 L 14.3,10.9 L 14,25 L 6.5,13.5 L 9,26 z"
+    style="stroke-linecap:butt;fill:#000000" />
+    <path d="m 9,26 c 0,2 1.5,2 2.5,4 1,1.5 1,1 0.5,3.5 -1.5,1 -1,2.5 -1,2.5 -1.5,1.5 0,2.5 0,2.5 6.5,1 16.5,1 23,0 0,0 1.5,-1 0,-2.5 0,0 0.5,-1.5 -1,-2.5 -0.5,-2.5 -0.5,-2 0.5,-3.5 1,-2 2.5,-2 2.5,-4 -8.5,-1.5 -18.5,-1.5 -27,0 z" />
+    <path d="M 11.5,30 C 15,29 30,29 33.5,30" />
+    <path d="m 12,33.5 c 6,-1 15,-1 21,0" />
+    <circle cx="6" cy="12" r="2" />
+    <circle cx="14" cy="9" r="2" />
+    <circle cx="22.5" cy="8" r="2" />
+    <circle cx="31" cy="9" r="2" />
+    <circle cx="39" cy="12" r="2" />
+    <path d="M 11,38.5 A 35,35 1 0 0 34,38.5"
+    style="fill:none; stroke:#000000;stroke-linecap:butt;" />
+    <g style="fill:none; stroke:#ffffff;">
+      <path d="M 11,29 A 35,35 1 0 1 34,29" />
+      <path d="M 12.5,31.5 L 32.5,31.5" />
+      <path d="M 11.5,34.5 A 35,35 1 0 0 33.5,34.5" />
+      <path d="M 10.5,37.5 A 35,35 1 0 0 34.5,37.5" />
+    </g>
+  </g>
+</svg>

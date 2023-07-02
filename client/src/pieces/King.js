@@ -5,8 +5,10 @@ export default class King extends Piece {
         super('king', 'K', board, color, row, col);
     }
 
-    canMove(toX, toY) {
-        // TODO: Implement canMove() for King
-        return true;
+    canMove(toRow, toCol) {
+        const relativeCol = toCol - this.col;
+        const relativeRow = toRow - this.row;
+
+        return Math.abs(relativeRow) <= 1 && Math.abs(relativeCol) <= 1;
     }
 }

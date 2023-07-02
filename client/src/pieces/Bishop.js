@@ -5,8 +5,10 @@ export default class Bishop extends Piece {
         super('bishop', 'B', board, color, row, col);
     }
 
-    canMove(toX, toY) {
-        // TODO: Implement canMove() for Bishop
-        return true;
+    canMove(toRow, toCol) {
+        const relativeCol = toCol - this.col;
+        const relativeRow = toRow - this.row;
+
+        return Math.abs(relativeRow) == Math.abs(relativeCol);
     }
 }
