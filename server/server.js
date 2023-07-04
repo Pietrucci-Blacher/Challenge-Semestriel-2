@@ -3,11 +3,17 @@ import http from 'http';
 import { Server } from 'socket.io';
 import UserRouter from './routes/user.js';
 import AuthRouter from './routes/auth.js';
+import { createMessage } from './services/chat.js';
 import cors from 'cors';
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: process.env.VITE_VUE_APP_SOCKET_ENDPOINT_BACK,
+        methods: ['GET', 'POST'],
+    },
+});
 
 app.use(cors());
 
@@ -39,6 +45,7 @@ io.on('connection', (socket) => {
 
     socket.on('chat message', (msg) => {
         console.log('Message received:', msg);
+        createMessage(msg.id, msg.text).then((r) => console.log(r));
         io.emit('chat message', msg); // Broadcast the message to all connected clients
     });
 
