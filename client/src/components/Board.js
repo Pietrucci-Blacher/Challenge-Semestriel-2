@@ -110,17 +110,17 @@ export default class ChessBoard {
 
         const relativeRow = toRow - fromRow;
         const relativeCol = toCol - fromCol;
-
         const dirRow = relativeRow < 0 ? -1 : relativeRow > 0 ? 1 : 0;
         const dirCol = relativeCol < 0 ? -1 : relativeCol > 0 ? 1 : 0;
 
         for (
             let i = 1;
-            i < Math.max(Math.abs(relativeRow), Math.abs(relativeCol));
+            i < Math.abs(relativeRow) || i < Math.abs(relativeCol);
             i++
         ) {
-            if (this.getPieceAt(fromRow + i * dirRow, fromCol + i * dirCol))
-                return false;
+            const row = fromRow + i * dirRow;
+            const col = fromCol + i * dirCol;
+            if (this.getPieceAt(row, col)) return false;
         }
 
         return true;
