@@ -5,6 +5,7 @@ export default class ChessBoard {
     moveHistory;
     winner;
     move;
+    static instance;
 
     constructor() {
         this.board = [];
@@ -12,6 +13,11 @@ export default class ChessBoard {
         this.winner = null;
         this.move = 0;
         this.initBoard();
+    }
+
+    static getInstance() {
+        if (!ChessBoard.instance) ChessBoard.instance = new ChessBoard();
+        return ChessBoard.instance;
     }
 
     initBoard() {
@@ -70,7 +76,7 @@ export default class ChessBoard {
     }
 
     movePiece(fromRow, fromCol, toRow, toCol) {
-        if (fromRow === toRow && fromRow === toCol) return false;
+        if (fromRow === toRow && fromCol === toCol) return false;
 
         const piece = this.getPieceAt(fromRow, fromCol);
 
@@ -130,7 +136,13 @@ export default class ChessBoard {
         return this.move % 2 === 0 ? 'white' : 'black';
     }
 
-    // static convertToAlgebraicNotation(x, y) {
-    //     return String.fromCharCode(97 + x) + (8 - y);
-    // }
+    static convertToAlgebraic(x, y) {
+        return String.fromCharCode(97 + x) + (8 - y);
+    }
+
+    static convertToCartesian(algebraic) {
+        const col = algebraic.charCodeAt(0) - 97;
+        const row = 8 - algebraic[1];
+        return { row, col };
+    }
 }
