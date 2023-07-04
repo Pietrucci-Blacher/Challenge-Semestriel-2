@@ -3,6 +3,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import UserRouter from './routes/user.js';
 import AuthRouter from './routes/auth.js';
+import { createMessage } from './services/chat.js';
 import cors from 'cors';
 import SocketService from './services/socket.js';
 import ChatSocket from './socket/chat.js';
