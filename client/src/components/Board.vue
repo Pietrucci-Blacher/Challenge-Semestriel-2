@@ -1,6 +1,5 @@
 <script setup>
 import ChessBoard from '@/components/Board.js';
-import { reactive } from 'vue';
 </script>
 <template>
     <div class="board noselect" :style="{ width: boardDim }">
@@ -86,7 +85,7 @@ export default {
     },
     data() {
         return {
-            chessBoard: reactive(new ChessBoard()),
+            chessBoard: ChessBoard.getInstance(),
             labels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
             clicked: null,
         };
