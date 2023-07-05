@@ -20,6 +20,14 @@ export default class ChessBoard {
         return ChessBoard.instance;
     }
 
+    resetBoard() {
+        this.board = [];
+        this.moveHistory = [];
+        this.winner = null;
+        this.move = 0;
+        this.initBoard();
+    }
+
     initBoard() {
         this.board[0] = [
             new Rook(this, 'black', 0, 0),
@@ -128,6 +136,74 @@ export default class ChessBoard {
             const col = fromCol + i * dirCol;
             if (this.getPieceAt(row, col)) return false;
         }
+
+        return true;
+    }
+
+    getKing(color) {
+        for (const row of this.board)
+            row.find(
+                (piece) => piece?.name === 'king' && piece.color === color,
+            );
+
+        return null;
+    }
+
+    isInCheck(color) {
+        const king = this.getKing(color);
+
+        if (!king) return false;
+
+        for (const row of this.board)
+            for (const piece of row)
+                if (
+                    piece &&
+                    piece.color !== color &&
+                    piece.canMove(king.row, king.col) &&
+                    this.trajectoryIsClear(
+                        piece.row,
+                        piece.col,
+                        king.row,
+                        king.col,
+                    )
+                )
+                    return true;
+
+        return false;
+    }
+
+    rockMove(color, side) {
+        const row = color === 'white' ? 7 : 0;
+        const king = this.getKing(color);
+        const rook = this.getPieceAt(row, side === 'kingside' ? 7 : 0);
+
+        if (
+            this.history.filter(
+                (move) => move.piece === 'K' || move.piece === 'R',
+            ).length > 0
+        )
+            return false;
+
+        if (
+            !king ||
+            !rook ||
+            king.name !== 'king' ||
+            rook.name !== 'rook' ||
+            king.hasMoved ||
+            rook.hasMoved ||
+            this.isInCheck(color)
+        )
+            return false;
+
+        const dir = side === 'kingside' ? 1 : -1;
+        const rowToCheck = row;
+        const colToCheck = side === 'kingside' ? 5 : 3;
+
+        for (let col = king.col + dir; col !== colToCheck; col += dir)
+            if (this.getPieceAt(rowToCheck, col)) return false;
+
+        this.movePiece(row, king.col, row, colToCheck);
+        this.movePiece(row, side === 'kingside' ? 7 : 0, row, colToCheck - dir);
 
         return true;
     }
