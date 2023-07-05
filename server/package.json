@@ -28,8 +28,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "jsdom": "^22.1.0",
     "nodemon": "^2.0.22",
-    "prettier": "^2.8.8",
-    "vitest": "^0.32.4"
+    "prettier": "^3.0.0",
+    "vitest": "^0.32.2"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
