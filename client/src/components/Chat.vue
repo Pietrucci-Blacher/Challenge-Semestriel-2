@@ -32,7 +32,7 @@ export default {
         const sendMessage = () => {
             if (newMessage.value.trim() !== '') {
                 const message = {
-                    id: Date.now(),
+                    id: 12,
                     text: newMessage.value.trim(),
                 };
                 messages.value.push(message);
