@@ -30,7 +30,7 @@
     "jsdom": "^22.1.0",
     "nodemon": "^2.0.22",
     "prettier": "^3.0.0",
-    "vitest": "^0.32.4"
+    "vitest": "^0.33.0"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
