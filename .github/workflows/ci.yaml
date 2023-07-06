@@ -42,4 +42,8 @@ jobs:
         run: |
           echo "Testing ${{ matrix.directory }}"
           pnpm install
-          pnpm test
+          pnpm test:unit
+          if [[ "${{ matrix.directory }}" == "client" ]]; then
+            echo "Running e2e tests"
+            pnpm run test:e2e
+          fi

@@ -15,7 +15,8 @@
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview",
-    "test": "playwright test",
+    "test:e2e": "playwright test",
+    "test:unit": "vitest --config ./vitest.config.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "author": "Teddy Gauthier, Iliès Slim, Maxime Pietrucci-Blacher",
