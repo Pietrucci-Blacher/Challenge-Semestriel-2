@@ -4,7 +4,7 @@ export default (io) => {
     const chatMessageEvent = (socket) => {
         socket.on('chat message', async (msg) => {
             console.log('Message received:', msg);
-            await createMessage(msg.id, msg.text);
+            await createMessage(msg.userId, msg.text);
             io.emit('chat message', msg); // Broadcast the message to all connected clients
         });
     };
