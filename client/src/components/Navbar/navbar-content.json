@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Games",
+    "icon": "chess-board",
+    "route": "/games",
+    "alt": "Play"
+  },
+  {
+    "name": "Games",
+    "icon": "cog",
+    "route": "#",
+    "alt": "Settings"
+  },
+  {
+    "name": "Messages",
+    "icon": "envelope",
+    "route": "#",
+    "alt": "Messages"
+  },
+  {
+    "name": "Logout",
+    "icon": "sign-out-alt",
+    "route": "#",
+    "alt": "Logout"
+  }
+]
