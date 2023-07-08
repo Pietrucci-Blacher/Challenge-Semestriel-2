@@ -1,29 +1,24 @@
 <template>
     <div
-        :class="[
-            'flex',
-            'flex-col',
-            'items-center',
-            'h-full',
-            'overflow-hidden',
-            'text-gray-400',
-            { 'bg-gray-900': isDarkTheme, 'bg-gray-100': !isDarkTheme },
-        ]"
+        class="flex flex-col items-center justify-between h-full overflow-hidden text-gray-400"
+        :class="{ 'bg-gray-900': isDarkTheme, 'bg-gray-100': !isDarkTheme }"
     >
-        <router-link to="/">
-            <img
-                :src="
-                    isDarkTheme
-                        ? '/images/svg/knight-white.svg'
-                        : '/images/svg/knight.svg'
-                "
-                alt="Vue logo"
-                class="mt-4 w-8 h-8"
-            />
-        </router-link>
+        <div>
+            <router-link to="/">
+                <img
+                    :src="
+                        isDarkTheme
+                            ? '/images/svg/knight-white.svg'
+                            : '/images/svg/knight.svg'
+                    "
+                    alt="Vue logo"
+                    class="mt-4 w-8 h-8"
+                />
+            </router-link>
+        </div>
         <transition name="menu-toggle">
             <div
-                class="flex flex-col items-center mt-3 border-t border-gray-700"
+                class="flex flex-col items-center border-t border-gray-700"
                 v-show="showMenu"
             >
                 <router-link
@@ -36,7 +31,20 @@
                 </router-link>
             </div>
         </transition>
-        <button class="mt-4" @click="toggleTheme">
+        <button class="transition-all" @click="toggleMenu">
+            <transition name="arrow-toggle">
+                <template v-slot:default>
+                    <font-awesome-icon
+                        :icon="
+                            showMenu
+                                ? ['fas', 'chevron-left']
+                                : ['fas', 'chevron-right']
+                        "
+                    />
+                </template>
+            </transition>
+        </button>
+        <button class="transition-all" @click="toggleTheme">
             <transition name="theme-toggle">
                 <template v-slot:default>
                     <font-awesome-icon
@@ -52,9 +60,6 @@
                 </template>
             </transition>
         </button>
-        <button class="mt-4" @click="toggleMenu">
-            {{ showMenu ? 'Collapse Menu' : 'Expand Menu' }}
-        </button>
     </div>
 </template>
 
@@ -68,12 +73,23 @@ import {
     faSignOutAlt,
     faSun,
     faMoon,
+    faChevronLeft,
+    faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import menuContent from './navbar-content.json';
 import { RouterLink } from 'vue-router';
 
-library.add(faChessBoard, faCog, faEnvelope, faSignOutAlt, faSun, faMoon);
+library.add(
+    faChessBoard,
+    faCog,
+    faEnvelope,
+    faSignOutAlt,
+    faSun,
+    faMoon,
+    faChevronLeft,
+    faChevronRight,
+);
 
 export default {
     components: {
@@ -82,7 +98,7 @@ export default {
     },
     setup() {
         const isDarkTheme = ref(true);
-        const showMenu = ref(true);
+        const showMenu = ref(false);
         const menuItems = reactive(menuContent);
 
         const toggleTheme = () => {
@@ -105,15 +121,14 @@ export default {
 </script>
 
 <style scoped>
-.menu-toggle-enter-active,
-.menu-toggle-leave-active {
-    transition: height 0.3s ease;
+.arrow-toggle-enter-active,
+.arrow-toggle-leave-active {
+    transition: transform 0.3s ease;
 }
 
-.menu-toggle-enter,
-.menu-toggle-leave-to {
-    height: 0;
-    opacity: 0;
+.arrow-toggle-enter,
+.arrow-toggle-leave-to {
+    transform: rotateZ(180deg);
 }
 
 button {
@@ -135,5 +150,19 @@ button {
 .theme-toggle-enter-active .fa-moon,
 .theme-toggle-leave-active .fa-sun {
     transform: rotateY(0deg);
+}
+
+.collapsed .rounded {
+    display: none;
+}
+
+.menu-toggle-enter-active,
+.menu-toggle-leave-active {
+    transition: transform 0.3s ease;
+}
+
+.menu-toggle-enter,
+.menu-toggle-leave-to {
+    transform: translateY(100%);
 }
 </style>
