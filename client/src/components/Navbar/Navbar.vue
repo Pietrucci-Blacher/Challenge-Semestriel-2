@@ -1,7 +1,15 @@
 <template>
     <div
-        class="flex flex-col items-center justify-between h-full overflow-hidden text-gray-400"
-        :class="{ 'bg-gray-900': isDarkTheme, 'bg-gray-100': !isDarkTheme }"
+        :class="[
+            'flex',
+            'flex-col',
+            'items-center',
+            'justify-between',
+            'h-full',
+            'overflow-hidden',
+            'text-gray-400',
+            isDarkTheme ? 'bg-gray-900' : 'bg-gray-100',
+        ]"
     >
         <div>
             <router-link to="/">
@@ -16,10 +24,11 @@
                 />
             </router-link>
         </div>
-        <transition name="menu-toggle">
+        <transition name="menu-toggle" mode="out-in">
             <div
                 class="flex flex-col items-center border-t border-gray-700"
                 v-show="showMenu"
+                :key="showMenu"
             >
                 <router-link
                     v-for="item in menuItems"
@@ -27,7 +36,8 @@
                     :to="item.route"
                     class="flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
                 >
-                    <font-awesome-icon :icon="['fas', item.icon]" />
+                    <font-awesome-icon :icon="item.icon" />
+                    <span class="ml-2" v-show="showMenu">{{ item.name }}</span>
                 </router-link>
             </div>
             <div
@@ -121,8 +131,17 @@ export default {
         const menuItems = reactive(menuContent);
 
         // Restore theme mode and menu state from localStorage
-        isDarkTheme.value = localStorage.getItem('themeMode') === 'dark';
-        showMenu.value = localStorage.getItem('menuState') === 'open';
+        if (localStorage.getItem('themeMode') === 'dark') {
+            isDarkTheme.value = true;
+        } else {
+            isDarkTheme.value = false;
+        }
+
+        if (localStorage.getItem('menuState') === 'open') {
+            showMenu.value = true;
+        } else {
+            showMenu.value = false;
+        }
 
         return {
             isDarkTheme,
@@ -192,11 +211,13 @@ button {
 
 .menu-toggle-enter-active,
 .menu-toggle-leave-active {
-    transition: transform 0.3s ease;
+    transition: height 0.3s ease;
 }
 
 .menu-toggle-enter,
 .menu-toggle-leave-to {
-    transform: translateY(100%);
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
 }
 </style>
