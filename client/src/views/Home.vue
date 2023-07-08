@@ -27,9 +27,7 @@ defineExpose({
 
 <template>
     <section class="flex flex-row h-screen">
-        <aside class="h-screen">
-            <Navbar :isUserAuthenticated="isUserAuthenticated" />
-        </aside>
+        <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <main class="w-full h-screen">
             <Login />
         </main>
