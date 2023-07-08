@@ -1,43 +1,20 @@
 <template>
-    <div
-        :class="[
-            'flex',
-            'flex-col',
-            'items-center',
-            'justify-between',
-            'h-full',
-            'overflow-hidden',
-            'text-gray-400',
-            isDarkTheme ? 'bg-gray-900' : 'bg-gray-100',
-        ]"
-    >
-        <div>
-            <router-link to="/">
-                <img
-                    :src="
-                        isDarkTheme
-                            ? '/images/svg/knight-white.svg'
-                            : '/images/svg/knight.svg'
-                    "
-                    alt="Vue logo"
-                    class="mt-4 w-8 h-8"
-                />
-            </router-link>
-        </div>
-        <transition name="menu-toggle" mode="out-in">
-            <div
-                class="flex flex-col items-center border-t border-gray-700"
-                v-show="showMenu"
-                :key="showMenu"
-            >
-                <router-link
-                    v-for="item in menuItems"
-                    :key="item.name"
-                    :to="item.route"
-                    class="flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
-                >
-                    <font-awesome-icon :icon="item.icon" />
-                    <span class="ml-2" v-show="showMenu">{{ item.name }}</span>
+    <aside class="h-screen">
+        <div
+            class="flex flex-col items-center justify-between h-full overflow-hidden text-gray-400"
+            :class="{ 'bg-gray-900': isDarkTheme, 'bg-gray-100': !isDarkTheme }"
+        >
+            <div>
+                <router-link to="/">
+                    <img
+                        :src="
+                            isDarkTheme
+                                ? '/images/svg/knight-white.svg'
+                                : '/images/svg/knight.svg'
+                        "
+                        alt="Vue logo"
+                        class="mt-4 w-8 h-8"
+                    />
                 </router-link>
             </div>
             <div
@@ -131,17 +108,9 @@ export default {
         const menuItems = reactive(menuContent);
 
         // Restore theme mode and menu state from localStorage
-        if (localStorage.getItem('themeMode') === 'dark') {
-            isDarkTheme.value = true;
-        } else {
-            isDarkTheme.value = false;
-        }
+        isDarkTheme.value = localStorage.getItem('themeMode') === 'dark';
 
-        if (localStorage.getItem('menuState') === 'open') {
-            showMenu.value = true;
-        } else {
-            showMenu.value = false;
-        }
+        showMenu.value = localStorage.getItem('menuState') === 'open';
 
         return {
             isDarkTheme,
