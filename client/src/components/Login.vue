@@ -49,10 +49,45 @@ export default {
         }
         
     },
-
-
-
-
-    
 };
+
+        function submitForm() {
+            // Prepare request data
+            const data = {
+                email: email.value,
+                password: password.value,
+            };
+            // Send login request
+            fetch('http://localhost:3000/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(async (response) => {
+                    if (response.ok) {
+                        // Successful login
+                        const { accessToken, refreshToken } = JSON.parse(
+                            await response.text(),
+                        );
+
+                        // Set the access token cookie with HttpOnly and Secure flags
+                        document.cookie = `userAccessToken=${accessToken}; HttpOnly; Secure`;
+                        // Set the refresh token cookie with HttpOnly and Secure flags
+                        document.cookie = `userRefreshToken=${refreshToken}; HttpOnly; Secure`;
+
+                        window.location.reload();
+                    } else {
+                        // Failed login
+                        console.error('Failed to log in');
+                    }
+                })
+                .catch((error) => {
+                    console.error('An error occurred:', error);
+                });
+
+
+            }
+
 </script>
