@@ -1,6 +1,7 @@
 <script setup>
 import Login from '@/components/Login.vue';
 import Register from '@/components/Register.vue';
+import Chat from '@/components/Chat.vue';
 import Navbar from '@/components/Navbar/Navbar.vue';
 
 import { ref, onMounted, defineExpose } from 'vue';
@@ -30,6 +31,9 @@ defineExpose({
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <main class="w-full h-screen">
             <Login />
+            <br />
+            <Register />
+            <Chat />
         </main>
     </section>
 </template>
