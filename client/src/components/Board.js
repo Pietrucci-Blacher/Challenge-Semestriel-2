@@ -29,40 +29,32 @@ export default class ChessBoard {
     }
 
     initBoard() {
-        this.board[0] = [
-            new Rook(this, 'black', 0, 0),
-            new Knight(this, 'black', 0, 1),
-            new Bishop(this, 'black', 0, 2),
-            new Queen(this, 'black', 0, 3),
-            new King(this, 'black', 0, 4),
-            new Bishop(this, 'black', 0, 5),
-            new Knight(this, 'black', 0, 6),
-            new Rook(this, 'black', 0, 7),
-        ];
-
-        this.board[1] = [];
-        for (let i = 0; i < 8; i++)
-            this.board[1][i] = new Pawn(this, 'black', 1, i);
-
-        for (let y = 2; y < 6; y++) {
+        for (let y = 0; y < 8; y++) {
             this.board[y] = [];
             for (let x = 0; x < 8; x++) this.board[y][x] = null;
         }
 
-        this.board[6] = [];
-        for (let i = 0; i < 8; i++)
-            this.board[6][i] = new Pawn(this, 'white', 6, i);
+        new Rook(this, 'black', 0, 0);
+        new Knight(this, 'black', 0, 1);
+        new Bishop(this, 'black', 0, 2);
+        new Queen(this, 'black', 0, 3);
+        new King(this, 'black', 0, 4);
+        new Bishop(this, 'black', 0, 5);
+        new Knight(this, 'black', 0, 6);
+        new Rook(this, 'black', 0, 7);
 
-        this.board[7] = [
-            new Rook(this, 'white', 7, 0),
-            new Knight(this, 'white', 7, 1),
-            new Bishop(this, 'white', 7, 2),
-            new Queen(this, 'white', 7, 3),
-            new King(this, 'white', 7, 4),
-            new Bishop(this, 'white', 7, 5),
-            new Knight(this, 'white', 7, 6),
-            new Rook(this, 'white', 7, 7),
-        ];
+        for (let i = 0; i < 8; i++) new Pawn(this, 'black', 1, i);
+
+        for (let i = 0; i < 8; i++) new Pawn(this, 'white', 6, i);
+
+        new Rook(this, 'white', 7, 0);
+        new Knight(this, 'white', 7, 1);
+        new Bishop(this, 'white', 7, 2);
+        new Queen(this, 'white', 7, 3);
+        new King(this, 'white', 7, 4);
+        new Bishop(this, 'white', 7, 5);
+        new Knight(this, 'white', 7, 6);
+        new Rook(this, 'white', 7, 7);
     }
 
     addMoveToHistory(notation, fromRow, fromCol, toRow, toCol, taken = null) {
@@ -98,11 +90,16 @@ export default class ChessBoard {
 
         const destPiece = this.getPieceAt(toRow, toCol);
 
-        if (destPiece && destPiece.color === piece.color) return false;
+        if (destPiece?.color === piece.color || destPiece?.name === 'king')
+            return false;
 
         piece.setCoords(toRow, toCol);
-        this.setPieceAt(toRow, toCol, piece);
-        this.setPieceAt(fromRow, fromCol, null);
+
+        if (this.isInCheck(piece.color)) {
+            piece.setCoords(fromRow, fromCol);
+            return false;
+        }
+
         this.addMoveToHistory(
             piece.notation,
             fromRow,
@@ -141,10 +138,13 @@ export default class ChessBoard {
     }
 
     getKing(color) {
-        for (const row of this.board)
-            row.find(
-                (piece) => piece?.name === 'king' && piece.color === color,
+        for (const row of this.board) {
+            const king = row.find(
+                (piece) => piece?.name === 'king' && piece?.color === color,
             );
+
+            if (king) return king;
+        }
 
         return null;
     }
@@ -170,6 +170,35 @@ export default class ChessBoard {
                     return true;
 
         return false;
+    }
+
+    isCheckmate(color) {
+        const king = this.getKing(color);
+
+        if (!king) return false;
+
+        for (const row of this.board)
+            for (const piece of row)
+                if (
+                    piece &&
+                    piece.color === color &&
+                    piece.canMove(king.row, king.col) &&
+                    this.trajectoryIsClear(
+                        piece.row,
+                        piece.col,
+                        king.row,
+                        king.col,
+                    ) &&
+                    !this.isInCheckAfterMove(
+                        piece.row,
+                        piece.col,
+                        king.row,
+                        king.col,
+                    )
+                )
+                    return false;
+
+        return true;
     }
 
     rockMove(color, side) {

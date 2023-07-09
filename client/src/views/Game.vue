@@ -1,13 +1,18 @@
 <script setup>
 import Board from '@/components/Board.vue';
 import ChessBoard from '@/components/Board.js';
+import Navbar from '@/components/Navbar/Navbar.vue';
 </script>
 
 <template>
-    <div class="game">
-        <Board width="500" />
-        <button @click="board.resetBoard()">Reset</button>
-    </div>
+    <section class="flex flex-row h-screen">
+        <Navbar :isUserAuthenticated="isUserAuthenticated" />
+        <main class="w-full h-screen">
+            <div class="game">
+                <Board width="500" />
+            </div>
+        </main>
+    </section>
 </template>
 
 <script>
