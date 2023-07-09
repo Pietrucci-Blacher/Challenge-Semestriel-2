@@ -149,6 +149,15 @@ export default class ChessBoard {
         return null;
     }
 
+    isPieceCheck(piece, king) {
+        return (
+            piece &&
+            piece.color !== king.color &&
+            piece.canMove(king.row, king.col) &&
+            this.trajectoryIsClear(piece.row, piece.col, king.row, king.col)
+        );
+    }
+
     isInCheck(color) {
         const king = this.getKing(color);
 
@@ -156,50 +165,22 @@ export default class ChessBoard {
 
         for (const row of this.board)
             for (const piece of row)
-                if (
-                    piece &&
-                    piece.color !== color &&
-                    piece.canMove(king.row, king.col) &&
-                    this.trajectoryIsClear(
-                        piece.row,
-                        piece.col,
-                        king.row,
-                        king.col,
-                    )
-                )
-                    return true;
+                if (this.isPieceCheck(piece, king)) return true;
 
         return false;
     }
 
-    isCheckmate(color) {
-        const king = this.getKing(color);
+    // isCheckmate(color) {
+    //     const king = this.getKing(color);
 
-        if (!king) return false;
+    //     if (!king) return false;
 
-        for (const row of this.board)
-            for (const piece of row)
-                if (
-                    piece &&
-                    piece.color === color &&
-                    piece.canMove(king.row, king.col) &&
-                    this.trajectoryIsClear(
-                        piece.row,
-                        piece.col,
-                        king.row,
-                        king.col,
-                    ) &&
-                    !this.isInCheckAfterMove(
-                        piece.row,
-                        piece.col,
-                        king.row,
-                        king.col,
-                    )
-                )
-                    return false;
+    //     for (const row of this.board)
+    //         for (const piece of row)
+    //             if (this.isPieceCheck(piece, king)) return false;
 
-        return true;
-    }
+    //     return true;
+    // }
 
     rockMove(color, side) {
         const row = color === 'white' ? 7 : 0;
