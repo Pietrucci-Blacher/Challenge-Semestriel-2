@@ -31,7 +31,11 @@
                         v-for="item in menuItems"
                         :key="item.name"
                         :to="item.route"
-                        class="flex items-center justify-center w-12 h-12 mt-2 hover:bg-gray-700 hover:text-gray-300"
+                        class="flex items-center justify-center h-12 mt-2 hover:bg-gray-700 hover:text-gray-300"
+                        :class="{
+                            'w-12': !showMenu,
+                            'w-28': showMenu,
+                        }"
                     >
                         <font-awesome-icon :icon="item.icon" />
                         <span class="ml-2">{{ item.name }}</span>
