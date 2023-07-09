@@ -13,7 +13,7 @@ const { devices } = require('@playwright/test');
  */
 const config = {
     testDir: './e2e',
-    /* Maximum time one test can run for. */
+    /* Maximum time one __tests__ can run for. */
     timeout: 30 * 1000,
     expect: {
         /**
@@ -22,11 +22,11 @@ const config = {
          */
         timeout: 5000,
     },
-    /* Fail the build on CI if you accidentally left test.only in the source code. */
+    /* Fail the build on CI if you accidentally left __tests__.only in the source code. */
     forbidOnly: !!process.env.CI,
     /* Retry on CI only */
     retries: process.env.CI ? 2 : 0,
-    /* Opt out of parallel tests on CI. */
+    /* Opt out of parallel __tests__ on CI. */
     workers: process.env.CI ? 1 : undefined,
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: 'html',
@@ -37,10 +37,10 @@ const config = {
         /* Base URL to use in actions like `await page.goto('/')`. */
         baseURL: 'http://localhost:5173',
 
-        /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+        /* Collect trace when retrying the failed __tests__. See https://playwright.dev/docs/trace-viewer */
         trace: 'on-first-retry',
 
-        /* Only on CI systems run the tests headless */
+        /* Only on CI systems run the __tests__ headless */
         headless: !!process.env.CI,
     },
 
@@ -87,10 +87,10 @@ const config = {
         // },
     ],
 
-    /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-    // outputDir: 'test-results/',
+    /* Folder for __tests__ artifacts such as screenshots, videos, traces, etc. */
+    // outputDir: '__tests__-results/',
 
-    /* Run your local dev server before starting the tests */
+    /* Run your local dev server before starting the __tests__ */
     webServer: {
         /**
          * Use the dev server by default for faster feedback loop.
