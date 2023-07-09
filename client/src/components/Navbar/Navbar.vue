@@ -1,9 +1,9 @@
 <template>
-    <aside class="h-screen">
-        <div
-            class="flex flex-col items-center justify-between h-full overflow-hidden text-gray-400"
-            :class="{ 'bg-gray-900': isDarkTheme, 'bg-gray-100': !isDarkTheme }"
-        >
+    <aside
+        class="min-h-screen flex flex-col justify-between"
+        :class="{ 'bg-gray-900': isDarkTheme, 'bg-gray-100': !isDarkTheme }"
+    >
+        <div class="flex flex-col items-center overflow-hidden text-gray-400">
             <div>
                 <router-link to="/">
                     <img
@@ -13,50 +13,63 @@
                                 : '/images/svg/knight.svg'
                         "
                         alt="Vue logo"
-                        class="mt-4 w-8 h-8"
+                        class="mt-4 mb-2 w-8 h-8"
                     />
                 </router-link>
             </div>
-            <transition name="menu-toggle" mode="out-in">
-                <div
-                    class="flex flex-col items-center border-t border-gray-700"
-                    :class="{ collapsed: !showMenu }"
-                    v-show="showMenu"
-                    :key="showMenu"
-                >
+            <div
+                class="flex flex-col items-center border-t"
+                :class="{
+                    'border-gray-700': isDarkTheme,
+                    'border-gray-300': !isDarkTheme,
+                }"
+                :key="showMenu"
+            >
+                <template v-if="showMenu">
                     <router-link
                         v-for="item in menuItems"
                         :key="item.name"
                         :to="item.route"
-                        class="flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-gray-700 hover:text-gray-300"
+                        class="flex items-center justify-center w-12 h-12 mt-2 hover:bg-gray-700 hover:text-gray-300"
                     >
                         <font-awesome-icon :icon="item.icon" />
                         <span class="ml-2">{{ item.name }}</span>
                     </router-link>
-                </div>
-            </transition>
-            <div class="flex flex-col items-center justify-evenly">
-                <button class="transition-all" @click="toggleTheme">
-                    <transition name="theme-toggle">
-                        <template v-slot:default>
-                            <font-awesome-icon
-                                :icon="isDarkTheme ? 'sun' : 'moon'"
-                            />
-                        </template>
-                    </transition>
-                </button>
-                <button class="transition-all" @click="toggleMenu">
-                    <transition name="arrow-toggle">
-                        <template v-slot:default>
-                            <font-awesome-icon
-                                :icon="
-                                    showMenu ? 'chevron-left' : 'chevron-right'
-                                "
-                            />
-                        </template>
-                    </transition>
-                </button>
+                </template>
+                <template v-else>
+                    <router-link
+                        v-for="item in menuItems"
+                        :key="item.name"
+                        :to="item.route"
+                        class="flex items-center justify-center w-12 h-12 mt-4 hover:bg-gray-700 hover:text-gray-300"
+                    >
+                        <font-awesome-icon :icon="item.icon" />
+                        <span class="ml-2" v-show="showMenu">{{
+                            item.name
+                        }}</span>
+                    </router-link>
+                </template>
             </div>
+        </div>
+        <div class="flex flex-col items-center">
+            <button class="transition-all" @click="toggleTheme">
+                <transition name="theme-toggle">
+                    <template v-slot:default>
+                        <font-awesome-icon
+                            :icon="isDarkTheme ? 'sun' : 'moon'"
+                        />
+                    </template>
+                </transition>
+            </button>
+            <button class="transition-all" @click="toggleMenu">
+                <transition name="arrow-toggle">
+                    <template v-slot:default>
+                        <font-awesome-icon
+                            :icon="showMenu ? 'chevron-left' : 'chevron-right'"
+                        />
+                    </template>
+                </transition>
+            </button>
         </div>
     </aside>
 </template>
@@ -125,7 +138,6 @@ export default {
 
         // Restore theme mode and menu state from localStorage
         isDarkTheme.value = localStorage.getItem('themeMode') === 'dark';
-
         showMenu.value = localStorage.getItem('menuState') === 'open';
 
         return {
@@ -169,21 +181,5 @@ button {
 .theme-toggle-enter-active .fa-moon,
 .theme-toggle-leave-active .fa-sun {
     transform: rotateY(0deg);
-}
-
-.collapsed .rounded {
-    display: none;
-}
-
-.menu-toggle-enter-active,
-.menu-toggle-leave-active {
-    transition: height 0.3s ease;
-}
-
-.menu-toggle-enter,
-.menu-toggle-leave-to {
-    height: 0;
-    opacity: 0;
-    overflow: hidden;
 }
 </style>
