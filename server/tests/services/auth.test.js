@@ -178,8 +178,6 @@ describe('Auth Service', () => {
                 where: { userId: createdUser.id },
             });
 
-            console.log(tokenInDb);
-
             expect(tokenInDb).toBeNull();
         });
     });
