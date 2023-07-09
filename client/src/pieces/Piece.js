@@ -13,10 +13,14 @@ export default class Piece {
         this.name = name;
         this.imageName = `${this.color}-${this.name}.svg`;
         this.notation = notation;
-        this.setCoords(row, col);
+        this.row = row;
+        this.col = col;
+        this.board.setPieceAt(row, col, this);
     }
 
     setCoords(row, col) {
+        this.board.setPieceAt(row, col, this);
+        this.board.setPieceAt(this.row, this.col, null);
         this.row = row;
         this.col = col;
     }
