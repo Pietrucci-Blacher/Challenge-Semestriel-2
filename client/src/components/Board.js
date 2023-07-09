@@ -35,20 +35,27 @@ export default class ChessBoard {
             for (let x = 0; x < 8; x++) this.board[y][x] = null;
         }
 
-        this.board[6] = [];
-        for (let i = 0; i < 8; i++)
-            this.board[6][i] = new Pawn(this, 'white', 6, i);
+        new Rook(this, 'black', 0, 0);
+        new Knight(this, 'black', 0, 1);
+        new Bishop(this, 'black', 0, 2);
+        new Queen(this, 'black', 0, 3);
+        new King(this, 'black', 0, 4);
+        new Bishop(this, 'black', 0, 5);
+        new Knight(this, 'black', 0, 6);
+        new Rook(this, 'black', 0, 7);
 
-        this.board[7] = [
-            new Rook(this, 'white', 7, 0),
-            new Knight(this, 'white', 7, 1),
-            new Bishop(this, 'white', 7, 2),
-            new Queen(this, 'white', 7, 3),
-            new King(this, 'white', 7, 4),
-            new Bishop(this, 'white', 7, 5),
-            new Knight(this, 'white', 7, 6),
-            new Rook(this, 'white', 7, 7),
-        ];
+        for (let i = 0; i < 8; i++) new Pawn(this, 'black', 1, i);
+
+        for (let i = 0; i < 8; i++) new Pawn(this, 'white', 6, i);
+
+        new Rook(this, 'white', 7, 0);
+        new Knight(this, 'white', 7, 1);
+        new Bishop(this, 'white', 7, 2);
+        new Queen(this, 'white', 7, 3);
+        new King(this, 'white', 7, 4);
+        new Bishop(this, 'white', 7, 5);
+        new Knight(this, 'white', 7, 6);
+        new Rook(this, 'white', 7, 7);
     }
 
     addMoveToHistory(notation, fromX, fromY, toX, toY) {
