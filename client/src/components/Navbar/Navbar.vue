@@ -133,14 +133,6 @@ export default {
             );
         };
 
-        // Watch window resize event
-        watch(() => {
-            window.addEventListener('resize', toggleMenu);
-            return () => {
-                window.removeEventListener('resize', toggleMenu);
-            };
-        });
-
         // Restore theme mode and menu state from localStorage
         isDarkTheme.value = localStorage.getItem('themeMode') === 'dark';
         showMenu.value = localStorage.getItem('menuState') === 'open';
