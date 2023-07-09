@@ -12,17 +12,18 @@
                                 ? '/images/svg/knight-white.svg'
                                 : '/images/svg/knight.svg'
                         "
-                        alt="Vue logo"
+                        alt="Chess"
                         class="mt-4 mb-2 w-8 h-8"
                     />
                 </router-link>
             </div>
             <div
-                class="flex flex-col items-center border-t"
+                class="flex flex-col items-center border-t transition-all"
                 :class="{
                     'border-gray-700': isDarkTheme,
                     'border-gray-300': !isDarkTheme,
                 }"
+                :style="{ width: showMenu ? '10rem' : '3rem' }"
                 :key="showMenu"
             >
                 <template v-if="showMenu">
