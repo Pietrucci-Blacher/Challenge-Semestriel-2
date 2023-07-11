@@ -1,16 +1,21 @@
 <template>
         <div class="bloc-modale" v-if="showRegister">
-            <div class="overlay" >
-                <div class="modale">
+            <div class="overlay" v-on:click="toggleModaleRegister">
+                <div class="modale" v-on:click.stop>
                     <div v-on:click="toggleModaleRegister" class="btn-modale cursor-pointer" >&times;</div>
                     <div>
-                        <h1>Register</h1>
                         <form @submit.prevent="submitForm">
-                            <div>
+                            <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+                            <div class="form-group">
                                 <label for="username">Username:</label>
-                                <input type="text" id="username" v-model="form.username" />
+                                <input 
+                                type="text"
+                                class="form-control"
+                                name="username"
+                                placeholder="Enter username"
+                                v-model="form.username" />
                             </div>
-                            <div>
+                            <div class="form-group">
                                 <label for="email">Email:</label>
                                 <input type="email" id="email" v-model="form.email" />
                             </div>
