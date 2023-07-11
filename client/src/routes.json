@@ -7,6 +7,6 @@
   {
     "path": "/404",
     "name": "404 Error",
-    "component": "NotFound"
+    "component": "404"
   }
 ]

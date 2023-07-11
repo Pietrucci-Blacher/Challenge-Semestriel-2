@@ -35,6 +35,7 @@
 
 <script>
 import { ref } from 'vue';
+import Cookie from 'js-cookie';
 
 export default {
     setup() {
@@ -54,20 +55,31 @@ export default {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
-            }).then(async (response) => {
-              if (response.ok) {
-                // Successful login
-                const {accessToken, refreshToken} = JSON.parse(await response.text());
-
-                document.cookie = `userAccessToken=${accessToken}`;
-                document.cookie = `userRefreshToken=${refreshToken}`;
-                window.location.reload();
-
-              } else {
-                // Failed login
-                console.error('Failed to log in');
-              }
             })
+                .then(async (response) => {
+                    if (response.ok) {
+                        // Successful login
+                        const { accessToken, refreshToken } = JSON.parse(
+                            await response.text(),
+                        );
+
+                        // Set the access token cookie with HttpOnly and Secure flags
+                        Cookie.set('userAccessToken', accessToken, {
+                            secure: true,
+                            expires: 7,
+                        });
+                        // Set the refresh token cookie with HttpOnly and Secure flags
+                        Cookie.set('userRefreshToken', refreshToken, {
+                            secure: true,
+                            expires: 7,
+                        });
+
+                        window.location.reload();
+                    } else {
+                        // Failed login
+                        console.error('Failed to log in');
+                    }
+                })
                 .catch((error) => {
                     console.error('An error occurred:', error);
                 });

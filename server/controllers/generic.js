@@ -60,10 +60,9 @@ export default function Controller(Service, options = {}) {
             const { id } = req.params;
             const { body } = req;
             try {
-                const [result] = await Service.update(
-                    { id: parseInt(id, 10) },
-                    body,
-                );
+                const [result] = await Service.update(body, {
+                    id: parseInt(id, 10),
+                });
                 if (result) res.json(result);
                 else res.sendStatus(404);
             } catch (err) {
@@ -77,8 +76,8 @@ export default function Controller(Service, options = {}) {
         delete: async (req, res) => {
             const { id } = req.params;
             try {
-                const nbDeleted = await Service.delete({
-                    id: parseInt(id, 10),
+                const nbDeleted = await Service.destroy({
+                    id: parseInt(id),
                 });
                 if (nbDeleted) res.sendStatus(204);
                 else res.sendStatus(404);
