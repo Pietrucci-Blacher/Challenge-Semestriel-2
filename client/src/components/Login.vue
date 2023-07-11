@@ -26,6 +26,8 @@
 
 import Modale from './Modale.vue'
 import ModaleRegister from './Register.vue'
+import { ref } from 'vue';
+import Cookie from 'js-cookie';
 
 export default {
 
@@ -73,9 +75,13 @@ export default {
                         );
 
                         // Set the access token cookie with HttpOnly and Secure flags
-                        document.cookie = `userAccessToken=${accessToken}; HttpOnly; Secure`;
+                        Cookie.set('userAccessToken', accessToken, {
+                            secure: true,
+                        });
                         // Set the refresh token cookie with HttpOnly and Secure flags
-                        document.cookie = `userRefreshToken=${refreshToken}; HttpOnly; Secure`;
+                        Cookie.set('userRefreshToken', refreshToken, {
+                            secure: true,
+                        });
 
                         window.location.reload();
                     } else {
