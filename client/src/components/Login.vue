@@ -35,6 +35,7 @@
 
 <script>
 import { ref } from 'vue';
+import Cookie from 'js-cookie';
 
 export default {
     setup() {
@@ -63,9 +64,15 @@ export default {
                         );
 
                         // Set the access token cookie with HttpOnly and Secure flags
-                        document.cookie = `userAccessToken=${accessToken}; HttpOnly; Secure`;
+                        Cookie.set('userAccessToken', accessToken, {
+                            secure: true,
+                            expires: 7,
+                        });
                         // Set the refresh token cookie with HttpOnly and Secure flags
-                        document.cookie = `userRefreshToken=${refreshToken}; HttpOnly; Secure`;
+                        Cookie.set('userRefreshToken', refreshToken, {
+                            secure: true,
+                            expires: 7,
+                        });
 
                         window.location.reload();
                     } else {
