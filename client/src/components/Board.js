@@ -57,13 +57,22 @@ export default class ChessBoard {
         new Rook(this, 'white', 7, 7);
     }
 
-    addMoveToHistory(notation, fromRow, fromCol, toRow, toCol, taken = null) {
+    addMoveToHistory({
+        pieceName,
+        pieceNotation,
+        takenPieceName = null,
+        fromRow,
+        fromCol,
+        toRow,
+        toCol,
+    }) {
         this.moveHistory.push({
             player: this.getTurn(),
             from: { row: fromRow, col: fromCol },
             to: { row: toRow, col: toCol },
-            piece: notation,
-            taken,
+            pieceName,
+            pieceNotation,
+            takenPieceName,
         });
     }
 
@@ -73,6 +82,10 @@ export default class ChessBoard {
 
     setPieceAt(row, col, piece) {
         this.board[row][col] = piece;
+    }
+
+    searchInHistory(name) {
+        return this.moveHistory.find((move) => move.piece === name);
     }
 
     movePiece(fromRow, fromCol, toRow, toCol) {
@@ -93,21 +106,41 @@ export default class ChessBoard {
         if (destPiece?.color === piece.color || destPiece?.name === 'king')
             return false;
 
+        let notation =
+            piece.notation +
+            (destPiece ? 'x' : '') +
+            ChessBoard.convertToAlgebraic(toRow, toCol);
+
+        if (piece.name === 'king' && Math.abs(fromCol - toCol) === 2) {
+            if (this.isInCheck(piece.color) || this.searchInHistory(piece.name))
+                return false;
+
+            const dir = fromCol - toCol < 0 ? 1 : -1;
+            const rook = this.getPieceAt(fromRow, dir === 1 ? 7 : 0);
+
+            if (rook && rook.name === 'rook' && rook.color === piece.color)
+                rook.setCoords(fromRow, fromCol + dir);
+
+            notation = dir === 1 ? 'O-O' : 'O-O-O';
+        }
+
         piece.setCoords(toRow, toCol);
 
         if (this.isInCheck(piece.color)) {
             piece.setCoords(fromRow, fromCol);
+            if (destPiece) destPiece.setCoords(toRow, toCol, false);
             return false;
         }
 
-        this.addMoveToHistory(
-            piece.notation,
+        this.addMoveToHistory({
+            pieceName: piece.name,
+            pieceNotation: notation,
             fromRow,
             fromCol,
             toRow,
             toCol,
-            destPiece?.name || null,
-        );
+            takenPieceName: destPiece?.name || null,
+        });
         this.move++;
 
         return true;
@@ -181,42 +214,6 @@ export default class ChessBoard {
 
     //     return true;
     // }
-
-    rockMove(color, side) {
-        const row = color === 'white' ? 7 : 0;
-        const king = this.getKing(color);
-        const rook = this.getPieceAt(row, side === 'kingside' ? 7 : 0);
-
-        if (
-            this.history.filter(
-                (move) => move.piece === 'K' || move.piece === 'R',
-            ).length > 0
-        )
-            return false;
-
-        if (
-            !king ||
-            !rook ||
-            king.name !== 'king' ||
-            rook.name !== 'rook' ||
-            king.hasMoved ||
-            rook.hasMoved ||
-            this.isInCheck(color)
-        )
-            return false;
-
-        const dir = side === 'kingside' ? 1 : -1;
-        const rowToCheck = row;
-        const colToCheck = side === 'kingside' ? 5 : 3;
-
-        for (let col = king.col + dir; col !== colToCheck; col += dir)
-            if (this.getPieceAt(rowToCheck, col)) return false;
-
-        this.movePiece(row, king.col, row, colToCheck);
-        this.movePiece(row, side === 'kingside' ? 7 : 0, row, colToCheck - dir);
-
-        return true;
-    }
 
     getTurn() {
         return this.move % 2 === 0 ? 'white' : 'black';

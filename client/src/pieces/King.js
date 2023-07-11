@@ -9,6 +9,9 @@ export default class King extends Piece {
         const relativeCol = toCol - this.col;
         const relativeRow = toRow - this.row;
 
-        return Math.abs(relativeRow) <= 1 && Math.abs(relativeCol) <= 1;
+        return (
+            (Math.abs(relativeRow) <= 1 && Math.abs(relativeCol) <= 1) ||
+            (Math.abs(relativeRow) === 0 && Math.abs(relativeCol) === 2)
+        );
     }
 }

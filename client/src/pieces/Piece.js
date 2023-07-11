@@ -13,19 +13,18 @@ export default class Piece {
         this.name = name;
         this.imageName = `${this.color}-${this.name}.svg`;
         this.notation = notation;
-        this.row = row;
-        this.col = col;
-        this.board.setPieceAt(row, col, this);
+        this.setCoords(row, col, false);
     }
 
-    setCoords(row, col) {
+    setCoords(row, col, move = true) {
         this.board.setPieceAt(row, col, this);
-        this.board.setPieceAt(this.row, this.col, null);
+        if (move) this.board.setPieceAt(this.row, this.col, null);
+
         this.row = row;
         this.col = col;
     }
 
-    convertToAlgebraic() {
+    getAlgebraicCoords() {
         const col = String.fromCharCode(this.col + 97);
         const row = 8 - this.row;
         return `${col}${row}`;
