@@ -66,10 +66,12 @@ export default {
                         // Set the access token cookie with HttpOnly and Secure flags
                         Cookie.set('userAccessToken', accessToken, {
                             secure: true,
+                            expires: 7,
                         });
                         // Set the refresh token cookie with HttpOnly and Secure flags
                         Cookie.set('userRefreshToken', refreshToken, {
                             secure: true,
+                            expires: 7,
                         });
 
                         window.location.reload();
