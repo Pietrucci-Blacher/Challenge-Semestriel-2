@@ -1,24 +1,32 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 mt-5 mx-auto">
-                <form novalidate @submit.prevent="submitForm">
-
-            <modal 
-            v-bind:revele="revele"
-            v-bind:toggleModale="toggleModale">
-            </modal>
-
-            <modalRegister
-                v-bind:showRegister="showRegister"
-                v-bind:toggleModaleRegister="toggleModaleRegister">
-            </modalRegister>
-            
-            <div v-on:click="toggleModale" class="btn">Ouvre modale Login</div>
-            <div v-on:click="toggleModaleRegister" v-onclick="console.log(showRegister)" class="btn">Ouvre modale Register</div>
-
+    <div class="container max-w-full">
+      <h2 class="text-5xl font-normal leading-normal mt-0 mb-2 flex justify-center">ChessChallenger</h2>
+      <div class="col-md-6 mt-5 mx-auto flex justify-center">
+        <div class="div-block-home w-[963px] h-[679px] grid grid-cols-2">
+          <div class="div-img-home p-5 flex content-center justify-center items-center">
+            <img class="img-home p-5 flex content-center justify-center items-center" src="../images/standardboard.1d6f9426.jpg" alt="">
+          </div>
+          <div class="flex flex-col justify-center items-center space-y-24">
+            <div>
+              <button class="div-button-home flex items-center justify-center w-[284px] h-[70px] p-6 md:p-[6px 10px]">
+                <p class="text-white text-center text-base md:text-lg font-inter font-semibold leading-6 md:leading-7">Jouer</p>
+              </button>
             </div>
+            <div>
+                <button class="div-button-home flex items-center justify-center w-[284px] h-[70px] p-6 md:p-[6px 10px]" @click="toggleModale">
+                    <p class="text-white text-center text-base md:text-lg font-inter font-semibold leading-6 md:leading-7">Se connecter</p>
+                </button>
+                <modal v-bind:revele="revele" v-bind:toggleModale="toggleModale"></modal>
+            </div>
+            <div>
+                <button class="div-button-home flex items-center justify-center w-[284px] h-[70px] p-6 md:p-[6px 10px]" @click="toggleModaleRegister">
+                    <p class="text-white text-center text-base md:text-lg font-inter font-semibold leading-6 md:leading-7">S'inscrire</p>
+                </button>
+                <modalRegister v-bind:showRegister="showRegister" v-bind:toggleModaleRegister="toggleModaleRegister"></modalRegister>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 </template>
 
@@ -43,17 +51,16 @@ export default {
         }
     },
     components: {
-        'modal': Modale,
-        'modalRegister': ModaleRegister
-    },
+          'modal': Modale,
+          'modalRegister': ModaleRegister
+      },
     methods: {
-        toggleModale: function(){
-            this.revele = !this.revele;
-        },
-        toggleModaleRegister: function(){
-            this.showRegister = !this.showRegister;
-        }
-        
+      toggleModale() {
+        this.revele = !this.revele;
+      },
+      toggleModaleRegister() {
+        this.showRegister = !this.showRegister;
+      },
     },
 
     setup() {

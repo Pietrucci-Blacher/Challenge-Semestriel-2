@@ -1,34 +1,39 @@
 <template>
     <div class="bloc-modale" v-if="revele">
-        <div class="overlay" v-on:click="toggleModale">
-            <div class="modale">
+        <div class="overlay flex justify-center" v-on:click="toggleModale">
+            <div class="modale div-block-modale w-[963px] h-auto grid grid-cols-2" v-on:click.stop>
                 <div v-on:click="toggleModale" class="btn-modale cursor-pointer" >&times;</div>
-
                 <form novalidate @submit.prevent="submitForm">
-                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                    <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input
-                            type="email"
-                            class="form-control"
-                            name="email"
-                            placeholder="Enter email"
-                            v-model="email"
-                        />
+                    <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600 ">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-black  ">Connexion</h3>
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input
-                            type="password"
-                            class="form-control"
-                            name="password"
-                            placeholder="Password"
-                            v-model="password"
-                        />
+                    <div flex flex-col>
+                        <div class="form-group flex justify-around items-center flex-row m-4">
+                            <label for="email">Email address</label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                placeholder="Entrez-votre email"
+                                v-model="email"
+                            />
+                        </div>
+                        <div class="form-group flex justify-around items-center flex-row m-4">
+                            <label for="password">Mot de Passe</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                name="password"
+                                placeholder="Mot de passe"
+                                v-model="password"
+                            />
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">
-                        Sign in
-                    </button>
+                    <div class="flex justify-center">
+                        <button type="submit" class="btn">
+                            Connexion
+                        </button>
+                    </div>
                 </form>
 
             </div>
@@ -98,6 +103,32 @@ import { ref } from 'vue';
 </script>
 
 <style >
+
+    .div-block-modale {
+        display: flex; 
+        flex-direction: column;
+        background: url(../images/beams-home@95.jpg), lightgray 50% / cover no-repeat;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    .form-control {
+        width: 643px;
+        height: 58px;
+        border-radius: 10px;
+        background: #FFF;
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05), 0px 0px 0px 1px #D1D5DB inset, 0px 0px 0px 0px #FFF inset;
+        padding: 1rem;
+    }
+
+    .btn {
+        display: inline-flex;
+        padding: 6px 169.86px 6px 168.14px;
+        align-items: flex-start;
+        border-radius: 6px;
+        background: #1F2937;
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+        color: white;
+    }
 
   
 </style>
