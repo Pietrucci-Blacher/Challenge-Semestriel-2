@@ -29,8 +29,8 @@ jobs:
           sudo apt-get install -y nodejs
 
       - name: Install dependencies
-        working-directory: ${{ matrix.front-path }}
-        run: pnpm install --prefix ${{ matrix.front-path }}
+        working-directory: ${{ matrix.frontend-path }}
+        run: pnpm install --prefix ${{ matrix.frontend-path }}
 
       - name: Build front-end
         working-directory: ${{ matrix.frontend-path }}
