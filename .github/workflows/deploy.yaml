@@ -11,8 +11,8 @@ jobs:
 
     strategy:
       matrix:
-        backend-path: [client]
-        frontend-path: [server]
+        backend-path: [server]
+        frontend-path: [client]
 
     steps:
       - name: Checkout code
