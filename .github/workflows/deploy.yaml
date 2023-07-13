@@ -38,7 +38,7 @@ jobs:
 
       - name: Build front-end
         working-directory: ${{ matrix.frontend-path }}
-        run: pnpm build
+        run: pnpm run build
 
       - name: Deploy to EC2
         uses: appleboy/scp-action@master
@@ -66,4 +66,4 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: ${{ matrix.frontend-path }}/dist
-          target: '/home/ubuntu/frontend'
+          target: '/var/www/html/client'
