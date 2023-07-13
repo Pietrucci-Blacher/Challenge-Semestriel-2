@@ -5,6 +5,11 @@
     "component": "Home"
   },
   {
+    "path": "/game",
+    "name": "Game",
+    "component": "Game"
+  },
+  {
     "path": "/404",
     "name": "404 Error",
     "component": "404"
