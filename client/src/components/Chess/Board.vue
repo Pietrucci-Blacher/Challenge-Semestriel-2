@@ -1,5 +1,11 @@
 <script setup>
-import ChessBoard from '@/components/Board.js';
+import { onMounted } from 'vue';
+import ChessBoard from '@/components/Chess/Board.js';
+
+onMounted(() => {
+    const board = document.querySelector('.board');
+    board.addEventListener('contextmenu', (event) => event.preventDefault());
+});
 </script>
 <template>
     <div class="board noselect" :style="{ width: boardDim }">
@@ -72,11 +78,11 @@ export default {
     props: {
         width: {
             type: Number,
-            default: 400,
+            default: 500,
         },
         height: {
             type: Number,
-            default: 400,
+            default: 500,
         },
         reverse: {
             type: Boolean,

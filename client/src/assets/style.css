@@ -4,6 +4,36 @@
 
 .game {
     padding: 50px;
+    display: flex;
+    flex-direction: row;
+}
+
+.game-info {
+    margin-left: 20px;
+}
+
+.history {
+    border: 1px solid black;
+    width: 250px;
+    overflow-y: auto;
+    background-color: #1F2937;
+}
+
+.history-item {
+    padding: 3px 15px;
+    cursor: pointer;
+    color: white;
+    background-color: #1F2937;
+    display: flex;
+    flex-direction: row;
+}
+
+.history-notation {
+    width: 100%;
+}
+
+.history-item:hover {
+    background-color: #4B5563;
 }
 
 .board {

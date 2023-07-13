@@ -1,6 +1,7 @@
 <script setup>
-import Board from '@/components/Board.vue';
-import ChessBoard from '@/components/Board.js';
+import Board from '@/components/Chess/Board.vue';
+import History from '@/components/Chess/History.vue';
+import ChessBoard from '@/components/Chess/Board.js';
 import Navbar from '@/components/Navbar/Navbar.vue';
 </script>
 
@@ -9,7 +10,12 @@ import Navbar from '@/components/Navbar/Navbar.vue';
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <main class="w-full h-screen">
             <div class="game">
-                <Board width="500" />
+                <div class="game-board">
+                    <Board />
+                </div>
+                <div class="game-info">
+                    <History />
+                </div>
             </div>
         </main>
     </section>

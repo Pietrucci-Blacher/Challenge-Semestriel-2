@@ -8,11 +8,7 @@ export default class ChessBoard {
     static instance;
 
     constructor() {
-        this.board = [];
-        this.moveHistory = [];
-        this.winner = null;
-        this.move = 0;
-        this.initBoard();
+        this.setBoard();
     }
 
     static getInstance() {
@@ -20,7 +16,7 @@ export default class ChessBoard {
         return ChessBoard.instance;
     }
 
-    resetBoard() {
+    setBoard() {
         this.board = [];
         this.moveHistory = [];
         this.winner = null;
@@ -59,7 +55,7 @@ export default class ChessBoard {
 
     addMoveToHistory({
         pieceName,
-        pieceNotation,
+        notation,
         takenPieceName = null,
         fromRow,
         fromCol,
@@ -71,7 +67,7 @@ export default class ChessBoard {
             from: { row: fromRow, col: fromCol },
             to: { row: toRow, col: toCol },
             pieceName,
-            pieceNotation,
+            notation,
             takenPieceName,
         });
     }
@@ -84,8 +80,10 @@ export default class ChessBoard {
         this.board[row][col] = piece;
     }
 
-    searchInHistory(name) {
-        return this.moveHistory.find((move) => move.piece === name);
+    searchInHistory(name, color) {
+        return this.moveHistory.find(
+            (move) => move.pieceName === name && move.player === color,
+        );
     }
 
     movePiece(fromRow, fromCol, toRow, toCol) {
@@ -112,7 +110,10 @@ export default class ChessBoard {
             ChessBoard.convertToAlgebraic(toRow, toCol);
 
         if (piece.name === 'king' && Math.abs(fromCol - toCol) === 2) {
-            if (this.isInCheck(piece.color) || this.searchInHistory(piece.name))
+            if (
+                this.isInCheck(piece.color) ||
+                this.searchInHistory('king', piece.color)
+            )
                 return false;
 
             const dir = fromCol - toCol < 0 ? 1 : -1;
@@ -134,7 +135,7 @@ export default class ChessBoard {
 
         this.addMoveToHistory({
             pieceName: piece.name,
-            pieceNotation: notation,
+            notation,
             fromRow,
             fromCol,
             toRow,
@@ -203,24 +204,12 @@ export default class ChessBoard {
         return false;
     }
 
-    // isCheckmate(color) {
-    //     const king = this.getKing(color);
-
-    //     if (!king) return false;
-
-    //     for (const row of this.board)
-    //         for (const piece of row)
-    //             if (this.isPieceCheck(piece, king)) return false;
-
-    //     return true;
-    // }
-
     getTurn() {
         return this.move % 2 === 0 ? 'white' : 'black';
     }
 
-    static convertToAlgebraic(x, y) {
-        return String.fromCharCode(97 + x) + (8 - y);
+    static convertToAlgebraic(row, col) {
+        return String.fromCharCode(97 + col) + (8 - row);
     }
 
     static convertToCartesian(algebraic) {
