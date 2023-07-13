@@ -49,8 +49,8 @@ jobs:
           source: ${{ matrix.backend-path }}
           target: '/var/www/html'
           script: |
-              chown -R www-data:www-data /var/www/html/server/
-              chmod -R 755 /var/www/html/server/
+              sudo chown -R www-data:www-data /var/www/html/server/
+              sudo chmod -R 755 /var/www/html/server/
 
       - name: Restart back-end
         uses: appleboy/ssh-action@master
