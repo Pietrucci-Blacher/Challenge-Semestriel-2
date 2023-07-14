@@ -94,8 +94,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           workdir: /var/www/html/server
           script: |
-            script: |
-              /home/${{ secrets.EC2_USERNAME }}/.nvm/versions/node/v20.4.0/bin/node /home/${{ secrets.EC2_USERNAME }}/.local/share/pnpm/pm2 restart server.js
+            /home/${{ secrets.EC2_USERNAME }}/.nvm/versions/node/v20.4.0/bin/node /home/${{ secrets.EC2_USERNAME }}/.local/share/pnpm/pm2 restart server.js
 
       - name: Deploy frontend to EC2
         uses: appleboy/scp-action@master
