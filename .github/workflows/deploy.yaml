@@ -73,7 +73,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            sudo chown -R www-data:www-data /var/www/html/server/
+            sudo chown -R $USER:$USER /var/www/html/server/
             sudo chmod -R 755 /var/www/html/server/
             sudo find /var/www/html/server/ -type d -exec chmod 755 {} \;
             sudo find /var/www/html/server/ -type f -exec chmod 644 {} \;
@@ -86,7 +86,6 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             sudo rm -rf /var/www/html/client
-            sudo chown -R $user:$user /var/www/html/client
 
       - name: Restart back-end
         uses: appleboy/ssh-action@master
@@ -114,7 +113,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            sudo chown -R www-data:www-data /var/www/html/client/
+            sudo chown -R $USER:$USER /var/www/html/client/
             sudo chmod -R 755 /var/www/html/client/
             sudo find /var/www/html/client/ -type d -exec chmod 755 {} \;
             sudo find /var/www/html/client/ -type f -exec chmod 644 {} \;
