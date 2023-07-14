@@ -40,6 +40,12 @@ jobs:
         working-directory: ${{ matrix.frontend-path }}
         run: pnpm run build
 
+      - name: Remove existing backend files
+        run: sudo rm -rf /var/www/html/server/*
+
+      - name: Remove existing frontend files
+        run: sudo rm -rf /var/www/html/client/*
+
       - name: Deploy backend to EC2
         uses: appleboy/scp-action@master
         with:
