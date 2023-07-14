@@ -47,10 +47,10 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: ${{ matrix.backend-path }}
-          target: '/var/www/html'
-          script: |
-              sudo chown -R www-data:www-data /var/www/html/server/
-              sudo chmod -R 755 /var/www/html/server/
+          target: '/var/www/html/server'
+          run: |
+            sudo chown -R www-data:www-data /var/www/html/server/
+            sudo chmod -R 755 /var/www/html/server/
 
       - name: Restart back-end
         uses: appleboy/ssh-action@master
@@ -70,3 +70,6 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: ${{ matrix.frontend-path }}/dist
           target: '/var/www/html/client'
+        run: |
+          sudo chown -R www-data:www-data /var/www/html/client/
+          sudo chmod -R 755 /var/www/html/client/
