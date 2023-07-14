@@ -54,7 +54,6 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             sudo rm -rf /var/www/html/server
-            sudo chown -R $user:$user /var/www/html/server
 
       - name: Deploy backend to EC2
         uses: appleboy/scp-action@master
