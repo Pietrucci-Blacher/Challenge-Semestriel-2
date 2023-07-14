@@ -77,6 +77,15 @@ jobs:
             sudo find /var/www/html/server/ -type d -exec chmod 755 {} \;
             sudo find /var/www/html/server/ -type f -exec chmod 644 {} \;
 
+      - name: Remove previous frontend files
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            sudo rm -rf /var/www/html/client/*
+
       - name: Restart back-end
         uses: appleboy/ssh-action@master
         with:
