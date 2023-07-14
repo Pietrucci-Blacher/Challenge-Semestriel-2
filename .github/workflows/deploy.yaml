@@ -67,7 +67,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           workdir: /var/www/html/server
           script: |
-            pm2 restart server.js
+            /usr/local/bin/pm2 restart server.js
 
       - name: Deploy frontend to EC2
         uses: appleboy/scp-action@master
