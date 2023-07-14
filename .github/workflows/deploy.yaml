@@ -53,8 +53,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            sudo rm -rf /var/www/html/server/*
-            sudo mkdir -p /var/www/html/server
+            sudo rm -rf /var/www/html/server
             sudo chown -R $user:$user /var/www/html/server
 
       - name: Deploy backend to EC2
@@ -86,8 +85,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            sudo rm -rf /var/www/html/client/*
-            sudo mkdir -p /var/www/html/client
+            sudo rm -rf /var/www/html/client
             sudo chown -R $user:$user /var/www/html/client
 
       - name: Restart back-end
