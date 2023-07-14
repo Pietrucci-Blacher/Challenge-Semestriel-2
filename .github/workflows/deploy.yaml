@@ -48,6 +48,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: ${{ matrix.backend-path }}
           target: '/var/www/html/server'
+          overwrite: true
 
       - name: Set backend permissions
         uses: appleboy/ssh-action@master
