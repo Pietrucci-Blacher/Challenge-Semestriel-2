@@ -40,7 +40,7 @@ jobs:
         working-directory: ${{ matrix.frontend-path }}
         run: pnpm run build
 
-      - name: Deploy to EC2
+      - name: Deploy backend to EC2
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -48,7 +48,14 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: ${{ matrix.backend-path }}
           target: '/var/www/html/server'
-          run: |
+
+      - name: Set backend permissions
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
             sudo chown -R www-data:www-data /var/www/html/server/
             sudo chmod -R 755 /var/www/html/server/
 
@@ -62,7 +69,7 @@ jobs:
           script: |
             pm2 restart server.js
 
-      - name: Deploy front-end
+      - name: Deploy frontend to EC2
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -70,6 +77,13 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: ${{ matrix.frontend-path }}/dist
           target: '/var/www/html/client'
-        run: |
-          sudo chown -R www-data:www-data /var/www/html/client/
-          sudo chmod -R 755 /var/www/html/client/
+
+      - name: Set frontend permissions
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            sudo chown -R www-data:www-data /var/www/html/client/
+            sudo chmod -R 755 /var/www/html/client/
