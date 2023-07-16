@@ -1,7 +1,9 @@
 import Cookie from 'js-cookie';
 
 const logout = () => {
-    if (!Cookie.get('userAccessToken')) return;
+    if (!isAuthenticated()) {
+        return;
+    }
 
     fetch('http://localhost:3000/auth/logout', {
         method: 'GET',
