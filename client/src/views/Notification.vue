@@ -1,136 +1,202 @@
 <template>
-    <div
-        v-if="showNotification"
-        :class="notificationClasses"
-        class="flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800"
-    >
-        <div :class="iconClasses" class="flex items-center justify-center w-12">
-            <font-awesome-icon
-                v-if="type === 'success'"
-                :icon="['fas', 'check-circle']"
-                class="text-white"
-            />
-            <font-awesome-icon
-                v-else-if="type === 'error'"
-                :icon="['fas', 'exclamation-circle']"
-                class="text-white"
-            />
-            <font-awesome-icon
-                v-else
-                :icon="['fas', 'info-circle']"
-                class="text-white"
-            />
-        </div>
-        <div class="px-4 py-2 -mx-3">
-            <div class="mx-3">
-                <span :class="titleClasses">{{ title }}</span>
-                <p class="text-sm" :class="messageClasses">{{ message }}</p>
+    <div>
+        <div v-if="showNotification" :class="notificationClasses">
+            <div class="toast-content">
+                <font-awesome-icon
+                    v-if="type === 'success'"
+                    class="text-white"
+                    :icon="['fas', 'check-circle']"
+                ></font-awesome-icon>
+                <font-awesome-icon
+                    v-else-if="type === 'error'"
+                    class="text-white"
+                    :icon="['fas', 'exclamation-circle']"
+                ></font-awesome-icon>
+                <font-awesome-icon
+                    v-else
+                    class="text-white"
+                    :icon="['fas', 'info-circle']"
+                ></font-awesome-icon>
+                <div class="message">
+                    <p class="text text-1">{{ title }}</p>
+                    <p class="text">{{ message }}</p>
+                </div>
+                <div class="close" @click="dismissNotification">
+                    <font-awesome-icon :icon="['fas', 'times']" />
+                </div>
             </div>
+            <div class="progress" :class="{ active: timerIsActive }"></div>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
+import { ref, defineProps, onMounted } from 'vue';
+
+const { type, title, message } = defineProps(['type', 'title', 'message']);
+
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faCheckCircle,
     faExclamationCircle,
     faInfoCircle,
+    faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faCheckCircle, faExclamationCircle, faInfoCircle);
+library.add(faCheckCircle, faExclamationCircle, faInfoCircle, faTimes);
 
-export default {
-    components: {
-        FontAwesomeIcon,
-    },
-    props: {
-        type: {
-            type: String,
-            required: true,
-            validator: (value) =>
-                ['success', 'error', 'information'].includes(value),
-        },
-        title: {
-            type: String,
-            required: true,
-        },
-        message: {
-            type: String,
-            required: true,
-        },
-    },
-    data() {
-        return {
-            showNotification: true,
-        };
-    },
-    mounted() {
-        this.startTimer();
-    },
-    methods: {
-        startTimer() {
-            setTimeout(() => {
-                this.dismissNotification();
-            }, 5000);
-        },
-        dismissNotification() {
-            this.showNotification = false;
-        },
-    },
-    computed: {
-        notificationClasses() {
-            return {
-                'bg-white': true,
-                'dark:bg-gray-800': true,
-                'rounded-lg': true,
-                'shadow-md': true,
-                flex: true,
-                'w-full': true,
-                'max-w-sm': true,
-                'overflow-hidden': true,
-            };
-        },
-        iconClasses() {
-            const classes = {
-                flex: true,
-                'items-center': true,
-                'justify-center': true,
-                'w-12': true,
-            };
-            if (this.type === 'success') {
-                classes['bg-emerald-500'] = true;
-            } else if (this.type === 'error') {
-                classes['bg-red-500'] = true;
-            } else {
-                classes['bg-blue-500'] = true;
-            }
-            return classes;
-        },
-        titleClasses() {
-            const classes = {
-                'font-semibold': true,
-            };
-            if (this.type === 'success') {
-                classes['text-emerald-500'] = true;
-                classes['dark:text-emerald-400'] = true;
-            } else if (this.type === 'error') {
-                classes['text-red-500'] = true;
-                classes['dark:text-red-400'] = true;
-            } else {
-                classes['text-blue-500'] = true;
-                classes['dark:text-blue-400'] = true;
-            }
-            return classes;
-        },
-        messageClasses() {
-            return {
-                'text-sm': true,
-                'text-gray-600': true,
-                'dark:text-gray-200': true,
-            };
-        },
-    },
+const showNotification = ref(false);
+const timerIsActive = ref(false);
+let timer1;
+let timer2;
+
+const notificationClasses = {
+    toast: true,
+    active: showNotification,
 };
+
+const showToast = () => {
+    showNotification.value = true;
+    timerIsActive.value = true;
+
+    timer1 = setTimeout(() => {
+        dismissNotification();
+    }, 5000);
+
+    timer2 = setTimeout(() => {
+        timerIsActive.value = false;
+    }, 5300);
+};
+
+const dismissNotification = () => {
+    showNotification.value = false;
+
+    setTimeout(() => {
+        timerIsActive.value = false;
+    }, 300);
+
+    clearTimeout(timer1);
+    clearTimeout(timer2);
+};
+
+// Show the toast when the component is mounted
+onMounted(() => {
+    showToast();
+});
 </script>
+
+<style>
+@keyframes progress {
+    100% {
+        right: 100%;
+    }
+}
+
+.toast {
+    position: absolute;
+    width: 20%;
+    top: 25px;
+    right: 30px;
+    border-radius: 12px;
+    background: #fff;
+    padding: 20px 35px 20px 25px;
+    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transform: translateX(calc(100% + 30px));
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+}
+
+.toast.active {
+    transform: translateX(0%);
+}
+
+.toast .toast-content {
+    display: flex;
+    align-items: center;
+}
+
+.toast-content .check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    min-width: 35px;
+    background-color: #4070f4;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 50%;
+}
+
+.toast-content .message {
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px;
+}
+
+.message .text {
+    font-size: 16px;
+    font-weight: 400;
+    color: #666666;
+}
+
+.message .text.text-1 {
+    font-weight: 600;
+    color: #333;
+}
+
+.toast .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    padding: 5px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.toast .close:hover {
+    opacity: 1;
+}
+
+.toast .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+}
+
+.toast .progress:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #4070f4;
+}
+
+.progress.active:before {
+    animation: progress 5s linear forwards;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 20px;
+    outline: none;
+    border: none;
+    background-color: #4070f4;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #0e4bf1;
+}
+
+.toast.active ~ button {
+    pointer-events: none;
+}
+</style>
