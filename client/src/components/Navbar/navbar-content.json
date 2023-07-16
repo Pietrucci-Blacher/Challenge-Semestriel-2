@@ -23,6 +23,6 @@
     "route": "",
     "alt": "Logout",
     "check": "isAuthenticated",
-    "onclick": "logout()"
+    "onclick": "logout"
   }
 ]

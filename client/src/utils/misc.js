@@ -1,25 +1,23 @@
 import Cookie from 'js-cookie';
 
-export const logout = () => {
+const logout = () => {
     if (!Cookie.get('userAccessToken')) return;
 
     fetch('http://localhost:3000/auth/logout', {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
         },
-    }).then((data) => {
+    }).then(() => {
         Cookie.remove('userAccessToken');
         Cookie.remove('userRefreshToken');
+        window.location.href = '/';
     });
 };
 
-export const isAuthenticated = () => {
+const isAuthenticated = () => {
     return !!(Cookie.get('userAccessToken') && Cookie.get('userRefreshToken'));
 };
 
-export default {
-    logout,
-    isAuthenticated,
-};
+export { logout, isAuthenticated };
