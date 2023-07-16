@@ -26,8 +26,6 @@ export let discordLogin = async (req, res) => {
     }
 };
 
-export let discordLogin = async (req, res) => {};
-
 /**
  * Logs into Discord using the provided code and returns the user information.
  *
