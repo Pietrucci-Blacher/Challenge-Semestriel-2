@@ -36,6 +36,7 @@
                             'w-12': !showMenu,
                             'w-28': showMenu,
                         }"
+                        @click="handleItemClick(item)"
                     >
                         <font-awesome-icon :icon="item.icon" />
                         <span class="ml-2">{{ item.name }}</span>
@@ -47,6 +48,7 @@
                         :key="item.name"
                         :to="item.route"
                         class="flex items-center justify-center w-12 h-12 mt-4 hover:bg-gray-700 hover:text-gray-300"
+                        @click="handleItemClick(item)"
                     >
                         <font-awesome-icon :icon="item.icon" />
                         <span class="ml-2" v-show="showMenu">{{
@@ -153,6 +155,17 @@ export default {
                 return this.menuItems.filter((item) => !item.check);
             }
             return this.menuItems;
+        },
+    },
+
+    methods: {
+        handleItemClick(item) {
+            if (item.onclick && typeof this[item.onclick] === 'function') {
+                this[item.onclick]();
+            }
+        },
+        logout() {
+            logout();
         },
     },
 };
