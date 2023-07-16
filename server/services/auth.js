@@ -3,6 +3,42 @@ import { Op } from 'sequelize';
 import { checkEmail, verifyRefreshToken } from '../utils/utils.js';
 import dotenv from 'dotenv';
 import db from '../database/postgres/postgres.js';
+
+export async function discordLogin(code) {
+    passport.use(
+        new DiscordStrategy(
+            {
+                clientID: process.env.DISCORD_CLIENT_ID,
+                clientSecret: process.env.DISCORD_CLIENT_SECRET,
+                callbackURL: process.env.DISCORD_CALLBACK_URL,
+                scope: ['identify', 'email'],
+            },
+            async (accessToken, refreshToken, profile, done) => {
+                try {
+                    const { id, username, discriminator, avatar, email } =
+                        profile;
+                    const user = await UserService.findOne({
+                        [Op.or]: [{ discordId: id }, { email }],
+                    });
+                    if (!user) {
+                        const newUser = await UserService.create({
+                            discordId: id,
+                            name: username,
+                            discriminator,
+                            avatar,
+                            email,
+                        });
+                        return done(null, newUser);
+                    }
+                    return done(null, user);
+                } catch (error) {
+                    return done(error);
+                }
+            },
+        ),
+    );
+}
+
 const Token = db.Token;
 import jwt from 'jsonwebtoken';
 
