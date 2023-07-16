@@ -24,7 +24,7 @@
   "homepage": "https://github.com/Pietrucci-Blacher/Challenge-Semestriel-2#readme",
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
-    "eslint": "^8.44.0",
+    "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-vue": "^9.15.1",
@@ -41,7 +41,7 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.7.0",
-    "mongoose": "^7.3.2",
+    "mongoose": "^7.3.4",
     "pg": "^8.11.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.32.1",
