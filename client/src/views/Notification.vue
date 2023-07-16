@@ -2,23 +2,27 @@
     <div>
         <div v-if="showNotification" :class="notificationClasses">
             <div class="toast-content">
-                <font-awesome-icon
-                    v-if="type === 'success'"
-                    class="text-white"
-                    :icon="['fas', 'check-circle']"
-                ></font-awesome-icon>
-                <font-awesome-icon
-                    v-else-if="type === 'error'"
-                    class="text-white"
-                    :icon="['fas', 'exclamation-circle']"
-                ></font-awesome-icon>
-                <font-awesome-icon
-                    v-else
-                    class="text-white"
-                    :icon="['fas', 'info-circle']"
-                ></font-awesome-icon>
+                <div :class="iconClasses">
+                    <font-awesome-icon
+                        v-if="type === 'success'"
+                        class="text-white"
+                        :icon="['fas', 'check-circle']"
+                    ></font-awesome-icon>
+                    <font-awesome-icon
+                        v-else-if="type === 'error'"
+                        class="text-white"
+                        :icon="['fas', 'exclamation-circle']"
+                    ></font-awesome-icon>
+                    <font-awesome-icon
+                        v-else
+                        class="text-white"
+                        :icon="['fas', 'info-circle']"
+                    ></font-awesome-icon>
+                </div>
                 <div class="message">
-                    <p class="text text-1">{{ title }}</p>
+                    <p class="text text-1" :class="titleClasses">
+                        {{ title }}
+                    </p>
                     <p class="text">{{ message }}</p>
                 </div>
                 <div class="close" @click="dismissNotification">
@@ -31,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted } from 'vue';
+import { ref, defineProps, onMounted, computed } from 'vue';
 
 const { type, title, message } = defineProps(['type', 'title', 'message']);
 
@@ -51,18 +55,53 @@ const timerIsActive = ref(false);
 let timer1;
 let timer2;
 
-const notificationClasses = {
+const notificationClasses = computed(() => ({
     toast: true,
-    active: showNotification,
-};
+    active: showNotification.value,
+}));
+
+const iconClasses = computed(() => {
+    const classes = {
+        check: true,
+    };
+
+    if (type.value === 'success') {
+        classes['bg-emerald-500'] = true;
+    } else if (type.value === 'error') {
+        classes['bg-red-500'] = true;
+    } else {
+        classes['bg-blue-500'] = true;
+    }
+
+    return classes;
+});
+
+const titleClasses = computed(() => {
+    const classes = {
+        'font-semibold': true,
+    };
+
+    if (type.value === 'success') {
+        classes['text-emerald-500'] = true;
+        classes['dark:text-emerald-400'] = true;
+    } else if (type.value === 'error') {
+        classes['text-red-500'] = true;
+        classes['dark:text-red-400'] = true;
+    } else {
+        classes['text-blue-500'] = true;
+        classes['dark:text-blue-400'] = true;
+    }
+
+    return classes;
+});
 
 const showToast = () => {
     showNotification.value = true;
     timerIsActive.value = true;
 
-    timer1 = setTimeout(() => {
-        dismissNotification();
-    }, 5000);
+    /*    timer1 = setTimeout(() => {
+      dismissNotification();
+  }, 5000);*/
 
     timer2 = setTimeout(() => {
         timerIsActive.value = false;
@@ -99,8 +138,7 @@ onMounted(() => {
     top: 25px;
     right: 30px;
     border-radius: 12px;
-    background: #fff;
-    padding: 20px 35px 20px 25px;
+    padding: 10px 20px 10px 15px;
     box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transform: translateX(calc(100% + 30px));
@@ -123,7 +161,6 @@ onMounted(() => {
     height: 35px;
     min-width: 35px;
     background-color: #4070f4;
-    color: #fff;
     font-size: 20px;
     border-radius: 50%;
 }
@@ -180,23 +217,23 @@ onMounted(() => {
     animation: progress 5s linear forwards;
 }
 
-button {
-    padding: 12px 20px;
-    font-size: 20px;
-    outline: none;
-    border: none;
-    background-color: #4070f4;
-    color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+@media (max-width: 768px) {
+    .toast {
+        width: 80%; /* Adjust the width for smaller screens */
+        right: 10px; /* Adjust the position for smaller screens */
+    }
 
-button:hover {
-    background-color: #0e4bf1;
-}
+    .toast .toast-content {
+        flex-direction: column;
+    }
 
-.toast.active ~ button {
-    pointer-events: none;
+    .toast-content .message {
+        margin: 10px 0;
+    }
+
+    .toast .close {
+        top: 5px; /* Adjust the position for smaller screens */
+        right: 5px; /* Adjust the position for smaller screens */
+    }
 }
 </style>
