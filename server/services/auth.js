@@ -3,35 +3,48 @@ import { Op } from 'sequelize';
 import { checkEmail, verifyRefreshToken } from '../utils/utils.js';
 import dotenv from 'dotenv';
 import db from '../database/postgres/postgres.js';
+import passport from 'passport';
+import { Strategy, Scope } from '@oauth-everything/passport-discord';
 
-export async function discordLogin(code) {
+export async function discordLogin() {
     passport.use(
-        new DiscordStrategy(
+        new Strategy(
             {
-                clientID: process.env.DISCORD_CLIENT_ID,
-                clientSecret: process.env.DISCORD_CLIENT_SECRET,
-                callbackURL: process.env.DISCORD_CALLBACK_URL,
-                scope: ['identify', 'email'],
+                clientID: process.env.VITE_DISCORD_CLIENT_ID,
+                clientSecret: process.env.VITE_DISCORD_CLIENT_SECRET,
+                callbackURL: process.env.VITE_DISCORD_CALLBACK_URL,
+                scope: [Scope.IDENTIFY, Scope.EMAIL],
             },
             async (accessToken, refreshToken, profile, done) => {
+                console.log('profile', profile);
                 try {
-                    const { id, username, discriminator, avatar, email } =
-                        profile;
                     const user = await UserService.findOne({
-                        [Op.or]: [{ discordId: id }, { email }],
+                        where: {
+                            [Op.or]: [
+                                { discordId: profile.id },
+                                { email: profile.email },
+                            ],
+                        },
                     });
+
                     if (!user) {
                         const newUser = await UserService.create({
-                            discordId: id,
-                            name: username,
-                            discriminator,
-                            avatar,
-                            email,
+                            discordId: profile.id,
+                            email: profile.email,
+                            username: profile.username,
+                            avatar: profile.avatar,
                         });
                         return done(null, newUser);
                     }
+
+                    if (!user.discordId) {
+                        user.discordId = profile.id;
+                        await user.save();
+                    }
+
                     return done(null, user);
                 } catch (error) {
+                    console.error('Error logging into Discord:', error);
                     return done(error);
                 }
             },

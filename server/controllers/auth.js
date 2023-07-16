@@ -1,4 +1,5 @@
 import * as AuthService from '../services/auth.js';
+import passport from 'passport';
 
 export let googleLogin = async (req, res) => {
     return;
@@ -16,8 +17,9 @@ export let discordLogin = async (req, res) => {
         // Get the code from the request query
         const { code } = req.query;
         // Get the user information from Discord
-        const response = await AuthService.discordLogin(code);
-        res.status(statusCode).json({ message: 'Login successful' });
+        passport.authenticate(AuthService.discordLogin(code));
+
+        res.status(200).json({ message: 'Login successful' });
     } catch (error) {
         console.error('Error logging into Discord:', error);
         res.status(500).json({ error: 'Internal server error' });
