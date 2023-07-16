@@ -28,7 +28,7 @@
             >
                 <template v-if="showMenu">
                     <router-link
-                        v-for="item in menuItems"
+                        v-for="item in filteredMenuItems"
                         :key="item.name"
                         :to="item.route"
                         class="flex items-center justify-center h-12 mt-2 hover:bg-gray-700 hover:text-gray-300"
@@ -43,7 +43,7 @@
                 </template>
                 <template v-else>
                     <router-link
-                        v-for="item in menuItems"
+                        v-for="item in filteredMenuItems"
                         :key="item.name"
                         :to="item.route"
                         class="flex items-center justify-center w-12 h-12 mt-4 hover:bg-gray-700 hover:text-gray-300"
@@ -107,6 +107,8 @@ library.add(
     faChevronRight,
 );
 
+import { logout, isAuthenticated } from '@/utils/misc';
+
 export default {
     components: {
         FontAwesomeIcon,
@@ -144,6 +146,14 @@ export default {
             toggleTheme,
             toggleMenu,
         };
+    },
+    computed: {
+        filteredMenuItems() {
+            if (!isAuthenticated()) {
+                return this.menuItems.filter((item) => !item.check);
+            }
+            return this.menuItems;
+        },
     },
 };
 </script>

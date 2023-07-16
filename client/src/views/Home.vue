@@ -4,6 +4,7 @@ import Register from '@/components/Register.vue';
 import Chat from '@/components/Chat.vue';
 import Navbar from '@/components/Navbar/Navbar.vue';
 import Notification from '@/views/Notification.vue';
+import { ref } from 'vue';
 
 const clientIdDiscord = import.meta.env.VITE_DISCORD_CLIENT_ID;
 const redirectUriDiscord = import.meta.env.VITE_DISCORD_REDIRECT_URI;
@@ -24,6 +25,8 @@ const LoginUrlGoogle = `https://accounts.google.com/o/oauth2/v2/auth/userinfo.pr
 )}&response_type=${responseTypeGoogle}&scope=${encodeURIComponent(
     scopeGoogle,
 )}`;
+
+const isUserAuthenticated = ref(false);
 </script>
 
 <template>
