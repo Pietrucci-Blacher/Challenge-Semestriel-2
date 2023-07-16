@@ -20,7 +20,7 @@
                     ></font-awesome-icon>
                 </div>
                 <div class="message">
-                    <p class="text text-1" :class="titleClasses">
+                    <p class="font-semibold" :class="titleClasses">
                         {{ title }}
                     </p>
                     <p class="text">{{ message }}</p>
@@ -65,9 +65,9 @@ const iconClasses = computed(() => {
         check: true,
     };
 
-    if (type.value === 'success') {
+    if (type === 'success') {
         classes['bg-emerald-500'] = true;
-    } else if (type.value === 'error') {
+    } else if (type === 'error') {
         classes['bg-red-500'] = true;
     } else {
         classes['bg-blue-500'] = true;
@@ -81,10 +81,10 @@ const titleClasses = computed(() => {
         'font-semibold': true,
     };
 
-    if (type.value === 'success') {
+    if (type === 'success') {
         classes['text-emerald-500'] = true;
         classes['dark:text-emerald-400'] = true;
-    } else if (type.value === 'error') {
+    } else if (type === 'error') {
         classes['text-red-500'] = true;
         classes['dark:text-red-400'] = true;
     } else {
@@ -99,9 +99,9 @@ const showToast = () => {
     showNotification.value = true;
     timerIsActive.value = true;
 
-    /*    timer1 = setTimeout(() => {
-      dismissNotification();
-  }, 5000);*/
+    timer1 = setTimeout(() => {
+        dismissNotification();
+    }, 5000);
 
     timer2 = setTimeout(() => {
         timerIsActive.value = false;
@@ -160,7 +160,6 @@ onMounted(() => {
     justify-content: center;
     height: 35px;
     min-width: 35px;
-    background-color: #4070f4;
     font-size: 20px;
     border-radius: 50%;
 }
