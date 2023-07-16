@@ -10,7 +10,7 @@ router.get('/logout', isAuthenticated, AuthController.logout);
 router.post('/refresh', AuthController.refresh);
 
 // Discord OAuth2 routes
-router.post('/discord/login', AuthController.discordLogin);
-router.post('/google/login', AuthController.googleLogin);
+router.get('/discord/login', AuthController.discordLogin);
+router.get('/google/login', AuthController.googleLogin);
 
 export default router;

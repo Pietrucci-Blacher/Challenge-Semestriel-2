@@ -1,5 +1,9 @@
 import * as AuthService from '../services/auth.js';
 
+export let googleLogin = async (req, res) => {
+    return;
+};
+
 /**
  * Logs into Discord using the provided code and returns the user information.
  *
@@ -9,8 +13,10 @@ import * as AuthService from '../services/auth.js';
  */
 export let discordLogin = async (req, res) => {
     try {
-        const { code } = req.body;
-        const test = await AuthService.discordLogin(code);
+        // Get the code from the request query
+        const { code } = req.query;
+        // Get the user information from Discord
+        const response = await AuthService.discordLogin(code);
         res.status(statusCode).json({ message: 'Login successful' });
     } catch (error) {
         console.error('Error logging into Discord:', error);
