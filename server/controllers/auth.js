@@ -26,30 +26,6 @@ export let discordLogin = async (req, res) => {
     }
 };
 
-export let googleLogin = async (req, res) => {
-    return;
-};
-
-/**
- * Logs into Discord using the provided code and returns the user information.
- *
- * @param {Object} req - The request object containing the code.
- * @param {Object} res - The response object to send the result.
- * @returns {Promise<void>} - A promise that resolves once the response is sent.
- */
-export let discordLogin = async (req, res) => {
-    try {
-        // Get the code from the request query
-        const { code } = req.query;
-        // Get the user information from Discord
-        const response = await AuthService.discordLogin(code);
-        res.status(statusCode).json({ message: 'Login successful' });
-    } catch (error) {
-        console.error('Error logging into Discord:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
-
 /**
  * login route
  *
