@@ -1,7 +1,5 @@
 import * as AuthService from '../services/auth.js';
 
-export let discordLogin = async (req, res) => {};
-
 /**
  * Logs into Discord using the provided code and returns the user information.
  *
