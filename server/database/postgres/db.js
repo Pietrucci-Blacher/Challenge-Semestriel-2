@@ -3,7 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
 
-const { POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, MODE } = process.env;
+const { POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, MODE } =
+    process.env;
 let connection;
 
 if (MODE === 'test') {
@@ -12,7 +13,7 @@ if (MODE === 'test') {
     });
 } else {
     connection = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
-        host: 'localhost',
+        host: POSTGRES_HOST,
         dialect: 'postgres',
         logging: false,
     });
