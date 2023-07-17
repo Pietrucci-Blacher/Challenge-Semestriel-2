@@ -7,11 +7,11 @@
             <img class="img-home p-5 flex content-center justify-center items-center" src="../images/standardboard.1d6f9426.jpg" alt="">
           </div>
           <div class="flex flex-col justify-center items-center space-y-24">
-            <div>
+            <!-- <div>
               <button class="div-button-home flex items-center justify-center w-[284px] h-[70px] p-6 md:p-[6px 10px]">
                 <p class="text-white text-center text-base md:text-lg font-inter font-semibold leading-6 md:leading-7">Jouer</p>
               </button>
-            </div>
+            </div> -->
             <div>
                 <button class="div-button-home flex items-center justify-center w-[284px] h-[70px] p-6 md:p-[6px 10px]" @click="toggleModale">
                     <p class="text-white text-center text-base md:text-lg font-inter font-semibold leading-6 md:leading-7">Se connecter</p>

@@ -51,5 +51,10 @@
   {"path": "/error",
     "name": "Error",
     "component": "Error"
+  },
+  {
+    "path": "/shop",
+    "name": "Shop",
+    "component": "Shop"
   }
 ]
