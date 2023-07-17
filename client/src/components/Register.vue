@@ -1,46 +1,65 @@
 <template>
         <div class="bloc-modale" v-if="showRegister">
-            <div class="overlay" v-on:click="toggleModaleRegister">
-                <div class="modale" v-on:click.stop>
+            <div class="overlay flex justify-center" v-on:click="toggleModaleRegister">
+                <div class="modale div-block-modale w-[963px] h-auto grid grid-cols-2" v-on:click.stop>
                     <div v-on:click="toggleModaleRegister" class="btn-modale cursor-pointer" >&times;</div>
-                    <div>
-                        <form @submit.prevent="submitForm">
-                            <h1 class="h3 mb-3 font-weight-normal">Register</h1>
-                            <div class="form-group">
-                                <label for="username">Username:</label>
+                    <form novalidate @submit.prevent="submitForm">
+                        <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600 ">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-black  ">Créez votre compte</h3>
+                        </div>
+                        <div flex flex-col>
+                            <div class="form-group flex justify-between items-center flex-row m-4">
+                                <label for="username">Pseudo:</label>
                                 <input 
-                                type="text"
-                                class="form-control"
-                                name="username"
-                                placeholder="Enter username"
-                                v-model="form.username" />
+                                    type="text"
+                                    class="form-control"
+                                    name="username"
+                                    placeholder="Entrer votre pseudo"
+                                    v-model="form.username" />
                             </div>
-                            <div class="form-group">
+                            <div class="form-group flex justify-between items-center flex-row m-4">
                                 <label for="email">Email:</label>
-                                <input type="email" id="email" v-model="form.email" />
+                                <input 
+                                    type="email"
+                                    class="form-control" 
+                                    id="email" 
+                                    placeholder="Entrer votre Email"
+                                    v-model="form.email" />
                             </div>
-                            <div>
-                                <label for="password">Password:</label>
-                                <input type="password" id="password" v-model="form.password" />
+                            <div class="form-group flex justify-between items-center flex-row m-4">
+                                <label for="password">Mot de Passe:</label>
+                                <input 
+                                    type="password" 
+                                    class="form-control"
+                                    id="password" 
+                                    placeholder="Entrer votre Mot de Password"
+                                    v-model="form.password" />
                             </div>
-                            <div>
-                                <label for="confirmPassword">Confirm Password:</label>
+                            <div class="form-group flex justify-between items-center flex-row m-4">
+                                <label for="confirmPassword">Confirmation Mot de Passe:</label>
                                 <input
                                     type="password"
+                                    class="form-control"
                                     id="confirmPassword"
+                                    placeholder="Entrer votre Confirmation Mot de Password"
                                     v-model="form.confirmPassword"
                                 />
+                            </div> 
+                        </div>
+                        <div v-if="error" class="error-message">{{ error }}</div>
+                            <div class="flex justify-center">
+                                <button type="submit" class="btn">Register</button>
                             </div>
-                            <div v-if="error" class="error-message">{{ error }}</div>
-                            <div>
-                                <button type="submit">Register</button>
-                            </div>
-                        </form>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
 </template>
+
+
+
+
+
 
 <script>
 export default {
@@ -105,8 +124,34 @@ export default {
 };
 </script>
 
-<style>
-.error-message {
-    color: red;
-}
+
+<style scope>
+
+    .div-block-modale {
+        display: flex; 
+        flex-direction: column;
+        background: url(../images/beams-home@95.jpg), lightgray 50% / cover no-repeat;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    .form-control {
+        width: 643px;
+        height: 58px;
+        border-radius: 10px;
+        background: #FFF;
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05), 0px 0px 0px 1px #D1D5DB inset, 0px 0px 0px 0px #FFF inset;
+        padding: 1rem;
+    }
+
+    .btn {
+        display: inline-flex;
+        padding: 6px 169.86px 6px 168.14px;
+        align-items: flex-start;
+        border-radius: 6px;
+        background: #1F2937;
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+        color: white;
+    }
+
+  
 </style>

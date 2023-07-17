@@ -5,7 +5,7 @@
                 <div v-on:click="toggleModale" class="btn-modale cursor-pointer" >&times;</div>
                 <form novalidate @submit.prevent="submitForm">
                     <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600 ">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-black  ">Connexion</h3>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-black  ">Connectez-vous à votre compte</h3>
                     </div>
                     <div flex flex-col>
                         <div class="form-group flex justify-around items-center flex-row m-4">
@@ -102,7 +102,7 @@ import { ref } from 'vue';
 
 </script>
 
-<style >
+<style scope>
 
     .div-block-modale {
         display: flex; 

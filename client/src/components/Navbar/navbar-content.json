@@ -22,5 +22,11 @@
     "icon": "sign-out-alt",
     "route": "#",
     "alt": "Logout"
+  },
+  {
+    "name": "Shop",
+    "icon": "cart-shopping",
+    "route": "/shop",
+    "alt": "Shop"
   }
 ]

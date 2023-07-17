@@ -29,10 +29,6 @@ import Error from '@/views/Error.vue';
             <Chat />
                 <br />
             <Stripe />
-            <br />
-            <Success />
-            <br />
-            <Error />
         </main>
     </section>
 

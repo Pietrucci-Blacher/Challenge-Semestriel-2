@@ -31,7 +31,7 @@
                         v-for="item in menuItems"
                         :key="item.name"
                         :to="item.route"
-                        class="flex items-center justify-center h-12 mt-2 hover:bg-gray-700 hover:text-gray-300"
+                        class="flex items-center justify-center h-12 mt-2 hover:bg-gray-700 hover:text-gray-300 transition-[900ms]"
                         :class="{
                             'w-12': !showMenu,
                             'w-28': showMenu,
@@ -46,7 +46,7 @@
                         v-for="item in menuItems"
                         :key="item.name"
                         :to="item.route"
-                        class="flex items-center justify-center w-12 h-12 mt-4 hover:bg-gray-700 hover:text-gray-300"
+                        class="flex items-center justify-center w-12 h-12 mt-4 hover:bg-gray-700 hover:text-gray-300" 
                     >
                         <font-awesome-icon :icon="item.icon" />
                         <span class="ml-2" v-show="showMenu">{{
@@ -58,10 +58,11 @@
         </div>
         <div class="flex flex-col items-center">
             <button class="transition-all" @click="toggleTheme">
-                <transition name="theme-toggle">
+                <transition name="theme-toggle transform">
                     <template v-slot:default>
                         <font-awesome-icon
                             :icon="isDarkTheme ? 'sun' : 'moon'"
+                            class="text-gray-400"
                         />
                     </template>
                 </transition>
@@ -71,6 +72,7 @@
                     <template v-slot:default>
                         <font-awesome-icon
                             :icon="showMenu ? 'chevron-left' : 'chevron-right'"
+                            class="text-gray-400"
                         />
                     </template>
                 </transition>
@@ -92,6 +94,7 @@ import {
     faMoon,
     faChevronLeft,
     faChevronRight,
+    faCartShopping,
 } from '@fortawesome/free-solid-svg-icons';
 import menuContent from './navbar-content.json';
 import { RouterLink } from 'vue-router';
@@ -105,6 +108,7 @@ library.add(
     faMoon,
     faChevronLeft,
     faChevronRight,
+    faCartShopping,
 );
 
 export default {
@@ -151,25 +155,24 @@ export default {
 <style scoped>
 .arrow-toggle-enter-active,
 .arrow-toggle-leave-active {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .arrow-toggle-enter,
 .arrow-toggle-leave-to {
-    transform: rotateZ(180deg);
+  transform: rotateZ(180deg);
 }
 
 button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    height: 2rem;
-    width: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 .theme-toggle-enter-active .fa-sun,
 .theme-toggle-leave-active .fa-moon {
     transform: rotateY(180deg);
