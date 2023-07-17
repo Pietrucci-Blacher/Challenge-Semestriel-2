@@ -31,6 +31,7 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2
         with:
+          file_name: .env.prod
           JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
           JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
           JWT_ACCESS_EXPIRE: 86400
