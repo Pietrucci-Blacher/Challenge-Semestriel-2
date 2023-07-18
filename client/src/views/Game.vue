@@ -2,6 +2,9 @@
 import Board from '@/components/Board.vue';
 import ChessBoard from '@/components/Board.js';
 import Navbar from '@/components/Navbar/Navbar.vue';
+import { ref } from 'vue';
+
+const isUserAuthenticated = ref(false);
 </script>
 
 <template>

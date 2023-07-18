@@ -49,7 +49,9 @@ export default {
                 password: password.value,
             };
             // Send login request
-            fetch('http://localhost:3000/auth/login', {
+            let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
+            let endpoint = `${url}/auth/login`;
+            fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

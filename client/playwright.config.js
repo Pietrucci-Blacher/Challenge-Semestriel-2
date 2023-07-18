@@ -1,6 +1,8 @@
 // @ts-check
 const { devices } = require('@playwright/test');
+const dotenv = require('dotenv');
 
+dotenv.config({ path: '../.env' });
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -35,7 +37,7 @@ const config = {
         /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
         actionTimeout: 0,
         /* Base URL to use in actions like `await page.goto('/')`. */
-        baseURL: 'http://localhost:5173',
+        baseURL: process.env.VITE_ENDPOINT_FRONT_URL || 'http://localhost:5173',
 
         /* Collect trace when retrying the failed __tests__. See https://playwright.dev/docs/trace-viewer */
         trace: 'on-first-retry',
