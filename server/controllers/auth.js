@@ -2,7 +2,12 @@ import * as AuthService from '../services/auth.js';
 import passport from 'passport';
 
 export let googleLogin = async (req, res) => {
-    return;
+    try {
+        passport.authenticate(AuthService.googleLogin());
+    } catch (error) {
+        console.error('Error logging into Google:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 };
 
 /**

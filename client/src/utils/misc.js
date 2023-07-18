@@ -4,8 +4,9 @@ const logout = () => {
     if (!isAuthenticated()) {
         return;
     }
-
-    fetch('http://localhost:3000/auth/logout', {
+    let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
+    let endpoint = `${url}/auth/logout`;
+    fetch(endpoint, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
