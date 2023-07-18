@@ -53,8 +53,10 @@ export default {
             }
 
             try {
+                let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
+                let endpoint = `${url}/auth/register`;
                 const response = await fetch(
-                    'http://localhost:3000/auth/register',
+                    endpoint,
                     {
                         method: 'POST',
                         headers: {

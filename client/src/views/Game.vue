@@ -4,6 +4,9 @@ import History from '@/components/Chess/History.vue';
 import ChessBoard from '@/components/Chess/Board.js';
 import PlayerInfo from '@/components/Chess/PlayerInfo.vue';
 import Navbar from '@/components/Navbar/Navbar.vue';
+import { ref } from 'vue';
+
+const isUserAuthenticated = ref(false);
 </script>
 
 <template>

@@ -20,7 +20,9 @@
   {
     "name": "Logout",
     "icon": "sign-out-alt",
-    "route": "#",
-    "alt": "Logout"
+    "route": "",
+    "alt": "Logout",
+    "check": "isAuthenticated",
+    "onclick": "logout"
   }
 ]
