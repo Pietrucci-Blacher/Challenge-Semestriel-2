@@ -3,8 +3,14 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
 
-const { POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, MODE } =
-    process.env;
+const {
+    POSTGRES_DB,
+    POSTGRES_USER,
+    POSTGRES_PASSWORD,
+    POSTGRES_HOST,
+    MODE,
+    MODE_SERV,
+} = process.env;
 let connection;
 
 if (MODE === 'test') {
@@ -12,11 +18,26 @@ if (MODE === 'test') {
         logging: false,
     });
 } else {
-    connection = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
+    let connectionOptions = {
         host: POSTGRES_HOST,
         dialect: 'postgres',
         logging: false,
-    });
+    };
+
+    if (MODE_SERV === 'prod') {
+        connectionOptions.ssl = true;
+        connectionOptions.dialectOptions = {
+            ssl: {
+                require: true,
+            },
+        };
+    }
+    connection = new Sequelize(
+        POSTGRES_DB,
+        POSTGRES_USER,
+        POSTGRES_PASSWORD,
+        connectionOptions,
+    );
 }
 
 try {
