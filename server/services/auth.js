@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import db from '../database/postgres/postgres.js';
 import passport from 'passport';
 import { Strategy, Scope } from '@oauth-everything/passport-discord';
+import GoogleStrategy from 'passport-google-oauth20';
 
 export async function discordLogin() {
     passport.use(
@@ -45,6 +46,50 @@ export async function discordLogin() {
                     return done(null, user);
                 } catch (error) {
                     console.error('Error logging into Discord:', error);
+                    return done(error);
+                }
+            },
+        ),
+    );
+}
+
+export async function googleLogin() {
+    passport.use(
+        new GoogleStrategy(
+            {
+                clientID: process.env.VITE_GOOGLE_CLIENT_ID,
+                clientSecret: process.env.VITE_GOOGLE_CLIENT_SECRET,
+                callbackURL: process.env.VITE_GOOGLE_CALLBACK_URL,
+            },
+            async (accessToken, refreshToken, profile, done) => {
+                try {
+                    const user = await UserService.findOne({
+                        where: {
+                            [Op.or]: [
+                                { googleId: profile.id },
+                                { email: profile.email },
+                            ],
+                        },
+                    });
+
+                    if (!user) {
+                        const newUser = await UserService.create({
+                            googleId: profile.id,
+                            email: profile.email,
+                            username: profile.displayName,
+                            avatar: profile.photos[0].value,
+                        });
+                        return done(null, newUser);
+                    }
+
+                    if (!user.googleId) {
+                        user.googleId = profile.id;
+                        await user.save();
+                    }
+
+                    return done(null, user);
+                } catch (error) {
+                    console.error('Error logging into Google:', error);
                     return done(error);
                 }
             },
