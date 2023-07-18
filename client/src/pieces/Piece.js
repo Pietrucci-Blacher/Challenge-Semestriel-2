@@ -29,4 +29,14 @@ export default class Piece {
         const row = 8 - this.row;
         return `${col}${row}`;
     }
+
+    export() {
+        return {
+            color: this.color,
+            row: this.row,
+            col: this.col,
+            name: this.name,
+            notation: this.notation,
+        };
+    }
 }

@@ -1,4 +1,6 @@
 import { Pawn, Rook, Knight, Bishop, Queen, King } from '@/pieces/';
+import io from 'socket.io-client';
+import Cookie from 'js-cookie';
 
 export default class ChessBoard {
     board;
@@ -6,8 +8,13 @@ export default class ChessBoard {
     winner;
     move;
     static instance;
+    socket;
 
     constructor() {
+        const url = import.meta.env.VITE_VUE_APP_SOCKET_ENDPOINT;
+        const token = Cookie.get('userAccessToken');
+
+        this.socket = io(url, { auth: { token } });
         this.setBoard();
     }
 
@@ -40,7 +47,6 @@ export default class ChessBoard {
         new Rook(this, 'black', 0, 7);
 
         for (let i = 0; i < 8; i++) new Pawn(this, 'black', 1, i);
-
         for (let i = 0; i < 8; i++) new Pawn(this, 'white', 6, i);
 
         new Rook(this, 'white', 7, 0);
@@ -133,7 +139,7 @@ export default class ChessBoard {
             return false;
         }
 
-        this.addMoveToHistory({
+        const move = {
             pieceName: piece.name,
             notation,
             fromRow,
@@ -141,7 +147,10 @@ export default class ChessBoard {
             toRow,
             toCol,
             takenPieceName: destPiece?.name || null,
-        });
+        };
+
+        this.addMoveToHistory(move);
+        this.sendMoveToSocket(fromRow, fromCol, toRow, toCol);
         this.move++;
 
         return true;
@@ -206,6 +215,15 @@ export default class ChessBoard {
 
     getTurn() {
         return this.move % 2 === 0 ? 'white' : 'black';
+    }
+
+    sendMoveToSocket(fromRow, fromCol, toRow, toCol) {
+        this.socket.emit('chessMove', {
+            fromRow,
+            fromCol,
+            toRow,
+            toCol,
+        });
     }
 
     static convertToAlgebraic(row, col) {

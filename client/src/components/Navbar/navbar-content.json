@@ -2,7 +2,7 @@
   {
     "name": "Games",
     "icon": "chess-board",
-    "route": "/game",
+    "route": "/gameMenu",
     "alt": "Play"
   },
   {

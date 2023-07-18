@@ -5,6 +5,11 @@
     "component": "Home"
   },
   {
+    "path": "/gameMenu",
+    "name": "GameMenu",
+    "component": "GameMenu"
+  },
+  {
     "path": "/game",
     "name": "Game",
     "component": "Game"

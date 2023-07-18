@@ -132,3 +132,71 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.board {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    background-color: #f0d9b5;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.col-label {
+    width: 20px;
+}
+
+.row-label {
+    height: 20px;
+}
+
+.equalizer {
+    width: 20px;
+    height: 20px;
+}
+
+.square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*font-size: 24px;*/
+    border: 1px solid black;
+    background-color: #f0d9b5;
+}
+
+.black-square {
+    background-color: #8b4513;
+    color: white;
+}
+
+.selected-square {
+    background-color: orange;
+}
+
+.chess-piece {
+    width: 100%;
+    pointer-events: none;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+    supported by Chrome, Edge, Opera and Firefox */
+}
+</style>

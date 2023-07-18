@@ -5,7 +5,10 @@ import UserRouter from './routes/user.js';
 import AuthRouter from './routes/auth.js';
 import cors from 'cors';
 import { addSocketId, removeSocketId } from './services/socket.js';
-import socketService from './socket/chat.js';
+import ChatSocket from './socket/chat.js';
+import ChessSocket from './socket/chess.js';
+import Socket from './models/socket.js';
+import { isAuthenticatedForSocket } from './middleware/middleware.js';
 
 const app = express();
 const server = http.createServer(app);
@@ -15,7 +18,8 @@ const io = new Server(server, {
         methods: ['GET', 'POST'],
     },
 });
-const { chatMessageEvent } = socketService(io);
+const { chatMessageEvent } = ChatSocket(io);
+const { chessEvent } = ChessSocket(io);
 
 app.use(cors());
 
@@ -42,10 +46,12 @@ app.post('/', (req, res) => {
     res.json(req.body);
 });
 
-io.on('connection', (socket) => {
-    console.log('A user connected', socket.id);
-    addSocketId(socket.id);
+io.use(isAuthenticatedForSocket).on('connection', (socket) => {
+    console.log('A user connected', socket.id, socket.userId);
+
+    addSocketId(socket.id, socket.userId);
     chatMessageEvent(socket);
+    chessEvent(socket);
 
     socket.on('disconnect', () => {
         removeSocketId(socket.id);
@@ -56,4 +62,5 @@ io.on('connection', (socket) => {
 const PORT = 3000;
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    Socket.deleteMany({}).then(() => console.log('Socket collection cleared'));
 });
