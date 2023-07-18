@@ -8,6 +8,7 @@ const {
     POSTGRES_USER,
     POSTGRES_PASSWORD,
     POSTGRES_HOST,
+    MODE,
     MODE_SERV,
 } = process.env;
 let connection;
