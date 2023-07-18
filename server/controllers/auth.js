@@ -1,8 +1,13 @@
 import * as AuthService from '../services/auth.js';
 import passport from 'passport';
 
-export let googleLogin = async (req, res) => {
-    return;
+export const googleLogin = async (req, res) => {
+    try {
+        passport.authenticate(await AuthService.googleLogin());
+    } catch (error) {
+        console.error('Error logging into Google:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 };
 
 /**
@@ -12,12 +17,12 @@ export let googleLogin = async (req, res) => {
  * @param {Object} res - The response object to send the result.
  * @returns {Promise<void>} - A promise that resolves once the response is sent.
  */
-export let discordLogin = async (req, res) => {
+export const discordLogin = async (req, res) => {
     try {
         // Get the code from the request query
         const { code } = req.query;
         // Get the user information from Discord
-        passport.authenticate(AuthService.discordLogin(code));
+        passport.authenticate(await AuthService.discordLogin(code));
 
         res.status(200).json({ message: 'Login successful' });
     } catch (error) {
