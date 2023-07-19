@@ -19,12 +19,11 @@
 
 <script>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import io from 'socket.io-client';
+import Socket from '@/utils/socket.js';
 
 export default {
     setup() {
-        const url = import.meta.env.VITE_VUE_APP_SOCKET_ENDPOINT;
-        const socket = io(url);
+        const socket = Socket.connect();
 
         const messages = ref([]);
         const newMessage = ref('');
@@ -32,7 +31,6 @@ export default {
         const sendMessage = () => {
             if (newMessage.value.trim() !== '') {
                 const message = {
-                    userId: 0,
                     text: newMessage.value.trim(),
                 };
                 messages.value.push(message);

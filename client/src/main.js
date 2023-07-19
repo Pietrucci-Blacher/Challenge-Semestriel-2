@@ -6,6 +6,7 @@ import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
 import routesData from './routes.json';
 import App from './App.vue';
+// import Socket from './utils/socket.js';
 
 const i18n = createI18n({
     locale: 'fr',
@@ -21,7 +22,7 @@ const routes = routesData.map((route) => ({
     path: route.path,
     name: route.name,
     component: () => import(`@/views/${route.component}.vue`),
-}))
+}));
 
 const router = createRouter({
     history: createWebHistory(),
@@ -30,14 +31,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     updateDocumentTitle(to);
-
-    // Check if the route exists in routes.json
-    const exists = routesData.some((route) => route.path === to.path);
-    if (!exists) {
-        next('/404'); // Redirect to /404 if the route doesn't exist
-    } else {
-        next();
-    }
+    next();
 });
 
 const app = createApp(App);

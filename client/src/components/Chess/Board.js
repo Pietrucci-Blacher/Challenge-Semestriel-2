@@ -1,6 +1,4 @@
 import { Pawn, Rook, Knight, Bishop, Queen, King } from '@/pieces/';
-import io from 'socket.io-client';
-import Cookie from 'js-cookie';
 
 export default class ChessBoard {
     board;
@@ -9,13 +7,21 @@ export default class ChessBoard {
     move;
     static instance;
     socket;
+    gameId;
 
     constructor() {
-        const url = import.meta.env.VITE_VUE_APP_SOCKET_ENDPOINT;
-        const token = Cookie.get('userAccessToken');
-
-        this.socket = io(url, { auth: { token } });
+        this.gameId = null;
         this.setBoard();
+    }
+
+    connectToSocket(socket) {
+        this.socket = socket;
+    }
+
+    disconnectFromSocket() {
+        if (!this.socket) return;
+        this.socket.disconnect();
+        this.socket = null;
     }
 
     static getInstance() {
@@ -218,6 +224,7 @@ export default class ChessBoard {
     }
 
     sendMoveToSocket(fromRow, fromCol, toRow, toCol) {
+        if (!this.socket) return;
         this.socket.emit('chessMove', {
             fromRow,
             fromCol,

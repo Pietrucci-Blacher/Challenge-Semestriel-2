@@ -14,7 +14,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.VITE_VUE_APP_SOCKET_ENDPOINT_BACK,
+        // origin: process.env.VITE_VUE_APP_SOCKET_ENDPOINT,
+        origin: '*',
         methods: ['GET', 'POST'],
     },
 });

@@ -25,7 +25,7 @@ export const removeSocketId = async (socketId) => {
     });
 };
 
-export const getSocketId = async (userId) => {
+export const getSocketByUserId = async (userId) => {
     const findedSocket = await Socket.findOne({
         userId,
     });
