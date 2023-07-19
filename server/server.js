@@ -48,9 +48,14 @@ app.post('/', (req, res) => {
 });
 
 io.use(isAuthenticatedForSocket).on('connection', (socket) => {
-    console.log('A user connected', socket.id, socket.userId);
+    console.log(
+        'A user connected',
+        socket.id,
+        socket.userId,
+        socket.handshake.query.key,
+    );
 
-    addSocketId(socket.id, socket.userId);
+    addSocketId(socket.id, socket.userId, socket.handshake.query.key);
     chatMessageEvent(socket);
     chessEvent(socket);
 

@@ -23,7 +23,7 @@ import Socket from '@/utils/socket.js';
 
 export default {
     setup() {
-        const socket = Socket.connect();
+        const socket = Socket.connect('chat');
 
         const messages = ref([]);
         const newMessage = ref('');

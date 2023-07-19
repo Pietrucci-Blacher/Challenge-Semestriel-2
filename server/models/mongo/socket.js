@@ -6,7 +6,14 @@ const socketSchema = new db.Schema(
             type: String,
             required: true,
         },
-        userId: Number,
+        userId: {
+            type: Number,
+            required: true,
+        },
+        key: {
+            type: String,
+            required: true,
+        },
     },
     { timestamps: true },
 );

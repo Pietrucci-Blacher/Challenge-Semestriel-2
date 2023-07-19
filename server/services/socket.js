@@ -1,22 +1,21 @@
 import Socket from '../models/mongo/socket.js';
 
-export const addSocketId = async (socketId, userId = null) => {
-    const findedSocket = await Socket.findOne({
-        socketId,
-    });
+export const addSocketId = async (socketId, userId, key) => {
+    const findedSocket = await Socket.findOne({ socketId, key });
 
     if (findedSocket) return;
 
     const socket = new Socket({
         userId,
         socketId,
+        key,
     });
 
     await socket.save();
 };
 
-export const updateSocketId = async (socketId, userId) => {
-    await Socket.updateOne({ socketId }, { $set: { userId } });
+export const updateSocketId = async (userId, key, socketId) => {
+    await Socket.updateOne({ userId, key }, { $set: { socketId } });
 };
 
 export const removeSocketId = async (socketId) => {
@@ -26,7 +25,7 @@ export const removeSocketId = async (socketId) => {
 };
 
 export const getSocketByUserId = async (userId) => {
-    const findedSocket = await Socket.findOne({
+    const findedSocket = await Socket.find({
         userId,
     });
 

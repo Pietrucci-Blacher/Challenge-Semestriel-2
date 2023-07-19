@@ -1,9 +1,5 @@
 <script setup>
 import Navbar from '@/components/Navbar/Navbar.vue';
-import Socket from '@/utils/socket.js';
-
-const socket = Socket.connect();
-console.log('socket', socket.id);
 </script>
 
 <template>
@@ -11,7 +7,18 @@ console.log('socket', socket.id);
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <div>
             <div><a href="/game/local">Local</a></div>
-            <div><a href="/game/zoieurzelkjsdfhozeir">Online</a></div>
+            <div @click="findGame">Online</div>
         </div>
     </section>
 </template>
+
+<script>
+export default {
+    name: 'GameMenu',
+    methods: {
+        findGame() {
+            console.log('find game');
+        },
+    },
+};
+</script>

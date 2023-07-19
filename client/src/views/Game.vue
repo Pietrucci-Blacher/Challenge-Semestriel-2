@@ -6,6 +6,7 @@ import PlayerInfo from '@/components/Chess/PlayerInfo.vue';
 import Navbar from '@/components/Navbar/Navbar.vue';
 import { ref } from 'vue';
 import Socket from '@/utils/socket.js';
+import Chat from '@/components/Chat.vue';
 
 const isUserAuthenticated = ref(false);
 </script>
@@ -15,6 +16,9 @@ const isUserAuthenticated = ref(false);
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <main class="w-full h-screen">
             <div class="game">
+                <div class="game-info">
+                    <Chat />
+                </div>
                 <div class="game-board">
                     <PlayerInfo name="Sunshio" color="black" />
                     <Board :reverse="false" />
@@ -30,14 +34,12 @@ const isUserAuthenticated = ref(false);
 
 <script>
 export default {
-    components: {
-        Board,
-    },
+    name: 'Game',
     data() {
         const board = ChessBoard.getInstance();
 
         if (this.$route.params.id !== 'local') {
-            const socket = Socket.connect();
+            const socket = Socket.connect('game');
             board.connectToSocket(socket);
             board.gameId = this.$route.params.id;
         }
