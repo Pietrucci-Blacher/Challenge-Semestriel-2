@@ -9,7 +9,7 @@ const { MODE } = process.env;
 
 const db = { connection };
 const dirname = path.dirname(new URL(import.meta.url).pathname);
-const modelDir = path.join(dirname, '../../models');
+const modelDir = path.join(dirname, '../../models/postgres');
 const files = fs.readdirSync(modelDir);
 
 for (const file of files) {

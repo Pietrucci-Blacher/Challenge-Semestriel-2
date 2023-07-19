@@ -6,11 +6,21 @@
   },
   {
     "path": "/game",
+    "name": "Game Menu",
+    "component": "GameMenu"
+  },
+  {
+    "path": "/game/:id",
     "name": "Game",
     "component": "Game"
   },
   {
     "path": "/404",
+    "name": "404 Error",
+    "component": "404"
+  },
+  {
+    "path": "/:pathMatch(.*)*",
     "name": "404 Error",
     "component": "404"
   }
