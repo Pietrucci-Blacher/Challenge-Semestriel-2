@@ -82,6 +82,10 @@ export default (sequelize) => {
                 allowNull: false,
                 defaultValue: 'user',
             },
+            elo: {
+                type: DataTypes.INTEGER,
+                defaultValue: 1000,
+            },
         },
         {
             sequelize,

@@ -1,4 +1,4 @@
-import Socket from '../models/socket.js';
+import Socket from '../models/mongo/socket.js';
 
 export const addSocketId = async (socketId, userId = null) => {
     const findedSocket = await Socket.findOne({

@@ -1,4 +1,4 @@
-import Chat from '../models/chat.js';
+import Chat from '../models/mongo/chat.js';
 // CREATE
 const createMessage = async (sender, message) => {
     try {

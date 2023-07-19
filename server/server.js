@@ -7,7 +7,7 @@ import cors from 'cors';
 import { addSocketId, removeSocketId } from './services/socket.js';
 import ChatSocket from './socket/chat.js';
 import ChessSocket from './socket/chess.js';
-import Socket from './models/socket.js';
+import Socket from './models/mongo/socket.js';
 import { isAuthenticatedForSocket } from './middleware/middleware.js';
 
 const app = express();

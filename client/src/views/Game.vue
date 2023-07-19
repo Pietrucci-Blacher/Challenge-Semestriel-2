@@ -34,14 +34,13 @@ export default {
         Board,
     },
     data() {
-        console.log('data', this.$route.params.id);
         const board = ChessBoard.getInstance();
 
-        if (this.$route.params.id === 'local') return { board };
-
-        const socket = Socket.connect();
-        board.connectToSocket(socket);
-        board.gameId = this.$route.params.id;
+        if (this.$route.params.id !== 'local') {
+            const socket = Socket.connect();
+            board.connectToSocket(socket);
+            board.gameId = this.$route.params.id;
+        }
 
         return { board };
     },

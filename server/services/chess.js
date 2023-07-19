@@ -1,4 +1,4 @@
-import Chess from '../models/chess.js';
+import Chess from '../models/mongo/chess.js';
 
 export const findGameById = (id) => {
     return Chess.findById(id);

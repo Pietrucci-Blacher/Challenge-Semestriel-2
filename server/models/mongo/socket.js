@@ -1,4 +1,4 @@
-import db from '../database/mongo/mongo.js';
+import db from '../../database/mongo/mongo.js';
 
 const socketSchema = new db.Schema(
     {
