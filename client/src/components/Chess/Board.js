@@ -6,13 +6,22 @@ export default class ChessBoard {
     winner;
     move;
     static instance;
+    socket;
+    gameId;
 
     constructor() {
-        this.board = [];
-        this.moveHistory = [];
-        this.winner = null;
-        this.move = 0;
-        this.initBoard();
+        this.gameId = null;
+        this.setBoard();
+    }
+
+    connectToSocket(socket) {
+        this.socket = socket;
+    }
+
+    disconnectFromSocket() {
+        if (!this.socket) return;
+        this.socket.disconnect();
+        this.socket = null;
     }
 
     static getInstance() {
@@ -20,7 +29,7 @@ export default class ChessBoard {
         return ChessBoard.instance;
     }
 
-    resetBoard() {
+    setBoard() {
         this.board = [];
         this.moveHistory = [];
         this.winner = null;
@@ -44,7 +53,6 @@ export default class ChessBoard {
         new Rook(this, 'black', 0, 7);
 
         for (let i = 0; i < 8; i++) new Pawn(this, 'black', 1, i);
-
         for (let i = 0; i < 8; i++) new Pawn(this, 'white', 6, i);
 
         new Rook(this, 'white', 7, 0);
@@ -57,13 +65,22 @@ export default class ChessBoard {
         new Rook(this, 'white', 7, 7);
     }
 
-    addMoveToHistory(notation, fromRow, fromCol, toRow, toCol, taken = null) {
+    addMoveToHistory({
+        pieceName,
+        notation,
+        takenPieceName = null,
+        fromRow,
+        fromCol,
+        toRow,
+        toCol,
+    }) {
         this.moveHistory.push({
             player: this.getTurn(),
             from: { row: fromRow, col: fromCol },
             to: { row: toRow, col: toCol },
-            piece: notation,
-            taken,
+            pieceName,
+            notation,
+            takenPieceName,
         });
     }
 
@@ -73,6 +90,12 @@ export default class ChessBoard {
 
     setPieceAt(row, col, piece) {
         this.board[row][col] = piece;
+    }
+
+    searchInHistory(name, color) {
+        return this.moveHistory.find(
+            (move) => move.pieceName === name && move.player === color,
+        );
     }
 
     movePiece(fromRow, fromCol, toRow, toCol) {
@@ -93,21 +116,47 @@ export default class ChessBoard {
         if (destPiece?.color === piece.color || destPiece?.name === 'king')
             return false;
 
+        let notation =
+            piece.notation +
+            (destPiece ? 'x' : '') +
+            ChessBoard.convertToAlgebraic(toRow, toCol);
+
+        if (piece.name === 'king' && Math.abs(fromCol - toCol) === 2) {
+            if (
+                this.isInCheck(piece.color) ||
+                this.searchInHistory('king', piece.color)
+            )
+                return false;
+
+            const dir = fromCol - toCol < 0 ? 1 : -1;
+            const rook = this.getPieceAt(fromRow, dir === 1 ? 7 : 0);
+
+            if (rook && rook.name === 'rook' && rook.color === piece.color)
+                rook.setCoords(fromRow, fromCol + dir);
+
+            notation = dir === 1 ? 'O-O' : 'O-O-O';
+        }
+
         piece.setCoords(toRow, toCol);
 
         if (this.isInCheck(piece.color)) {
             piece.setCoords(fromRow, fromCol);
+            if (destPiece) destPiece.setCoords(toRow, toCol, false);
             return false;
         }
 
-        this.addMoveToHistory(
-            piece.notation,
+        const move = {
+            pieceName: piece.name,
+            notation,
             fromRow,
             fromCol,
             toRow,
             toCol,
-            destPiece?.name || null,
-        );
+            takenPieceName: destPiece?.name || null,
+        };
+
+        this.addMoveToHistory(move);
+        this.sendMoveToSocket(fromRow, fromCol, toRow, toCol);
         this.move++;
 
         return true;
@@ -170,60 +219,22 @@ export default class ChessBoard {
         return false;
     }
 
-    // isCheckmate(color) {
-    //     const king = this.getKing(color);
-
-    //     if (!king) return false;
-
-    //     for (const row of this.board)
-    //         for (const piece of row)
-    //             if (this.isPieceCheck(piece, king)) return false;
-
-    //     return true;
-    // }
-
-    rockMove(color, side) {
-        const row = color === 'white' ? 7 : 0;
-        const king = this.getKing(color);
-        const rook = this.getPieceAt(row, side === 'kingside' ? 7 : 0);
-
-        if (
-            this.history.filter(
-                (move) => move.piece === 'K' || move.piece === 'R',
-            ).length > 0
-        )
-            return false;
-
-        if (
-            !king ||
-            !rook ||
-            king.name !== 'king' ||
-            rook.name !== 'rook' ||
-            king.hasMoved ||
-            rook.hasMoved ||
-            this.isInCheck(color)
-        )
-            return false;
-
-        const dir = side === 'kingside' ? 1 : -1;
-        const rowToCheck = row;
-        const colToCheck = side === 'kingside' ? 5 : 3;
-
-        for (let col = king.col + dir; col !== colToCheck; col += dir)
-            if (this.getPieceAt(rowToCheck, col)) return false;
-
-        this.movePiece(row, king.col, row, colToCheck);
-        this.movePiece(row, side === 'kingside' ? 7 : 0, row, colToCheck - dir);
-
-        return true;
-    }
-
     getTurn() {
         return this.move % 2 === 0 ? 'white' : 'black';
     }
 
-    static convertToAlgebraic(x, y) {
-        return String.fromCharCode(97 + x) + (8 - y);
+    sendMoveToSocket(fromRow, fromCol, toRow, toCol) {
+        if (!this.socket) return;
+        this.socket.emit('chessMove', {
+            fromRow,
+            fromCol,
+            toRow,
+            toCol,
+        });
+    }
+
+    static convertToAlgebraic(row, col) {
+        return String.fromCharCode(97 + col) + (8 - row);
     }
 
     static convertToCartesian(algebraic) {

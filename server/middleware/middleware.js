@@ -36,3 +36,22 @@ export const isAdmin = async (req, res, next) => {
 
     next();
 };
+
+export const isAuthenticatedForSocket = async (socket, next) => {
+    const token = socket.handshake.auth.token;
+
+    if (!token) return next(new Error('No token provided'));
+
+    const foundedToken = await Token.findOne({
+        where: { access_token: token },
+    });
+    if (!foundedToken) return next(new Error('Token not found'));
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+        socket.userId = decoded.id;
+        next();
+    } catch (err) {
+        return next(new Error('Authentication error'));
+    }
+};

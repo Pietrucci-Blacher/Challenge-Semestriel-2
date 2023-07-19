@@ -43,10 +43,10 @@ export default (sequelize) => {
             const payload = { id: this.id };
 
             const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, {
-                expiresIn: JWT_ACCESS_EXPIRE,
+                expiresIn: parseInt(JWT_ACCESS_EXPIRE),
             });
             const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, {
-                expiresIn: JWT_REFRESH_EXPIRE,
+                expiresIn: parseInt(JWT_REFRESH_EXPIRE),
             });
 
             return { accessToken, refreshToken };
@@ -81,6 +81,10 @@ export default (sequelize) => {
                 type: DataTypes.STRING(50),
                 allowNull: false,
                 defaultValue: 'user',
+            },
+            elo: {
+                type: DataTypes.INTEGER,
+                defaultValue: 1000,
             },
         },
         {
