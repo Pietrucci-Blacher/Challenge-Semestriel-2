@@ -16,11 +16,6 @@ import Error from '@/views/Error.vue';
             <br />
             <Register />
             <br />
-            <Stripe />
-            <br />
-            <Success />
-            <br />
-            <Error />
             <Chat />
         </main>
     </section>

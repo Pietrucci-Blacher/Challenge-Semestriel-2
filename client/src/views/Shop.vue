@@ -14,24 +14,6 @@
         <div class="div-block-home w-[963px] h-[679px] grid">
           <section >
             <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
-              
-            <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide">
-              <Slide v-for="slide in 5" :key="slide">
-                <div class="carousel__item">{{ slide }}</div>
-              </Slide>
-            </Carousel>
-
-            <Carousel
-              id="thumbnails"
-              :items-to-show="4"
-              :wrap-around="true"
-              v-model="currentSlide"
-              ref="carousel"
-            >
-              <Slide v-for="slide in 5" :key="slide">
-                <div class="carousel__item" @click="slideTo(slide - 1)">{{ slide }}</div>
-              </Slide>
-            </Carousel>
               <div class="grid gap-8 lg:grid-cols-2">
                 <!-- ... Votre contenu d'articles ici ... -->
                 <article class="p-6 bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
@@ -73,38 +55,26 @@
 
 <script>
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
-import { defineComponent } from 'vue'
-import { Carousel, Slide } from 'vue3-carousel'
-
-import 'vue3-carousel/dist/carousel.css'
 
 export default {
-  name: 'Gallery',
   components: {
-    Carousel,
-    Slide,
-    Navigation,
     StripeCheckout
   },
   data() {
-  return {
-    currentSlide: 0,
-    publishableKey: 'pk_test_51NHLQLJ6Q5BZS72KVkdWCzDVWs2svIZoMdrvawZ2LMP7PpHPe46OUtJt1mPdwbJHkyeU5mITFwqeOX1K6Iq1xgYV00VGwsaNiQ',
-    loading: false,
-    lineItems: [
-      {
-        price: 'price_1NV8qDJ6Q5BZS72KyAM6DIBZ', // L'identifiant du prix unique que vous avez créé dans votre tableau de bord Stripe
-        quantity: 1,
-      },
-    ],
-    successURL: 'http://localhost:5173/success', // URL de redirection après un paiement réussi
-    cancelURL: 'http://localhost:5173/error', // URL de redirection si l'utilisateur annule le paiement
-  };
-},
+    return {
+      publishableKey: 'pk_test_51NHLQLJ6Q5BZS72KVkdWCzDVWs2svIZoMdrvawZ2LMP7PpHPe46OUtJt1mPdwbJHkyeU5mITFwqeOX1K6Iq1xgYV00VGwsaNiQ',
+      loading: false,
+      lineItems: [
+        {
+          price: 'price_1NV8qDJ6Q5BZS72KyAM6DIBZ', // L'identifiant du prix unique que vous avez créé dans votre tableau de bord Stripe
+          quantity: 1,
+        },
+      ],
+      successURL: 'http://localhost:5173/success', // URL de redirection après un paiement réussi
+      cancelURL: 'http://localhost:5173/error', // URL de redirection si l'utilisateur annule le paiement
+    };
+  },
   methods: {
-    slideTo(val) {
-      this.currentSlide = val
-    },
     submit() {
       this.loading = true; // Active le pageloader
 
@@ -137,32 +107,4 @@ body {
   background: #0C141E;
   box-shadow: 0px 
 }
-
-/* carousel */
-#thumbnails {
-
-}
-
-.carousel__item {
-  cursor: pointer;
-  margin-top: 20px;
-  /* background-color: #642afb; */
-  font-size: 20px;
-  border-radius: 8px;
-  width: 100%;
-}
-
-#gallery {
-  width: auto;
-  /* background-color: #642afb; */
-  color: black;
-  font-size: 20px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
-
 </style>
