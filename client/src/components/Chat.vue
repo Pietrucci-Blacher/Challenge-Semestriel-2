@@ -34,19 +34,19 @@ export default {
                     text: newMessage.value.trim(),
                 };
                 messages.value.push(message);
-                socket.emit('chat message', message);
+                socket?.emit('chat message', message);
                 newMessage.value = '';
             }
         };
 
         onMounted(() => {
-            socket.on('message', (message) => {
+            socket?.on('message', (message) => {
                 messages.value.push(message);
             });
         });
 
         onBeforeUnmount(() => {
-            socket.disconnect();
+            socket?.disconnect();
         });
 
         return {

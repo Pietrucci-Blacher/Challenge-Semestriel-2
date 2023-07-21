@@ -15,11 +15,11 @@ export default class Socket {
         return Socket.socket[key];
     }
 
-    static disconnect() {
-        if (!Socket.socket) return;
+    static disconnect(key = 'default') {
+        if (!Socket.socket[key]?.id) return;
 
-        Socket.socket.disconnect();
-        Socket.socket = null;
+        Socket.socket[key]?.disconnect();
+        delete Socket.socket[key];
     }
 
     static getSocket(key = 'default') {

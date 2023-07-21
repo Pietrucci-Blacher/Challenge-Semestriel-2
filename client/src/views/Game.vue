@@ -4,9 +4,13 @@ import History from '@/components/Chess/History.vue';
 import ChessBoard from '@/components/Chess/Board.js';
 import PlayerInfo from '@/components/Chess/PlayerInfo.vue';
 import Navbar from '@/components/Navbar/Navbar.vue';
-import { ref } from 'vue';
+import { ref, onBeforeUnmount } from 'vue';
 import Socket from '@/utils/socket.js';
 import Chat from '@/components/Chat.vue';
+
+onBeforeUnmount(() => {
+    Socket.disconnect('game');
+});
 
 const isUserAuthenticated = ref(false);
 </script>

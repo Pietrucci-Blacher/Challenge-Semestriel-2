@@ -6,6 +6,8 @@ import { checkEmail } from '../utils/utils.js';
 export const findAll = async (filters, options = {}) => {
     let users = await UserModel.findAll({ where: filters });
 
+    for (const user of users) delete user.password;
+
     if (options.order)
         users = users.sort((a, b) => compare(a, b, options.order));
 
@@ -14,8 +16,24 @@ export const findAll = async (filters, options = {}) => {
     return users;
 };
 
-export const findOne = (filters) => {
-    return UserModel.findOne({ where: filters });
+export const findOne = async (filters) => {
+    const user = await UserModel.findOne({ where: filters });
+    if (!user) {
+        const error = new Error();
+        error.name = 'NotFound';
+        error.errors = {
+            message: 'User not found',
+        };
+        throw error;
+    }
+
+    delete user.password;
+
+    return user;
+};
+
+export const findById = (id) => {
+    return UserModel.findOne({ where: { id } });
 };
 
 export const create = async (data) => {

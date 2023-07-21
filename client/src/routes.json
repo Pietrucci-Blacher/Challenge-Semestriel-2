@@ -6,7 +6,7 @@
   },
   {
     "path": "/game",
-    "name": "Game Menu",
+    "name": "Menu",
     "component": "GameMenu"
   },
   {

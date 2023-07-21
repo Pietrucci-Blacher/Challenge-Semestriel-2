@@ -50,6 +50,7 @@ export const isAuthenticatedForSocket = async (socket, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
         socket.userId = decoded.id;
+        socket.key = socket.handshake.query.key;
         next();
     } catch (err) {
         return next(new Error('Authentication error'));
