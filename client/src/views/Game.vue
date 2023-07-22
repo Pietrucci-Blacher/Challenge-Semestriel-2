@@ -20,7 +20,7 @@ const isUserAuthenticated = ref(false);
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <main class="w-full h-screen">
             <div class="game">
-                <div class="game-info">
+                <div v-if="$route.params.id !== 'local'" class="game-info">
                     <Chat />
                 </div>
                 <div class="game-board">
