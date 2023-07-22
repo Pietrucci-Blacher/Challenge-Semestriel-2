@@ -10,6 +10,9 @@ const chessSchema = new db.Schema(
             type: Number,
             required: true,
         },
+        winner: {
+            type: Number,
+        },
         moveHistory: {
             type: Array,
             required: true,
