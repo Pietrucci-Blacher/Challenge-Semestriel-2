@@ -13,7 +13,7 @@ module.exports = {
     rules: {
         'prettier/prettier': 'error',
         indent: ['error', 4],
-        quotes: ['error', 'single'],
+        quotes: ['warn', 'single', { avoidEscape: true }],
         semi: ['error', 'always'],
     },
 };

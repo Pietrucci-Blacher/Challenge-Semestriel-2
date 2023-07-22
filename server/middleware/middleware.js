@@ -28,7 +28,7 @@ export const isAuthenticated = async (req, res, next) => {
 };
 
 export const isAdmin = async (req, res, next) => {
-    const user = await UserService.findOne({ _id: req.userId });
+    const user = await UserService.findOne({ id: req.userId });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     if (user.role !== 'admin')

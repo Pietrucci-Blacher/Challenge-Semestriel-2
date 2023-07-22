@@ -18,15 +18,6 @@ export const findAll = async (filters, options = {}) => {
 
 export const findOne = async (filters) => {
     const user = await UserModel.findOne({ where: filters });
-    if (!user) {
-        const error = new Error();
-        error.name = 'NotFound';
-        error.errors = {
-            message: 'User not found',
-        };
-        throw error;
-    }
-
     delete user.password;
 
     return user;
