@@ -109,7 +109,13 @@ library.add(
     faChevronRight,
 );
 
-import { logout, isAuthenticated } from '@/utils/misc';
+import {
+    logout,
+    isAuthenticated,
+    toggleTheme,
+    toggleMenu,
+    getThemeMode,
+} from '@/utils/misc';
 
 export default {
     components: {
@@ -117,25 +123,9 @@ export default {
         RouterLink,
     },
     setup() {
-        const isDarkTheme = ref(true);
+        const isDarkTheme = ref(getThemeMode() === 'dark');
         const showMenu = ref(false);
         const menuItems = reactive(menuContent);
-
-        const toggleTheme = () => {
-            isDarkTheme.value = !isDarkTheme.value;
-            localStorage.setItem(
-                'themeMode',
-                isDarkTheme.value ? 'dark' : 'light',
-            );
-        };
-
-        const toggleMenu = () => {
-            showMenu.value = !showMenu.value;
-            localStorage.setItem(
-                'menuState',
-                showMenu.value ? 'open' : 'closed',
-            );
-        };
 
         // Restore theme mode and menu state from localStorage
         isDarkTheme.value = localStorage.getItem('themeMode') === 'dark';
@@ -145,8 +135,8 @@ export default {
             isDarkTheme,
             showMenu,
             menuItems,
-            toggleTheme,
-            toggleMenu,
+            toggleTheme: () => toggleTheme(isDarkTheme),
+            toggleMenu: () => toggleMenu(showMenu),
         };
     },
     computed: {
