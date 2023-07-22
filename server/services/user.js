@@ -18,7 +18,8 @@ export const findAll = async (filters, options = {}) => {
 
 export const findOne = async (filters) => {
     const user = await UserModel.findOne({ where: filters });
-    delete user.password;
+
+    if (user) delete user.password;
 
     return user;
 };
