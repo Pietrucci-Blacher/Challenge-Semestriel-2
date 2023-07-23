@@ -15,6 +15,11 @@
     "component": "Game"
   },
   {
+    "path": "/profile",
+    "name": "Profil",
+    "component": "Profile"
+  },
+  {
     "path": "/404",
     "name": "404 Error",
     "component": "404"
