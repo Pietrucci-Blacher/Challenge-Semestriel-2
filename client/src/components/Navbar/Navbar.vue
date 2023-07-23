@@ -2,8 +2,7 @@
     <aside class="h-screen">
         <div
             class="flex flex-col items-center justify-between h-full overflow-hidden text-gray-400"
-            :class="{ 'bg-gray-900': isDarkTheme, 'bg-gray-100': !isDarkTheme }"
-        >
+            :class="{ 'bg-gray-900': isDarkTheme, 'bg-gray-100': !isDarkTheme }">
             <div>
                 <router-link to="/">
                     <img
@@ -24,8 +23,7 @@
                     'border-gray-300': !isDarkTheme,
                 }"
                 :style="{ width: showMenu ? '10rem' : '3rem' }"
-                :key="showMenu"
-            >
+                :key="showMenu">
                 <template v-if="showMenu">
                     <router-link
                         v-for="item in filteredMenuItems"
@@ -36,8 +34,7 @@
                             'w-12': !showMenu,
                             'w-28': showMenu,
                         }"
-                        @click="handleItemClick(item)"
-                    >
+                        @click="handleItemClick(item)">
                         <font-awesome-icon :icon="item.icon" />
                         <span class="ml-2">{{ item.name }}</span>
                     </router-link>
@@ -48,17 +45,16 @@
                         :key="item.name"
                         :to="item.route"
                         class="flex items-center justify-center w-12 h-12 mt-4 hover:bg-gray-700 hover:text-gray-300"
-                        @click="handleItemClick(item)"
-                    >
+                        @click="handleItemClick(item)">
                         <font-awesome-icon :icon="item.icon" />
                         <span class="ml-2" v-show="showMenu">{{
                             item.name
                         }}</span>
                     </router-link>
                 </template>
-            </transition>
-        </button>
-    </div>
+            </div>
+        </div>
+    </aside>
 </template>
 
 <script>

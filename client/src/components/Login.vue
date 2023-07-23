@@ -37,9 +37,6 @@ import ModaleRegister from './Register.vue'
 import { ref } from 'vue';
 import Cookie from 'js-cookie';
 
-import Modale from './Modale.vue'
-import ModaleRegister from './Register.vue'
-
 export default {
 
     name: 'Login', 
@@ -117,3 +114,20 @@ export default {
     },
 };
 </script>
+
+<style>
+body {
+  background: url(../images/beams-home@95.jpg), lightgray 50% / cover no-repeat;
+}
+
+.div-block-home {
+  background: url(../images/beams-home@95.jpg), lightgray 50% / cover no-repeat;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.div-button-home {
+  border-radius: 6px;
+  background: #1F2937;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+}
+</style>
