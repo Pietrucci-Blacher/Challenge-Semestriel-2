@@ -4,14 +4,52 @@ import {
     findOpponent,
     createGame,
     findGameById,
+    updateGame,
 } from '../services/chess.js';
 import SocketService from '../services/socket.js';
+import ChessBoard from '../services/chess/Board.js';
 
 export default (io) => (socket) => {
-    socket.on('chessMove', async (move) => {
+    socket.on('chessMoveFromClient', async (move) => {
         console.log('chess move received:', move, 'from', socket.id);
         const gameId = socket.key.split('-')[1];
-        const game = await findGameById(gameId);
+        const gameData = await findGameById(gameId);
+        if (!gameData) return;
+
+        const game = new ChessBoard({
+            board: gameData.board,
+            moveHistory: gameData.moveHistory,
+            winner: gameData.winner || null,
+        });
+
+        const valid = game.movePiece(
+            move.fromRow,
+            move.fromCol,
+            move.toRow,
+            move.toCol,
+        );
+
+        console.log('valid move', valid);
+
+        if (!valid) return;
+
+        const gameExport = game.export();
+
+        await updateGame(gameId, {
+            board: gameExport.board,
+            moveHistory: gameExport.moveHistory,
+        });
+
+        const opponentId =
+            gameData.whiteUserId === socket.userId
+                ? gameData.blackUserId
+                : gameData.whiteUserId;
+
+        console.log('opponent id', opponentId);
+
+        const opponentSocket = SocketService.getSocket(opponentId, socket.key);
+
+        opponentSocket.emit('chessMoveFromServer', move);
     });
 
     socket.on('addToQueue', async () => {
