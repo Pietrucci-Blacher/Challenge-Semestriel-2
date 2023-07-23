@@ -75,11 +75,11 @@ onMounted(() => {
             </div>
         </div>
     </section>
-    <Modal v-show="showModal === 1" title="Match making">
+    <Modal v-if="showModal === 1" title="Match making">
         <p>Recherche de partie ...</p>
         <button @click="hideModal">Annuler</button>
     </Modal>
-    <Modal v-show="showModal === 2" title="Match making">
+    <Modal v-if="showModal === 2" title="Match making">
         <p>Aucun joueur n'a été trouver</p>
         <button @click="hideModal">Fermer</button>
     </Modal>
@@ -103,6 +103,9 @@ export default {
             });
             socket.on('gameNotFound', () => {
                 showModal.value = 2;
+            });
+            socket.on('gameDoesNotExist', () => {
+                window.location.href = '/game';
             });
         },
         hideModal() {

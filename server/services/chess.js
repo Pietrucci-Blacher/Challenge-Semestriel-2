@@ -1,6 +1,9 @@
 import Chess from '../models/mongo/chess.js';
+import Board from './chess/Board.js';
 import MatchMaking from '../models/mongo/matchMaking.js';
 import * as UserServices from '../services/user.js';
+
+export const gameIdRegex = /^game-.+/i;
 
 export const findGameById = (id) => {
     return Chess.findById(id);
@@ -12,16 +15,22 @@ export const findGameByUserId = (userId) => {
     });
 };
 
+export const gameExists = async (id) => {
+    const game = await Chess.findById(id);
+    return !!game;
+};
+
 export const createGame = async (whiteUserId, blackUserId) => {
-    // TODO: init game
+    const game = new Board();
+
     const chess = new Chess({
         whiteUserId,
         blackUserId,
-        board: [],
+        board: game.export().board,
         moveHistory: [],
     });
 
-    await chess.save();
+    return await chess.save();
 };
 
 export const addToQueue = async (userId) => {
