@@ -23,4 +23,18 @@ const isAuthenticated = () => {
     return !!(Cookie.get('userAccessToken') && Cookie.get('userRefreshToken'));
 };
 
-export { logout, isAuthenticated };
+const toggleTheme = (isDarkTheme) => {
+    isDarkTheme.value = !isDarkTheme.value;
+    localStorage.setItem('themeMode', isDarkTheme.value ? 'dark' : 'light');
+};
+
+const toggleMenu = (showMenu) => {
+    showMenu.value = !showMenu.value;
+    localStorage.setItem('menuState', showMenu.value ? 'open' : 'closed');
+};
+
+const getThemeMode = () => {
+    return localStorage.getItem('themeMode') || 'dark'; // You can set a default value here if needed
+};
+
+export { logout, isAuthenticated, toggleTheme, toggleMenu, getThemeMode };
