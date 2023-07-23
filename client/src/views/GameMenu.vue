@@ -2,41 +2,55 @@
     <section class="flex flex-row h-screen">
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
 
-        <transition name="fade">
-            <div class="w-full fade-in-container" v-if="showContent">
+        <div class="w-full fade-in-container">
+            <h1 class="text-4xl font-bold mt-16 mb-6 text-center fade-in-down">
+                Select a Game Mode
+            </h1>
+            <div class="flex justify-center h-4/5">
                 <div
-                    class="flex flex-col items-center mt-16 text-4xl font-bold mb-8"
+                    class="flex flex-col items-center md:flex-row gap-56 fade-in-down"
                 >
-                    Select a Game Mode
-                </div>
-
-                <div class="mb-4 link-button">
-                    <font-awesome-icon
-                        :icon="['fas', 'dumbbell']"
-                        class="icon mr-2"
-                    />
                     <router-link
                         to="/game/local"
-                        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow-md transition duration-300"
+                        class="bg-white p-6 rounded-lg shadow-md w-64 md:w-96 h-96 transition duration-300 hover:shadow-lg hover:bg-gray-50 cursor-pointer flex flex-col gap-y-24"
                     >
-                        Local
+                        <div class="flex items-center justify-center mb-4">
+                            <font-awesome-icon
+                                :icon="['fas', 'dumbbell']"
+                                class="text-7xl"
+                            />
+                        </div>
+                        <div class="flex flex-col gap-y-12">
+                            <h2 class="text-2xl font-bold mb-3 text-center">
+                                Local Mode
+                            </h2>
+                            <p class="text-gray-600 text-center">
+                                Select a game mode to play with friends locally
+                            </p>
+                        </div>
                     </router-link>
-                </div>
-
-                <div class="link-button">
-                    <font-awesome-icon
-                        :icon="['fas', 'globe']"
-                        class="icon mr-2"
-                    />
                     <router-link
                         to="/game/zoieurzelkjsdfhozeir"
-                        class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md shadow-md transition duration-300"
+                        class="bg-white p-6 rounded-lg shadow-md w-64 md:w-96 h-96 transition duration-300 hover:shadow-lg hover:bg-gray-50 cursor-pointer flex flex-col gap-y-24"
                     >
-                        Online
+                        <div class="flex items-center justify-center mb-4">
+                            <font-awesome-icon
+                                :icon="['fas', 'globe']"
+                                class="text-7xl"
+                            />
+                        </div>
+                        <div class="flex flex-col gap-y-12">
+                            <h2 class="text-2xl font-bold mb-3 text-center">
+                                Online Mode
+                            </h2>
+                            <p class="text-gray-600 text-center">
+                                Select a game mode to play with others online
+                            </p>
+                        </div>
                     </router-link>
                 </div>
             </div>
-        </transition>
+        </div>
     </section>
 </template>
 
@@ -64,4 +78,40 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.router-link-active::after {
+    content: '';
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 9999px;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Apply fade-in down animation to the wrapper element */
+.fade-in-container > * {
+    animation: fade-in-down 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+</style>
