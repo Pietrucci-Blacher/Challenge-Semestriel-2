@@ -44,18 +44,18 @@ export const create = async (req, res) => {
 };
 
 export const replace = async (req, res) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
     const { body } = req;
 
     if (id !== req.userId)
         return res.status(403).json({
-            error: "You don't have the permission to modify this resource",
+            message: "You don't have the permission to modify this resource",
         });
 
     try {
         const [[result, created]] = await UserService.replace(
-            { id: parseInt(id, 10) },
-            { id: parseInt(id, 10), ...body },
+            { id },
+            { id, ...body },
         );
         if (created) res.status(201).json(result);
         else res.json(result);
@@ -69,18 +69,16 @@ export const replace = async (req, res) => {
 };
 
 export const update = async (req, res) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
     const { body } = req;
 
     if (id !== req.userId)
         return res.status(403).json({
-            error: "You don't have the permission to modify this resource",
+            message: "You don't have the permission to modify this resource",
         });
 
     try {
-        const [result] = await UserService.update(body, {
-            id: parseInt(id, 10),
-        });
+        const [result] = await UserService.update(body, { id });
         if (result) res.json(result);
         else res.sendStatus(404);
     } catch (err) {

@@ -6,7 +6,7 @@ export const googleLogin = async (req, res) => {
         passport.authenticate(await AuthService.googleLogin());
     } catch (error) {
         console.error('Error logging into Google:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json(error);
     }
 };
 
@@ -27,7 +27,7 @@ export const discordLogin = async (req, res) => {
         res.status(200).json({ message: 'Login successful' });
     } catch (error) {
         console.error('Error logging into Discord:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json(error);
     }
 };
 
