@@ -7,7 +7,6 @@ import Navbar from '@/components/Navbar/Navbar.vue';
 import { ref, onBeforeUnmount } from 'vue';
 import Socket from '@/utils/socket.js';
 import Chat from '@/components/Chat.vue';
-import Cookie from 'js-cookie';
 
 const isUserAuthenticated = ref(false);
 </script>
@@ -23,24 +22,20 @@ const isUserAuthenticated = ref(false);
                 <div class="game-board">
                     <PlayerInfo
                         :name="
-                            board.color.value === 'black'
-                                ? board.whitePlayer.value
-                                : board.blackPlayer.value
+                            board.color === 'black'
+                                ? board.whitePlayer
+                                : board.blackPlayer
                         "
-                        :color="
-                            board.color.value === 'black' ? 'black' : 'white'
-                        "
+                        :color="board.color === 'black' ? 'black' : 'white'"
                     />
-                    <Board :reverse="board.color.value !== 'white'" />
+                    <Board :reverse="board.color !== 'white'" />
                     <PlayerInfo
                         :name="
-                            board.color.value === 'white'
-                                ? board.whitePlayer.value
-                                : board.blackPlayer.value
+                            board.color === 'white'
+                                ? board.whitePlayer
+                                : board.blackPlayer
                         "
-                        :color="
-                            board.color.value === 'white' ? 'white' : 'black'
-                        "
+                        :color="board.color === 'white' ? 'white' : 'black'"
                     />
                 </div>
                 <div class="game-info">
@@ -68,56 +63,7 @@ export default {
         board.connectToSocket(socket);
         board.gameId = gameId;
 
-        (async () => {
-            let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
-            const response = await fetch(`${url}/game/${gameId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
-                },
-            });
-
-            const game = await response.json();
-
-            console.log('game', game);
-
-            const [whiteRes, blackRes] = await Promise.all([
-                fetch(`${url}/users/${game.whiteUserId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${Cookie.get(
-                            'userAccessToken',
-                        )}`,
-                    },
-                }),
-                fetch(`${url}/users/${game.blackUserId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${Cookie.get(
-                            'userAccessToken',
-                        )}`,
-                    },
-                }),
-            ]);
-
-            console.log('whiteRes', whiteRes, 'blackRes', blackRes);
-
-            const [whitePlayer, blackPlayer] = await Promise.all([
-                whiteRes.json(),
-                blackRes.json(),
-            ]);
-
-            console.log('whitePlayer', whitePlayer, 'blackPlayer', blackPlayer);
-
-            board.whitePlayer = ref(whitePlayer.username);
-            board.blackPlayer = ref(blackPlayer.username);
-            board.color = ref(
-                game.whiteUserId === socket.userId ? 'white' : 'black',
-            );
-        })();
+        board.initInfo();
 
         socket.on('gameDoesNotExist', () => {
             window.location.href = '/game';

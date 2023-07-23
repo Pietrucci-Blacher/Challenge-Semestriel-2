@@ -1,5 +1,6 @@
 import { Pawn, Rook, Knight, Bishop, Queen, King } from '@/pieces/';
 import Piece from '@/pieces/Piece';
+import Cookie from 'js-cookie';
 
 export default class ChessBoard {
     board;
@@ -63,6 +64,52 @@ export default class ChessBoard {
             moveHistory: this.moveHistory,
             winner: this.winner,
         };
+    }
+
+    async initInfo() {
+        let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
+        const response = await fetch(`${url}/game/${this.gameId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
+            },
+        });
+
+        const game = await response.json();
+
+        console.log('game', game);
+
+        const [whiteRes, blackRes] = await Promise.all([
+            fetch(`${url}/users/${game.whiteUserId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
+                },
+            }),
+            fetch(`${url}/users/${game.blackUserId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
+                },
+            }),
+        ]);
+
+        console.log('whiteRes', whiteRes, 'blackRes', blackRes);
+
+        const [whitePlayer, blackPlayer] = await Promise.all([
+            whiteRes.json(),
+            blackRes.json(),
+        ]);
+
+        console.log('whitePlayer', whitePlayer, 'blackPlayer', blackPlayer);
+
+        this.whitePlayer = whitePlayer.username;
+        this.blackPlayer = blackPlayer.username;
+        this.color =
+            game.whiteUserId === this.socket.userId ? 'white' : 'black';
     }
 
     initBoard() {
