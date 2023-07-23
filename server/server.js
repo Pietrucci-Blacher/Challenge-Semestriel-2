@@ -10,6 +10,9 @@ import ChatSocket from './socket/chat.js';
 import ChessSocket from './socket/chess.js';
 import MatchMaking from './models/mongo/matchMaking.js';
 import { isAuthenticatedForSocket } from './middleware/middleware.js';
+import { gameIdRegex, gameExists } from './services/chess.js';
+import mongoose from 'mongoose';
+const ObjectId = mongoose.Types.ObjectId;
 
 const app = express();
 const server = http.createServer(app);
@@ -21,7 +24,7 @@ const io = new Server(server, {
     },
 });
 const { chatMessageEvent } = ChatSocket(io);
-const { chessEvent } = ChessSocket(io);
+const chessEvent = ChessSocket(io);
 
 app.use(cors());
 
@@ -39,6 +42,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);
+app.use('/game', ChessRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -48,12 +52,21 @@ app.post('/', (req, res) => {
     res.json(req.body);
 });
 
-io.use(isAuthenticatedForSocket).on('connection', (socket) => {
+io.use(isAuthenticatedForSocket).on('connection', async (socket) => {
     console.log('A user connected', socket.id, socket.userId, socket.key);
+    if (gameIdRegex.test(socket.key)) {
+        const gameId = socket.key.split('-')[1];
+        if (!ObjectId.isValid(gameId) || !(await gameExists(gameId))) {
+            socket.emit('gameDoesNotExist');
+            return;
+        }
+    }
 
     SocketService.addSocket(socket.userId, socket.key, socket);
     chatMessageEvent(socket);
     chessEvent(socket);
+
+    console.log('Socket:', SocketService.sockets);
 
     socket.on('disconnect', () => {
         SocketService.removeSocket(socket.userId, socket.key);
