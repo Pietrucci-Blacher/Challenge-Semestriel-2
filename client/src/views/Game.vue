@@ -20,23 +20,9 @@ const isUserAuthenticated = ref(false);
                     <Chat />
                 </div>
                 <div class="game-board">
-                    <PlayerInfo
-                        :name="
-                            board.color === 'black'
-                                ? board.whitePlayer
-                                : board.blackPlayer
-                        "
-                        :color="board.color === 'black' ? 'black' : 'white'"
-                    />
+                    <PlayerInfo color="black" />
                     <Board :reverse="board.color !== 'white'" />
-                    <PlayerInfo
-                        :name="
-                            board.color === 'white'
-                                ? board.whitePlayer
-                                : board.blackPlayer
-                        "
-                        :color="board.color === 'white' ? 'white' : 'black'"
-                    />
+                    <PlayerInfo color="white" />
                 </div>
                 <div class="game-info">
                     <History />
@@ -60,14 +46,15 @@ export default {
         const gameId = this.$route.params.id;
 
         const socket = Socket.connect(`game-${gameId}`);
-        board.connectToSocket(socket);
-        board.gameId = gameId;
-
-        board.initInfo();
 
         socket.on('gameDoesNotExist', () => {
             window.location.href = '/game';
         });
+
+        board.connectToSocket(socket);
+        board.gameId = gameId;
+
+        board.initInfo();
 
         onBeforeUnmount(() => {
             Socket.disconnect(`game-${this.$route.params.id}`);

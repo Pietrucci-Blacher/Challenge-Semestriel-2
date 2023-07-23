@@ -3,12 +3,12 @@ import ChessBoard from '@/components/Chess/Board.js';
 </script>
 
 <template>
-    <div class="player-info">
+    <div class="player-info" :key="board.whitePlayer">
         <div
             class="player-info-name"
             :class="{ 'player-info-turn': getTurn() === color }"
         >
-            {{ name }}
+            {{ color === 'white' ? board.whitePlayer : board.blackPlayer }}
         </div>
         <div class="player-info-taken">
             <img
@@ -25,17 +25,17 @@ import ChessBoard from '@/components/Chess/Board.js';
 export default {
     name: 'PlayerInfo',
     props: {
-        name: String,
+        /* name: String, */
         color: String,
     },
     data() {
         return {
-            chessBoard: ChessBoard.getInstance(),
+            board: ChessBoard.getInstance(),
         };
     },
     methods: {
         getTakenPiece(color) {
-            return this.chessBoard.moveHistory
+            return this.board.moveHistory
                 .filter((move) => move.player === color && move.takenPieceName)
                 .map((move) => this.chessPiece(color, move.takenPieceName));
         },
@@ -44,7 +44,7 @@ export default {
             return `/images/chess-piece-classic/${invColor}-${name}.svg`;
         },
         getTurn() {
-            return this.chessBoard.getTurn();
+            return this.board.getTurn();
         },
     },
 };
