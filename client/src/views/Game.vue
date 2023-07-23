@@ -20,9 +20,17 @@ const isUserAuthenticated = ref(false);
                     <Chat />
                 </div>
                 <div class="game-board">
-                    <PlayerInfo color="black" />
-                    <Board :reverse="board.color !== 'white'" />
-                    <PlayerInfo color="white" />
+                    <PlayerInfo
+                        :key="reload"
+                        :name="opponent()"
+                        :color="opponentColor()"
+                    />
+                    <Board :key="reload" :reverse="board.color !== 'white'" />
+                    <PlayerInfo
+                        :key="reload"
+                        :name="player()"
+                        :color="playerColor()"
+                    />
                 </div>
                 <div class="game-info">
                     <History />
@@ -39,6 +47,7 @@ export default {
         const board = ChessBoard.getInstance();
         const data = {
             board,
+            reload: 0,
         };
 
         if (this.$route.params.id === 'local') return data;
@@ -54,13 +63,37 @@ export default {
         board.connectToSocket(socket);
         board.gameId = gameId;
 
-        board.initInfo();
+        board.initInfo().then(() => {
+            this.forceReload();
+        });
 
         onBeforeUnmount(() => {
-            Socket.disconnect(`game-${this.$route.params.id}`);
+            Socket.disconnect(`game-${gameId}`);
+            ChessBoard.destroyInstance();
         });
 
         return data;
+    },
+    methods: {
+        forceReload() {
+            this.reload += 1;
+        },
+        player() {
+            return this.board.color === 'white'
+                ? this.board.whitePlayer
+                : this.board.blackPlayer;
+        },
+        playerColor() {
+            return this.board.color;
+        },
+        opponent() {
+            return this.board.color === 'white'
+                ? this.board.blackPlayer
+                : this.board.whitePlayer;
+        },
+        opponentColor() {
+            return this.board.color === 'white' ? 'black' : 'white';
+        },
     },
 };
 </script>

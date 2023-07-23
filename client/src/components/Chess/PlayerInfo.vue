@@ -3,12 +3,12 @@ import ChessBoard from '@/components/Chess/Board.js';
 </script>
 
 <template>
-    <div class="player-info" :key="board.whitePlayer">
+    <div class="player-info">
         <div
             class="player-info-name"
             :class="{ 'player-info-turn': getTurn() === color }"
         >
-            {{ color === 'white' ? board.whitePlayer : board.blackPlayer }}
+            {{ name }}
         </div>
         <div class="player-info-taken">
             <img
@@ -25,7 +25,7 @@ import ChessBoard from '@/components/Chess/Board.js';
 export default {
     name: 'PlayerInfo',
     props: {
-        /* name: String, */
+        name: String,
         color: String,
     },
     data() {
