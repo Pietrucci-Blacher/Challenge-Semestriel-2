@@ -2,6 +2,8 @@ import Chess from '../models/mongo/chess.js';
 import Board from './chess/Board.js';
 import MatchMaking from '../models/mongo/matchMaking.js';
 import * as UserServices from '../services/user.js';
+import mongoose from 'mongoose';
+const ObjectId = mongoose.Types.ObjectId;
 
 export const gameIdRegex = /^game-.+/i;
 
@@ -13,6 +15,18 @@ export const findGameByUserId = (userId) => {
     return Chess.findOne({
         $or: [{ whiteUserId: userId }, { blackUserId: userId }],
     });
+};
+
+export const updateGame = async (id, data) => {
+    await Chess.updateOne(
+        { _id: new ObjectId(id) },
+        {
+            $set: {
+                board: data.board,
+                moveHistory: data.moveHistory,
+            },
+        },
+    );
 };
 
 export const gameExists = async (id) => {
