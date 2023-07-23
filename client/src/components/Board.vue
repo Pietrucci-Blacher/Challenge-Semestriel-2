@@ -1,6 +1,9 @@
 <script setup>
 import ChessBoard from '@/components/Board.js';
+<<<<<<< HEAD
 import { reactive } from 'vue';
+=======
+>>>>>>> 3204519c326938cd8621135211242a35cfb9f0af
 </script>
 <template>
     <div class="board noselect" :style="{ width: boardDim }">
@@ -28,12 +31,26 @@ import { reactive } from 'vue';
                 v-for="(square, colIndex) in reverseTab(row, reverse)"
                 :key="colIndex"
                 class="square"
+<<<<<<< HEAD
                 :class="{ 'black-square': (rowIndex + colIndex) % 2 === 1 }"
                 :style="{ width: squareSize, height: squareSize }"
                 @click="
                     onSquareClick(
                         reverse ? 7 - colIndex : colIndex,
                         reverse ? 7 - rowIndex : rowIndex,
+=======
+                :class="{
+                    'selected-square':
+                        clicked?.x === reverseCoord(colIndex, reverse) &&
+                        clicked?.y === reverseCoord(rowIndex, reverse),
+                    'black-square': (rowIndex + colIndex) % 2 === 1,
+                }"
+                :style="{ width: squareSize, height: squareSize }"
+                @click="
+                    onSquareClick(
+                        reverseCoord(colIndex, reverse),
+                        reverseCoord(rowIndex, reverse),
+>>>>>>> 3204519c326938cd8621135211242a35cfb9f0af
                     )
                 "
             >
@@ -81,7 +98,11 @@ export default {
     },
     data() {
         return {
+<<<<<<< HEAD
             chessBoard: reactive(new ChessBoard()),
+=======
+            chessBoard: ChessBoard.getInstance(),
+>>>>>>> 3204519c326938cd8621135211242a35cfb9f0af
             labels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
             clicked: null,
         };
@@ -103,13 +124,23 @@ export default {
         reverseLabel(index, rev = false) {
             return rev ? 1 + index : 8 - index;
         },
+<<<<<<< HEAD
+=======
+        reverseCoord(coord, rev = false) {
+            return rev ? 7 - coord : coord;
+        },
+>>>>>>> 3204519c326938cd8621135211242a35cfb9f0af
         chessPiece(piece) {
             return `/images/chess-piece-classic/${piece}`;
         },
         onSquareClick(x, y) {
             if (this.clicked) {
                 const { x: x1, y: y1 } = this.clicked;
+<<<<<<< HEAD
                 this.chessBoard.movePiece(x1, y1, x, y);
+=======
+                this.chessBoard.movePiece(y1, x1, y, x);
+>>>>>>> 3204519c326938cd8621135211242a35cfb9f0af
                 this.clicked = null;
                 return;
             }

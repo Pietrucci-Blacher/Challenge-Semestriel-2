@@ -32,7 +32,6 @@ export default class Piece {
 
     export() {
         return {
-            color: this.color,
             row: this.row,
             col: this.col,
             name: this.name,
