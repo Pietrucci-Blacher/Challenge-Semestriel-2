@@ -17,8 +17,8 @@ export default class ChessBoard {
     constructor() {
         this.gameId = null;
         this.color = 'white';
-        this.whitePlayer = 'white';
-        this.blackPlayer = 'black';
+        this.whitePlayer = 'player1';
+        this.blackPlayer = 'player2';
         this.setBoard();
     }
 
@@ -35,6 +35,10 @@ export default class ChessBoard {
     static getInstance() {
         if (!ChessBoard.instance) ChessBoard.instance = new ChessBoard();
         return ChessBoard.instance;
+    }
+
+    static destroyInstance() {
+        ChessBoard.instance = null;
     }
 
     setBoard() {
@@ -78,38 +82,29 @@ export default class ChessBoard {
 
         const game = await response.json();
 
-        console.log('game', game);
+        const data = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
+            },
+        };
 
-        const [whiteRes, blackRes] = await Promise.all([
-            fetch(`${url}/users/${game.whiteUserId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
-                },
-            }),
-            fetch(`${url}/users/${game.blackUserId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
-                },
-            }),
+        const [meRes, whiteRes, blackRes] = await Promise.all([
+            fetch(`${url}/users/me`, data),
+            fetch(`${url}/users/${game.whiteUserId}`, data),
+            fetch(`${url}/users/${game.blackUserId}`, data),
         ]);
 
-        console.log('whiteRes', whiteRes, 'blackRes', blackRes);
-
-        const [whitePlayer, blackPlayer] = await Promise.all([
+        const [me, whitePlayer, blackPlayer] = await Promise.all([
+            meRes.json(),
             whiteRes.json(),
             blackRes.json(),
         ]);
 
-        console.log('whitePlayer', whitePlayer, 'blackPlayer', blackPlayer);
-
         this.whitePlayer = whitePlayer.username;
         this.blackPlayer = blackPlayer.username;
-        this.color =
-            game.whiteUserId === this.socket.userId ? 'white' : 'black';
+        this.color = game.whiteUserId === me.id ? 'white' : 'black';
     }
 
     initBoard() {
