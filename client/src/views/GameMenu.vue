@@ -1,3 +1,26 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+import Navbar from '@/components/Navbar/Navbar.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+
+// Import the icons you need
+import { faDumbbell, faGlobe } from '@fortawesome/free-solid-svg-icons';
+import Modal from '@/components/Modal.vue';
+
+library.add(faGlobe, faDumbbell);
+const isUserAuthenticated = true; // Replace with your actual authenticated state logic
+
+const showContent = ref(false);
+
+onMounted(() => {
+    // Trigger the fade-in effect after a short delay
+    setTimeout(() => {
+        showContent.value = true;
+    }, 100);
+});
+</script>
+
 <template>
     <section class="flex flex-row h-screen">
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
@@ -29,9 +52,9 @@
                             </p>
                         </div>
                     </router-link>
-                    <router-link
-                        to="/game/zoieurzelkjsdfhozeir"
+                    <div
                         class="bg-white p-6 rounded-lg shadow-md w-64 md:w-96 h-96 transition duration-300 hover:shadow-lg hover:bg-gray-50 cursor-pointer flex flex-col gap-y-24"
+                        @click="findGame"
                     >
                         <div class="flex items-center justify-center mb-4">
                             <font-awesome-icon
@@ -47,7 +70,7 @@
                                 Select a game mode to play with others online
                             </p>
                         </div>
-                    </router-link>
+                    </div>
                 </div>
             </div>
         </div>
@@ -62,29 +85,10 @@
     </Modal>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
-import Navbar from '@/components/Navbar/Navbar.vue';
-import Socket from '@/utils/socket.js';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-
-// Import the icons you need
-import { faDumbbell, faGlobe } from '@fortawesome/free-solid-svg-icons';
-
-library.add(faGlobe, faDumbbell);
-const socket = Socket.connect();
-const isUserAuthenticated = true; // Replace with your actual authenticated state logic
-
-const showContent = ref(false);
+<script>
+import Socket from '@/utils/socket';
+import { ref } from 'vue';
 const showModal = ref(0);
-
-onMounted(() => {
-    // Trigger the fade-in effect after a short delay
-    setTimeout(() => {
-        showContent.value = true;
-    }, 100);
-});
 
 export default {
     name: 'GameMenu',
