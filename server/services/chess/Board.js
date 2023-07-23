@@ -8,8 +8,8 @@ export default class ChessBoard {
     move;
 
     constructor(board = null) {
+        this.setBoard();
         if (board) this.import(board);
-        else this.setBoard();
     }
 
     setBoard() {
@@ -160,7 +160,6 @@ export default class ChessBoard {
         };
 
         this.addMoveToHistory(move);
-        this.sendMoveToSocket(fromRow, fromCol, toRow, toCol);
         this.move++;
 
         return true;
@@ -225,16 +224,6 @@ export default class ChessBoard {
 
     getTurn() {
         return this.move % 2 === 0 ? 'white' : 'black';
-    }
-
-    sendMoveToSocket(fromRow, fromCol, toRow, toCol) {
-        if (!this.socket) return;
-        this.socket.emit('chessMove', {
-            fromRow,
-            fromCol,
-            toRow,
-            toCol,
-        });
     }
 
     static convertToAlgebraic(row, col) {

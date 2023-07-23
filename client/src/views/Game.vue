@@ -33,7 +33,7 @@ const isUserAuthenticated = ref(false);
                     />
                 </div>
                 <div class="game-info">
-                    <History />
+                    <History :key="reload" />
                 </div>
             </div>
         </main>
@@ -58,6 +58,18 @@ export default {
 
         socket.on('gameDoesNotExist', () => {
             window.location.href = '/game';
+        });
+
+        socket.on('chessMoveFromServer', (move) => {
+            console.log('chessMoveFromServer', move);
+            board.movePiece(
+                move.fromRow,
+                move.fromCol,
+                move.toRow,
+                move.toCol,
+                false,
+            );
+            this.forceReload();
         });
 
         board.connectToSocket(socket);

@@ -24,6 +24,17 @@ export default class ChessBoard {
 
     connectToSocket(socket) {
         this.socket = socket;
+
+        // this.socket.on('chessMoveFromServer', (move) => {
+        //     console.log('chessMoveFromServer', move);
+        //     this.movePiece(
+        //         move.fromRow,
+        //         move.fromCol,
+        //         move.toRow,
+        //         move.toCol,
+        //         false,
+        //     );
+        // });
     }
 
     disconnectFromSocket() {
@@ -71,16 +82,7 @@ export default class ChessBoard {
     }
 
     async initInfo() {
-        let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
-        const response = await fetch(`${url}/game/${this.gameId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
-            },
-        });
-
-        const game = await response.json();
+        const url = import.meta.env.VITE_ENDPOINT_BACK_URL;
 
         const data = {
             method: 'GET',
@@ -89,6 +91,9 @@ export default class ChessBoard {
                 Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
             },
         };
+
+        const response = await fetch(`${url}/game/${this.gameId}`, data);
+        const game = await response.json();
 
         const [meRes, whiteRes, blackRes] = await Promise.all([
             fetch(`${url}/users/me`, data),
@@ -101,6 +106,12 @@ export default class ChessBoard {
             whiteRes.json(),
             blackRes.json(),
         ]);
+
+        this.import({
+            board: game.board,
+            moveHistory: game.moveHistory,
+            winner: game.winner || null,
+        });
 
         this.whitePlayer = whitePlayer.username;
         this.blackPlayer = blackPlayer.username;
@@ -168,7 +179,7 @@ export default class ChessBoard {
         );
     }
 
-    movePiece(fromRow, fromCol, toRow, toCol) {
+    movePiece(fromRow, fromCol, toRow, toCol, sendToServer = true) {
         if (fromRow === toRow && fromCol === toCol) return false;
 
         const piece = this.getPieceAt(fromRow, fromCol);
@@ -226,7 +237,7 @@ export default class ChessBoard {
         };
 
         this.addMoveToHistory(move);
-        this.sendMoveToSocket(fromRow, fromCol, toRow, toCol);
+        if (sendToServer) this.sendMoveToSocket(fromRow, fromCol, toRow, toCol);
         this.move++;
 
         return true;
@@ -295,7 +306,7 @@ export default class ChessBoard {
 
     sendMoveToSocket(fromRow, fromCol, toRow, toCol) {
         if (!this.socket) return;
-        this.socket.emit('chessMove', {
+        this.socket.emit('chessMoveFromClient', {
             fromRow,
             fromCol,
             toRow,
