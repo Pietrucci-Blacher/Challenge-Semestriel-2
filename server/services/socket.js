@@ -1,40 +1,24 @@
-import Socket from '../models/mongo/socket.js';
+export default class Socket {
+    static sockets = {};
 
-export const addSocketId = async (socketId, userId = null) => {
-    const findedSocket = await Socket.findOne({
-        socketId,
-    });
+    static addSocket(userId, key, socket) {
+        if (!Socket.sockets[userId]) Socket.sockets[userId] = {};
+        Socket.sockets[userId][key] = socket;
+    }
 
-    if (findedSocket) return;
+    static updateSocket(userId, key, socket) {
+        Socket.sockets[userId][key] = socket;
+    }
 
-    const socket = new Socket({
-        userId,
-        socketId,
-    });
+    static removeSocket(userId, key) {
+        delete Socket.sockets[userId][key];
 
-    await socket.save();
-};
+        if (Object.keys(Socket.sockets[userId]).length === 0) {
+            delete Socket.sockets[userId];
+        }
+    }
 
-export const updateSocketId = async (socketId, userId) => {
-    await Socket.updateOne({ socketId }, { $set: { userId } });
-};
-
-export const removeSocketId = async (socketId) => {
-    await Socket.deleteOne({
-        socketId,
-    });
-};
-
-export const getSocketByUserId = async (userId) => {
-    const findedSocket = await Socket.findOne({
-        userId,
-    });
-
-    return findedSocket;
-};
-
-export const getAllSocketId = async () => {
-    const findedSocket = await Socket.find({});
-
-    return findedSocket;
-};
+    static getSocket(userId, key) {
+        return Socket.sockets[userId][key];
+    }
+}

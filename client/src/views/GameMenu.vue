@@ -52,6 +52,14 @@
             </div>
         </div>
     </section>
+    <Modal v-show="showModal === 1" title="Match making">
+        <p>Recherche de partie ...</p>
+        <button @click="hideModal">Annuler</button>
+    </Modal>
+    <Modal v-show="showModal === 2" title="Match making">
+        <p>Aucun joueur n'a été trouver</p>
+        <button @click="hideModal">Fermer</button>
+    </Modal>
 </template>
 
 <script setup>
@@ -69,6 +77,7 @@ const socket = Socket.connect();
 const isUserAuthenticated = true; // Replace with your actual authenticated state logic
 
 const showContent = ref(false);
+const showModal = ref(0);
 
 onMounted(() => {
     // Trigger the fade-in effect after a short delay
@@ -76,6 +85,28 @@ onMounted(() => {
         showContent.value = true;
     }, 100);
 });
+
+export default {
+    name: 'GameMenu',
+    methods: {
+        findGame() {
+            const socket = Socket.connect('queue');
+            socket.emit('addToQueue');
+            showModal.value = 1;
+
+            socket.on('gameFound', (data) => {
+                window.location.href = `/game/${data.gameId}`;
+            });
+            socket.on('gameNotFound', () => {
+                showModal.value = 2;
+            });
+        },
+        hideModal() {
+            Socket.disconnect('queue');
+            showModal.value = 0;
+        },
+    },
+};
 </script>
 
 <style scoped>
