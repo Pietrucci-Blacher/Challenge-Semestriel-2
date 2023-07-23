@@ -1,39 +1,15 @@
-import { Pawn, Rook, Knight, Bishop, Queen, King } from '@/pieces/';
-import Piece from '@/pieces/Piece';
+import { Pawn, Rook, Knight, Bishop, Queen, King } from './pieces/index.js';
+import Piece from './pieces/Piece.js';
 
 export default class ChessBoard {
     board;
     moveHistory;
     winner;
     move;
-    static instance;
-    socket;
-    gameId;
-    color;
-    whitePlayer;
-    blackPlayer;
 
-    constructor() {
-        this.gameId = null;
-        this.color = 'white';
-        this.whitePlayer = 'white';
-        this.blackPlayer = 'black';
-        this.setBoard();
-    }
-
-    connectToSocket(socket) {
-        this.socket = socket;
-    }
-
-    disconnectFromSocket() {
-        if (!this.socket) return;
-        this.socket.disconnect();
-        this.socket = null;
-    }
-
-    static getInstance() {
-        if (!ChessBoard.instance) ChessBoard.instance = new ChessBoard();
-        return ChessBoard.instance;
+    constructor(board = null) {
+        if (board) this.import(board);
+        else this.setBoard();
     }
 
     setBoard() {

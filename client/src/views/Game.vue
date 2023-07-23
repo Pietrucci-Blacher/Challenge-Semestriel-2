@@ -7,10 +7,7 @@ import Navbar from '@/components/Navbar/Navbar.vue';
 import { ref, onBeforeUnmount } from 'vue';
 import Socket from '@/utils/socket.js';
 import Chat from '@/components/Chat.vue';
-
-onBeforeUnmount(() => {
-    Socket.disconnect('game');
-});
+import Cookie from 'js-cookie';
 
 const isUserAuthenticated = ref(false);
 </script>
@@ -24,9 +21,27 @@ const isUserAuthenticated = ref(false);
                     <Chat />
                 </div>
                 <div class="game-board">
-                    <PlayerInfo name="Sunshio" color="black" />
-                    <Board :reverse="false" />
-                    <PlayerInfo name="LordPax" color="white" />
+                    <PlayerInfo
+                        :name="
+                            board.color.value === 'black'
+                                ? board.whitePlayer.value
+                                : board.blackPlayer.value
+                        "
+                        :color="
+                            board.color.value === 'black' ? 'black' : 'white'
+                        "
+                    />
+                    <Board :reverse="board.color.value !== 'white'" />
+                    <PlayerInfo
+                        :name="
+                            board.color.value === 'white'
+                                ? board.whitePlayer.value
+                                : board.blackPlayer.value
+                        "
+                        :color="
+                            board.color.value === 'white' ? 'white' : 'black'
+                        "
+                    />
                 </div>
                 <div class="game-info">
                     <History />
@@ -41,14 +56,78 @@ export default {
     name: 'Game',
     data() {
         const board = ChessBoard.getInstance();
+        const data = {
+            board,
+        };
 
-        if (this.$route.params.id !== 'local') {
-            const socket = Socket.connect('game');
-            board.connectToSocket(socket);
-            board.gameId = this.$route.params.id;
-        }
+        if (this.$route.params.id === 'local') return data;
 
-        return { board };
+        const gameId = this.$route.params.id;
+
+        const socket = Socket.connect(`game-${gameId}`);
+        board.connectToSocket(socket);
+        board.gameId = gameId;
+
+        (async () => {
+            let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
+            const response = await fetch(`${url}/game/${gameId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
+                },
+            });
+
+            const game = await response.json();
+
+            console.log('game', game);
+
+            const [whiteRes, blackRes] = await Promise.all([
+                fetch(`${url}/users/${game.whiteUserId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${Cookie.get(
+                            'userAccessToken',
+                        )}`,
+                    },
+                }),
+                fetch(`${url}/users/${game.blackUserId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${Cookie.get(
+                            'userAccessToken',
+                        )}`,
+                    },
+                }),
+            ]);
+
+            console.log('whiteRes', whiteRes, 'blackRes', blackRes);
+
+            const [whitePlayer, blackPlayer] = await Promise.all([
+                whiteRes.json(),
+                blackRes.json(),
+            ]);
+
+            console.log('whitePlayer', whitePlayer, 'blackPlayer', blackPlayer);
+
+            board.whitePlayer = ref(whitePlayer.username);
+            board.blackPlayer = ref(blackPlayer.username);
+            board.color = ref(
+                game.whiteUserId === socket.userId ? 'white' : 'black',
+            );
+        })();
+
+        socket.on('gameDoesNotExist', () => {
+            window.location.href = '/game';
+        });
+
+        onBeforeUnmount(() => {
+            Socket.disconnect(`game-${this.$route.params.id}`);
+        });
+
+        return data;
     },
 };
 </script>
