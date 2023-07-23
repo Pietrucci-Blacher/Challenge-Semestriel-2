@@ -94,6 +94,7 @@ import {
     faMoon,
     faChevronLeft,
     faChevronRight,
+    faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import menuContent from './navbar-content.json';
 import { RouterLink } from 'vue-router';
@@ -107,6 +108,7 @@ library.add(
     faMoon,
     faChevronLeft,
     faChevronRight,
+    faUser,
 );
 
 import {
