@@ -87,7 +87,6 @@ onMounted(() => {
 
 <script>
 import Socket from '@/utils/socket';
-import { ref } from 'vue';
 const showModal = ref(0);
 
 export default {
