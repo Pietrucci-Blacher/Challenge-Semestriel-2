@@ -20,6 +20,11 @@
     "component": "Profile"
   },
   {
+    "path": "/admin",
+    "name": "Admin",
+    "component": "DashboardAdmin"
+  },
+  {
     "path": "/404",
     "name": "404 Error",
     "component": "404"

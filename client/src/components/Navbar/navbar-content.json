@@ -7,6 +7,13 @@
     "check": "isAuthenticated"
   },
   {
+    "name": "Admin",
+    "icon": "user-shield",
+    "route": "/admin",
+    "alt": "Admin",
+    "check": "isAdmin"
+  },
+  {
     "name": "Profile",
     "icon": "user",
     "route": "/profile",
@@ -16,7 +23,7 @@
   {
     "name": "Logout",
     "icon": "sign-out-alt",
-    "route": "",
+    "route": "#",
     "alt": "Logout",
     "check": "isAuthenticated",
     "onclick": "logout"

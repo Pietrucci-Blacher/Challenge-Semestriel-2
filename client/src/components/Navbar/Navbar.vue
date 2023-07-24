@@ -95,6 +95,8 @@ import {
     faChevronLeft,
     faChevronRight,
     faUser,
+    faUserShield,
+    faSignInAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import menuContent from './navbar-content.json';
 import { RouterLink } from 'vue-router';
@@ -109,6 +111,8 @@ library.add(
     faChevronLeft,
     faChevronRight,
     faUser,
+    faUserShield,
+    faSignInAlt,
 );
 
 import {
@@ -118,6 +122,8 @@ import {
     toggleMenu,
     getThemeMode,
 } from '@/utils/misc';
+
+import { isUserAdminRole } from '@/utils/user';
 
 export default {
     components: {

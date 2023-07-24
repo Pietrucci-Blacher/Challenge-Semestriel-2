@@ -54,6 +54,16 @@ export const userDataDelete = async (userId) => {
             Authorization: `Bearer ${userToken}`,
         },
     });
+    Cookie.remove('userAccessToken');
+    Cookie.remove('userRefreshToken');
+    window.location.href = '/';
 };
 
-export default { getUserData, userDataUpdate, userDataDelete };
+export const isUserAdminRole = async () => {
+    let userinfos = await getUserData();
+    if (userinfos.role === 'admin') {
+        return true;
+    }
+};
+
+export default { getUserData, userDataUpdate, userDataDelete, isUserAdminRole };
