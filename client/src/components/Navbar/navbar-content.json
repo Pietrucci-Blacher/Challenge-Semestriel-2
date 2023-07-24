@@ -3,24 +3,27 @@
     "name": "Games",
     "icon": "chess-board",
     "route": "/game",
-    "alt": "Play"
+    "alt": "Play",
+    "check": "isAuthenticated"
   },
   {
-    "name": "Games",
-    "icon": "cog",
-    "route": "#",
-    "alt": "Settings"
+    "name": "Admin",
+    "icon": "user-shield",
+    "route": "/admin",
+    "alt": "Admin",
+    "check": "isAdmin"
   },
   {
-    "name": "Messages",
-    "icon": "envelope",
-    "route": "#",
-    "alt": "Messages"
+    "name": "Profile",
+    "icon": "user",
+    "route": "/profile",
+    "alt": "Profil",
+    "check": "isAuthenticated"
   },
   {
     "name": "Logout",
     "icon": "sign-out-alt",
-    "route": "",
+    "route": "#",
     "alt": "Logout",
     "check": "isAuthenticated",
     "onclick": "logout"
