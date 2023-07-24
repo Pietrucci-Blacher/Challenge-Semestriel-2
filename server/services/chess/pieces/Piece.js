@@ -1,4 +1,4 @@
-import { Pawn, Rook, Knight, Bishop, Queen, King } from '@/pieces/';
+import { Pawn, Rook, Knight, Bishop, Queen, King } from './index.js';
 
 export default class Piece {
     color;
@@ -7,13 +7,11 @@ export default class Piece {
     board;
     name;
     notation;
-    imageName;
 
     constructor(name, notation, board, color, row, col) {
         this.color = color;
         this.board = board;
         this.name = name;
-        this.imageName = `${this.color}-${this.name}.svg`;
         this.notation = notation;
         this.setCoords(row, col, false);
     }

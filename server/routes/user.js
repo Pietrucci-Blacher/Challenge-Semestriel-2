@@ -10,6 +10,6 @@ router.post('/', isAuthenticated, isAdmin, UserController.create);
 router.get('/:id', isAuthenticated, UserController.getOne);
 router.put('/:id', isAuthenticated, UserController.replace);
 router.patch('/:id', isAuthenticated, UserController.update);
-router.delete('/:id', isAuthenticated, isAdmin, UserController.destroy);
+router.delete('/:id', isAuthenticated, UserController.destroy);
 
 export default router;
