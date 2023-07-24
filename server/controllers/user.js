@@ -94,9 +94,10 @@ export const update = async (req, res) => {
 export const destroy = async (req, res) => {
     const id = parseInt(req.params.id);
 
-    const user = await UserService.findById(id);
-    console.log(req.userId);
-    console.log(id);
+    const user = await UserService.findById(req.userId);
+    console.log('req', req.userId);
+    console.log('id', id);
+    console.log('role', user.role);
     if (id !== req.userId && user.role !== 'admin')
         return res.status(403).json({
             message: "You don't have the permission to modify this resource",

@@ -346,7 +346,9 @@
                     </div>
                     <div class="mt-5 md:mt-0 md:col-span-2">
                         <form>
-                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div
+                                class="grid grid-cols-1 gap-4 sm:grid-cols-2 shadow-md"
+                            >
                                 <div class="col-span-2">
                                     <label
                                         for="oldPassword"
@@ -362,6 +364,7 @@
                                         />
                                     </div>
                                 </div>
+                                <br />
                                 <div class="col-span-2">
                                     <label
                                         for="newPassword"
@@ -443,7 +446,7 @@ export default {
 
         async function deleteUserProfile() {
             try {
-                await userDataDelete(userInfos.id);
+                await userDataDelete(userInfos.id, true);
                 console.log('Profile deleted successfully!');
             } catch (error) {
                 console.error('Error deleting profile:', error);
