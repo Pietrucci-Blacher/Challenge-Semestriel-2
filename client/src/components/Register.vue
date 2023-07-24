@@ -90,16 +90,13 @@ export default {
             try {
                 let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
                 let endpoint = `${url}/auth/register`;
-                const response = await fetch(
-                    endpoint,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(requestData),
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
                     },
-                );
+                    body: JSON.stringify(requestData),
+                });
 
                 if (response.ok) {
                     // Registration successful, handle the response
