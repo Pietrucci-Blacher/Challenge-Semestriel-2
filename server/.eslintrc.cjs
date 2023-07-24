@@ -12,7 +12,7 @@ module.exports = {
     plugins: ['prettier'],
     rules: {
         'prettier/prettier': 'error',
-        indent: ['error', 4],
+        indent: ['error', 4, { SwitchCase: 1 }],
         quotes: ['warn', 'single', { avoidEscape: true }],
         semi: ['error', 'always'],
     },
