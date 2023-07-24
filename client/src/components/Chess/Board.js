@@ -24,17 +24,6 @@ export default class ChessBoard {
 
     connectToSocket(socket) {
         this.socket = socket;
-
-        // this.socket.on('chessMoveFromServer', (move) => {
-        //     console.log('chessMoveFromServer', move);
-        //     this.movePiece(
-        //         move.fromRow,
-        //         move.fromCol,
-        //         move.toRow,
-        //         move.toCol,
-        //         false,
-        //     );
-        // });
     }
 
     disconnectFromSocket() {
@@ -65,7 +54,7 @@ export default class ChessBoard {
             row.map((piece) => Piece.create(this, piece)),
         );
         this.moveHistory = board.moveHistory;
-        this.winner = board.winner;
+        this.winner = board.winner || null;
         this.move = board.moveHistory.length;
     }
 
@@ -181,6 +170,9 @@ export default class ChessBoard {
 
     movePiece(fromRow, fromCol, toRow, toCol, sendToServer = true) {
         if (fromRow === toRow && fromCol === toCol) return false;
+
+        if (this.socket && sendToServer && this.getTurn() !== this.color)
+            return false;
 
         const piece = this.getPieceAt(fromRow, fromCol);
 

@@ -60,8 +60,16 @@ export default {
             window.location.href = '/game';
         });
 
+        socket.on('correction', (gameInfo) => {
+            board.import({
+                board: gameInfo.board,
+                moveHistory: gameInfo.moveHistory,
+                winner: gameInfo.winner || null,
+            });
+            this.forceReload();
+        });
+
         socket.on('chessMoveFromServer', (move) => {
-            console.log('chessMoveFromServer', move);
             board.movePiece(
                 move.fromRow,
                 move.fromCol,

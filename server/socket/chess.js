@@ -11,7 +11,6 @@ import ChessBoard from '../services/chess/Board.js';
 
 export default (io) => (socket) => {
     socket.on('chessMoveFromClient', async (move) => {
-        console.log('chess move received:', move, 'from', socket.id);
         const gameId = socket.key.split('-')[1];
         const gameData = await findGameById(gameId);
         if (!gameData) return;
@@ -22,6 +21,22 @@ export default (io) => (socket) => {
             winner: gameData.winner || null,
         });
 
+        const correction = {
+            board: gameData.board,
+            moveHistory: gameData.moveHistory,
+            winner: gameData.winner || null,
+        };
+
+        if (
+            (game.getTurn() === 'white' &&
+                gameData.whiteUserId !== socket.userId) ||
+            (game.getTurn() === 'black' &&
+                gameData.blackUserId !== socket.userId)
+        ) {
+            socket.emit('correction', correction);
+            return;
+        }
+
         const valid = game.movePiece(
             move.fromRow,
             move.fromCol,
@@ -29,9 +44,10 @@ export default (io) => (socket) => {
             move.toCol,
         );
 
-        console.log('valid move', valid);
-
-        if (!valid) return;
+        if (!valid) {
+            socket.emit('correction', correction);
+            return;
+        }
 
         const gameExport = game.export();
 
@@ -45,15 +61,12 @@ export default (io) => (socket) => {
                 ? gameData.blackUserId
                 : gameData.whiteUserId;
 
-        console.log('opponent id', opponentId);
-
         const opponentSocket = SocketService.getSocket(opponentId, socket.key);
 
         opponentSocket.emit('chessMoveFromServer', move);
     });
 
     socket.on('addToQueue', async () => {
-        console.log('add to queue received:', socket.id);
         await addToQueue(socket.userId);
 
         const opponentId = await findOpponent(socket.userId);
@@ -66,8 +79,10 @@ export default (io) => (socket) => {
             removeFromQueue(opponentId),
         ]);
 
-        // TODO: choose color randomly
-        const game = await createGame(socket.userId, opponentId);
+        const playerId = [socket.userId, opponentId];
+        if (Math.random() > 0.5) playerId.reverse();
+
+        const game = await createGame(playerId[0], playerId[1]);
 
         const data = { gameId: game._id.toString() };
         for (const sock of [socket, opponentSocket]) {
@@ -76,12 +91,10 @@ export default (io) => (socket) => {
     });
 
     socket.on('removeFromQueue', async () => {
-        console.log('remove from queue received:', socket.id);
         await removeFromQueue(socket.userId);
     });
 
     socket.on('disconnect', async () => {
-        console.log('remove from queue received:', socket.id);
         await removeFromQueue(socket.userId);
     });
 };
