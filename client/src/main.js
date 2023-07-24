@@ -30,14 +30,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     updateDocumentTitle(to);
-
-    // Check if the route exists in routes.json
-    const exists = routesData.some((route) => route.path === to.path);
-    if (!exists) {
-        next('/404'); // Redirect to /404 if the route doesn't exist
-    } else {
-        next();
-    }
+    next();
 });
 
 const app = createApp(App);
