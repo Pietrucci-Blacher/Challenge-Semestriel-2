@@ -6,7 +6,8 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - mongo-db:/data/db
+      - ./docker/mongo:/data/db
+      - ./docker/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=password
@@ -22,22 +23,8 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:? postgres password is needed}
       - POSTGRES_DB=${POSTGRES_DB:? postgres db name is needed}
 
-  server:
-    image: node:latest
-    working_dir: /node/app
-    volumes:
-      - ./server:/node/app
-    env_file:
-      - ./.env
-    command: sh -c "npm install && npm run dev"
-    ports:
-      - 3000:3000
-
   adminer:
     image: adminer
     restart: always
     ports:
       - "8080:8080"
-
-volumes:
-  mongo-db: 
