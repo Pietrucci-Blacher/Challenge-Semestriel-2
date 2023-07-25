@@ -27,5 +27,11 @@
     "alt": "Logout",
     "check": "isAuthenticated",
     "onclick": "logout"
+  },
+  {
+    "name": "Shop",
+    "icon": "cart-shopping",
+    "route": "/shop",
+    "alt": "Shop"
   }
 ]

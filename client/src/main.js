@@ -6,7 +6,6 @@ import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
 import routesData from './routes.json';
 import App from './App.vue';
-// import Socket from './utils/socket.js';
 
 const i18n = createI18n({
     locale: 'fr',
@@ -22,7 +21,7 @@ const routes = routesData.map((route) => ({
     path: route.path,
     name: route.name,
     component: () => import(`@/views/${route.component}.vue`),
-}));
+}))
 
 const router = createRouter({
     history: createWebHistory(),
