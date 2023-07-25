@@ -8,11 +8,8 @@ import { ref, onBeforeUnmount } from 'vue';
 import Socket from '@/utils/socket.js';
 import Chat from '@/components/Chat.vue';
 
-onBeforeUnmount(() => {
-    Socket.disconnect('game');
-});
+defineProps(['isUserAuthenticated']);
 
-const isUserAuthenticated = ref(false);
 </script>
 
 <template>
@@ -24,12 +21,20 @@ const isUserAuthenticated = ref(false);
                     <Chat />
                 </div>
                 <div class="game-board">
-                    <PlayerInfo name="Sunshio" color="black" />
-                    <Board :reverse="false" />
-                    <PlayerInfo name="LordPax" color="white" />
+                    <PlayerInfo
+                        :key="reload"
+                        :name="opponent()"
+                        :color="opponentColor()"
+                    />
+                    <Board :key="reload" :reverse="board.color !== 'white'" />
+                    <PlayerInfo
+                        :key="reload"
+                        :name="player()"
+                        :color="playerColor()"
+                    />
                 </div>
                 <div class="game-info">
-                    <History />
+                    <History :key="reload" />
                 </div>
             </div>
         </main>
@@ -41,14 +46,67 @@ export default {
     name: 'Game',
     data() {
         const board = ChessBoard.getInstance();
+        const data = {
+            board,
+            reload: 0,
+        };
 
-        if (this.$route.params.id !== 'local') {
-            const socket = Socket.connect('game');
-            board.connectToSocket(socket);
-            board.gameId = this.$route.params.id;
-        }
+        if (this.$route.params.id === 'local') return data;
 
-        return { board };
+        const gameId = this.$route.params.id;
+
+        const socket = Socket.connect(`game-${gameId}`);
+
+        socket.on('gameDoesNotExist', () => {
+            window.location.href = '/game';
+        });
+
+        socket.on('chessMoveFromServer', (move) => {
+            console.log('chessMoveFromServer', move);
+            board.movePiece(
+                move.fromRow,
+                move.fromCol,
+                move.toRow,
+                move.toCol,
+                false,
+            );
+            this.forceReload();
+        });
+
+        board.connectToSocket(socket);
+        board.gameId = gameId;
+
+        board.initInfo().then(() => {
+            this.forceReload();
+        });
+
+        onBeforeUnmount(() => {
+            Socket.disconnect(`game-${gameId}`);
+            ChessBoard.destroyInstance();
+        });
+
+        return data;
+    },
+    methods: {
+        forceReload() {
+            this.reload += 1;
+        },
+        player() {
+            return this.board.color === 'white'
+                ? this.board.whitePlayer
+                : this.board.blackPlayer;
+        },
+        playerColor() {
+            return this.board.color;
+        },
+        opponent() {
+            return this.board.color === 'white'
+                ? this.board.blackPlayer
+                : this.board.whitePlayer;
+        },
+        opponentColor() {
+            return this.board.color === 'white' ? 'black' : 'white';
+        },
     },
 };
 </script>

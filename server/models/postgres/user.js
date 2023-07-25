@@ -65,6 +65,14 @@ export default (sequelize) => {
                 type: DataTypes.STRING(50),
                 allowNull: false,
             },
+            firstname: {
+                type: DataTypes.STRING(50),
+                allowNull: true,
+            },
+            lastname: {
+                type: DataTypes.STRING(50),
+                allowNull: true,
+            },
             password: {
                 type: DataTypes.TEXT,
                 allowNull: false,

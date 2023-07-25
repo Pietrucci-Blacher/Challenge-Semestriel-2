@@ -1,55 +1,15 @@
-import { Pawn, Rook, Knight, Bishop, Queen, King } from '@/pieces/';
-import Piece from '@/pieces/Piece';
-import Cookie from 'js-cookie';
+import { Pawn, Rook, Knight, Bishop, Queen, King } from './pieces/index.js';
+import Piece from './pieces/Piece.js';
 
 export default class ChessBoard {
     board;
     moveHistory;
     winner;
     move;
-    static instance;
-    socket;
-    gameId;
-    color;
-    whitePlayer;
-    blackPlayer;
 
-    constructor() {
-        this.gameId = null;
-        this.color = 'white';
-        this.whitePlayer = 'player1';
-        this.blackPlayer = 'player2';
+    constructor(board = null) {
         this.setBoard();
-    }
-
-    connectToSocket(socket) {
-        this.socket = socket;
-
-        // this.socket.on('chessMoveFromServer', (move) => {
-        //     console.log('chessMoveFromServer', move);
-        //     this.movePiece(
-        //         move.fromRow,
-        //         move.fromCol,
-        //         move.toRow,
-        //         move.toCol,
-        //         false,
-        //     );
-        // });
-    }
-
-    disconnectFromSocket() {
-        if (!this.socket) return;
-        this.socket.disconnect();
-        this.socket = null;
-    }
-
-    static getInstance() {
-        if (!ChessBoard.instance) ChessBoard.instance = new ChessBoard();
-        return ChessBoard.instance;
-    }
-
-    static destroyInstance() {
-        ChessBoard.instance = null;
+        if (board) this.import(board);
     }
 
     setBoard() {
@@ -79,43 +39,6 @@ export default class ChessBoard {
             moveHistory: this.moveHistory,
             winner: this.winner,
         };
-    }
-
-    async initInfo() {
-        const url = import.meta.env.VITE_ENDPOINT_BACK_URL;
-
-        const data = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
-            },
-        };
-
-        const response = await fetch(`${url}/game/${this.gameId}`, data);
-        const game = await response.json();
-
-        const [meRes, whiteRes, blackRes] = await Promise.all([
-            fetch(`${url}/users/me`, data),
-            fetch(`${url}/users/${game.whiteUserId}`, data),
-            fetch(`${url}/users/${game.blackUserId}`, data),
-        ]);
-
-        const [me, whitePlayer, blackPlayer] = await Promise.all([
-            meRes.json(),
-            whiteRes.json(),
-            blackRes.json(),
-        ]);
-
-        this.import({
-            board: game.board,
-            moveHistory: game.moveHistory,
-            winner: game.winner || null,
-        });
-
-        this.whitePlayer = whitePlayer.username;
-        this.blackPlayer = blackPlayer.username;
-        this.color = game.whiteUserId === me.id ? 'white' : 'black';
     }
 
     initBoard() {
@@ -179,7 +102,7 @@ export default class ChessBoard {
         );
     }
 
-    movePiece(fromRow, fromCol, toRow, toCol, sendToServer = true) {
+    movePiece(fromRow, fromCol, toRow, toCol) {
         if (fromRow === toRow && fromCol === toCol) return false;
 
         const piece = this.getPieceAt(fromRow, fromCol);
@@ -237,7 +160,6 @@ export default class ChessBoard {
         };
 
         this.addMoveToHistory(move);
-        if (sendToServer) this.sendMoveToSocket(fromRow, fromCol, toRow, toCol);
         this.move++;
 
         return true;
@@ -302,16 +224,6 @@ export default class ChessBoard {
 
     getTurn() {
         return this.move % 2 === 0 ? 'white' : 'black';
-    }
-
-    sendMoveToSocket(fromRow, fromCol, toRow, toCol) {
-        if (!this.socket) return;
-        this.socket.emit('chessMoveFromClient', {
-            fromRow,
-            fromCol,
-            toRow,
-            toCol,
-        });
     }
 
     static convertToAlgebraic(row, col) {

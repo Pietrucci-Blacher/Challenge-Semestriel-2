@@ -1,4 +1,5 @@
 import * as UserService from '../services/user.js';
+import * as Authservice from '../services/auth.js';
 
 export const getAll = async (req, res) => {
     const { page, itemsPerPage, order, ...filters } = req.query;
@@ -91,8 +92,16 @@ export const update = async (req, res) => {
 };
 
 export const destroy = async (req, res) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
+
+    const user = await UserService.findById(req.userId);
+    if (id !== req.userId && user.role !== 'admin')
+        return res.status(403).json({
+            message: "You don't have the permission to modify this resource",
+        });
+
     try {
+        await Authservice.logout(id);
         const nbDeleted = await UserService.destroy({
             id: parseInt(id),
         });
