@@ -40,7 +40,7 @@ export const userDataUpdate = async (userId, userData) => {
     });
 };
 
-export const userDataDelete = async (userId) => {
+export const userDataDelete = async (userId, reload = false) => {
     if (!isAuthenticated()) {
         window.location.href = '/';
     }
@@ -54,9 +54,11 @@ export const userDataDelete = async (userId) => {
             Authorization: `Bearer ${userToken}`,
         },
     });
-    Cookie.remove('userAccessToken');
-    Cookie.remove('userRefreshToken');
-    window.location.href = '/';
+    if (reload) {
+        Cookie.remove('userAccessToken');
+        Cookie.remove('userRefreshToken');
+        window.location.href = '/';
+    }
 };
 
 export const isUserAdminRole = async () => {

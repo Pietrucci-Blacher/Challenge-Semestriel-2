@@ -2,7 +2,9 @@
     <div class="modal-bg">
         <div class="modal">
             <div class="modal-header">
-                <h4 class="model-title">{{ title }}</h4>
+                <h2 class="model-title text-2xl font-semibold text-black">
+                    {{ title }}
+                </h2>
             </div>
             <div class="modal-body">
                 <slot></slot>

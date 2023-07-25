@@ -1,3 +1,43 @@
+<script setup>
+import { getUserData, userDataDelete, userDataUpdate } from '@/utils/user';
+import { onMounted, reactive, ref } from 'vue';
+import Notification from '@/components/Notification.vue';
+const showNotificationProfileUpdated = ref(false);
+// Create a reactive object to hold user data
+const userInfos = reactive({
+    id: '',
+    email: '',
+    username: '',
+});
+
+// Fetch user data when the component is mounted
+onMounted(async () => {
+    const userData = await getUserData();
+    userInfos.id = userData.id;
+    userInfos.firstname = userData.firstname;
+    userInfos.lastname = userData.lastname;
+    userInfos.email = userData.email;
+    userInfos.username = userData.username;
+});
+
+async function updateUserProfile() {
+    try {
+        await userDataUpdate(userInfos.id, userInfos);
+        showNotificationProfileUpdated.value = true;
+    } catch (error) {
+        console.error('Error updating profile:', error);
+    }
+}
+
+async function deleteUserProfile() {
+    try {
+        await userDataDelete(userInfos.id, true);
+    } catch (error) {
+        console.error('Error deleting profile:', error);
+    }
+}
+</script>
+
 <template>
     <section class="flex overflow-hidden">
         <div>
@@ -250,6 +290,11 @@
                                 Update Profile
                             </button>
                         </div>
+                        <Notification
+                            v-if="showNotificationProfileUpdated"
+                            title="Profile message"
+                            message="Your profile has been updated successfully."
+                        />
                     </div>
                 </div>
             </div>
@@ -346,7 +391,9 @@
                     </div>
                     <div class="mt-5 md:mt-0 md:col-span-2">
                         <form>
-                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div
+                                class="grid grid-cols-1 gap-4 sm:grid-cols-2 shadow-md"
+                            >
                                 <div class="col-span-2">
                                     <label
                                         for="oldPassword"
@@ -362,6 +409,7 @@
                                         />
                                     </div>
                                 </div>
+                                <br />
                                 <div class="col-span-2">
                                     <label
                                         for="newPassword"
@@ -408,49 +456,3 @@
         </div>
     </section>
 </template>
-
-<script>
-import { getUserData, userDataDelete, userDataUpdate } from '@/utils/user';
-import { onMounted, reactive } from 'vue';
-
-export default {
-    setup() {
-        // Create a reactive object to hold user data
-        const userInfos = reactive({
-            id: '',
-            email: '',
-            username: '',
-        });
-
-        // Fetch user data when the component is mounted
-        onMounted(async () => {
-            const userData = await getUserData();
-            userInfos.id = userData.id;
-            userInfos.firstname = userData.firstname;
-            userInfos.lastname = userData.lastname;
-            userInfos.email = userData.email;
-            userInfos.username = userData.username;
-        });
-
-        async function updateUserProfile() {
-            try {
-                await userDataUpdate(userInfos.id, userInfos);
-                console.log('Profile updated successfully!');
-            } catch (error) {
-                console.error('Error updating profile:', error);
-            }
-        }
-
-        async function deleteUserProfile() {
-            try {
-                await userDataDelete(userInfos.id);
-                console.log('Profile deleted successfully!');
-            } catch (error) {
-                console.error('Error deleting profile:', error);
-            }
-        }
-
-        return { userInfos, updateUserProfile, deleteUserProfile };
-    },
-};
-</script>
