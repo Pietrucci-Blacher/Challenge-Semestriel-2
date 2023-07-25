@@ -9,6 +9,7 @@ import Socket from '@/utils/socket.js';
 import Chat from '@/components/Chat.vue';
 
 defineProps(['isUserAuthenticated']);
+
 </script>
 
 <template>
