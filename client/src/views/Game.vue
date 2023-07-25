@@ -136,13 +136,11 @@ export default {
 
 <style scoped>
 .game {
-    padding: 10px;
     display: flex;
     flex-direction: row;
 }
 
 .game-info {
-    margin-left: 10px;
     height: 100%;
 }
 </style>

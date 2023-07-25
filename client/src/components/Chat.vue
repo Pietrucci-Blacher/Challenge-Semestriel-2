@@ -1,19 +1,37 @@
 <template>
-    <div>
-        <ul>
-            <li v-for="(message, i) in chat.messages" :key="i">
-                {{ message.sender || 'me' }}: {{ message.text }}
-            </li>
-        </ul>
+    <div class="h-screen flex items-center justify-center">
+        <div class="bg-gray-100 p-4 h-full max-w-md overflow-y-auto mt-0">
+            <ul class="space-y-2">
+                <li
+                    v-for="(message, i) in chat.messages"
+                    :key="i"
+                    :class="['flex', getMessageClass(message)]"
+                >
+                    <span v-if="message.sender === 'me'" class="text-green-600"
+                        >Me:</span
+                    >
+                    <span v-else class="text-gray-600"
+                        >{{ message.sender || 'me' }}:</span
+                    >
+                    {{ message.text }}
+                </li>
+            </ul>
 
-        <form @submit.prevent="sendMessage">
-            <input
-                type="text"
-                v-model="newMessage"
-                placeholder="Type your message"
-            />
-            <button type="submit">Send</button>
-        </form>
+            <form @submit.prevent="sendMessage" class="flex mt-4">
+                <input
+                    type="text"
+                    v-model="newMessage"
+                    placeholder="Type your message"
+                    class="flex-1 border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-500"
+                />
+                <button
+                    type="submit"
+                    class="ml-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                >
+                    Send
+                </button>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -42,10 +60,11 @@ export default {
                 newMessage.value = '';
             }
         },
+        getMessageClass(message) {
+            return message.sender === 'me'
+                ? 'flex justify-end'
+                : 'flex justify-start';
+        },
     },
 };
 </script>
-
-<style scoped>
-/* Add custom styles for your chat component */
-</style>
