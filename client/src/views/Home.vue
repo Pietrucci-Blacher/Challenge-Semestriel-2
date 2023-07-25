@@ -35,7 +35,6 @@ const isUserAuthenticated = ref(false);
             <Login />
             <br />
             <Register />
-            <Chat />
             <a :href="LoginUrlDiscord">Login with Discord</a>
             <br />
             <a :href="LoginUrlGoogle">Login with Google</a>
