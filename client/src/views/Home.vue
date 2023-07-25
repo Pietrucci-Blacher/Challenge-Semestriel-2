@@ -3,7 +3,6 @@ import Login from '@/components/Login.vue';
 import Register from '@/components/Register.vue';
 import Chat from '@/components/Chat.vue';
 import Navbar from '@/components/Navbar/Navbar.vue';
-import Notification from '@/components/Notification.vue';
 import { ref } from 'vue';
 
 const clientIdDiscord = import.meta.env.VITE_DISCORD_CLIENT_ID;
