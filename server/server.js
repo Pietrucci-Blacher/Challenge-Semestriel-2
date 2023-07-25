@@ -33,9 +33,7 @@ const chessEvent = ChessSocket(io);
 app.use(
     cors({
         origin: [process.env.VITE_ENDPOINT_FRONT_URL],
-        methods: ['GET', 'POST'],
-        optionsSuccessStatus: 200,
-        preflightContinue: true,
+        methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
     }),
 );
 
