@@ -45,33 +45,94 @@
                             Delete
                         </button>
                     </td>
+                    <Modal v-if="showModalEdit" title="User Edit">
+                        <hr />
+                        <br />
+                        <div class="flex flex-col space-between">
+                            <input
+                                type="text"
+                                v-model="user.username"
+                                class="border border-gray-300 p-2 rounded-lg w-full"
+                            />
+                            <br />
+                            <input
+                                type="text"
+                                v-model="user.email"
+                                class="border border-gray-300 p-2 rounded-lg w-full"
+                            />
+                            <br />
+                            <div>
+                                <button
+                                    @click="handleSubmit(user)"
+                                    class="border border-gray-300 p-2 rounded-lg w-full mt-4"
+                                >
+                                    Edit
+                                </button>
+
+                                <button @click="hideModal">Cancel</button>
+                            </div>
+                        </div>
+                    </Modal>
                 </tr>
             </tbody>
         </table>
+        <Notification
+            v-if="showNotificationUpdateDatas"
+            title="Update"
+            message="User updated"
+            type="success"
+            @close="showNotificationUpdateDatas = false"
+        />
+        <Notification
+            v-if="showNotificationUserDelete"
+            title="Delete"
+            type="success"
+            message="User deleted"
+            @close="showNotificationUserDelete = false"
+        />
+        <Notification title="Delete" message="User deleted" />
     </div>
 </template>
 
 <script setup>
 import { onMounted, ref, defineEmits } from 'vue';
 import { getUsers } from '@/utils/admin';
-import { userDataDelete } from '@/utils/user';
+import { userDataDelete, userDataUpdate } from '@/utils/user';
+import Modal from '@/components/Modal.vue';
+import Notification from '@/components/Notification.vue';
 
-// Assuming you have a reactive ref for users data
 const users = ref([]);
+const showNotificationUpdateDatas = ref(false);
+const showNotificationUserDelete = ref(false);
 
 onMounted(async () => {
     users.value = await getUsers();
 });
 
+const showModalEdit = ref(false);
+
 defineEmits(['delete', 'select']);
 
 const handleEdit = (user) => {
-    emit('select', user);
+    showModalEdit.value = true;
+};
+
+const handleSubmit = async (user) => {
+    await userDataUpdate(user.id, user);
+    hideModal();
+    showNotificationUpdateDatas.value = true;
+};
+
+const hideModal = () => {
+    showModalEdit.value = false;
 };
 
 const handleDelete = async (userId) => {
-    console.log(userId);
-    // Assuming you have a method to delete the user with the given userId
     await userDataDelete(userId);
+    const index = users.value.findIndex((user) => user.id === userId);
+    if (index !== -1) {
+        users.value.splice(index, 1);
+    }
+    showNotificationUserDelete.value = true;
 };
 </script>
