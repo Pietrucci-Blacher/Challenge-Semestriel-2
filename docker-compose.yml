@@ -3,23 +3,16 @@ version: '3'
 services:
   mongo:
     image: mongo:latest
-    container_name: mongo
     ports:
       - "27017:27017"
     volumes:
-      - ./docker/mongo:/data/db
-      - ./docker/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+      - mongo-db:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER:? mongo root user is needed}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD:? mongo root password is needed}
-      - MONGO_USER=${MONGO_USER:? mongo user is needed}
-      - MONGO_PASSWORD=${MONGO_PASSWORD:? mongo password is needed}
-      - MONGO_DB=${MONGO_DB:? mongo db name is needed}
-    networks:
-      - services
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+
   postgresql:
     image: postgres:latest
-    container_name: postgresql
     ports:
       - "5432:5432"
     volumes:
@@ -28,13 +21,23 @@ services:
       - POSTGRES_USER=${POSTGRES_USER:? postgres user is needed}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:? postgres password is needed}
       - POSTGRES_DB=${POSTGRES_DB:? postgres db name is needed}
+
+  server:
+    image: node:latest
+    working_dir: /node/app
+    volumes:
+      - ./server:/node/app
+    env_file:
+      - ./.env
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - 3000:3000
+
   adminer:
     image: adminer
-    container_name: adminer
     restart: always
     ports:
       - "8080:8080"
 
-networks:
-  services:
-    name: ${MONGO_NETWORK:-mongodb.network}
+volumes:
+  mongo-db: 
