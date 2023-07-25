@@ -7,9 +7,9 @@ import Navbar from '@/components/Navbar/Navbar.vue';
 import { ref, onBeforeUnmount } from 'vue';
 import Socket from '@/utils/socket.js';
 import Chat from '@/components/Chat.vue';
+import ChatJs from '@/components/Chat.js';
 
 defineProps(['isUserAuthenticated']);
-
 </script>
 
 <template>
@@ -18,7 +18,7 @@ defineProps(['isUserAuthenticated']);
         <main class="w-full h-screen">
             <div class="game">
                 <div v-if="$route.params.id !== 'local'" class="game-info">
-                    <Chat />
+                    <Chat :key="reload" />
                 </div>
                 <div class="game-board">
                     <PlayerInfo
@@ -46,6 +46,7 @@ export default {
     name: 'Game',
     data() {
         const board = ChessBoard.getInstance();
+
         const data = {
             board,
             reload: 0,
@@ -54,8 +55,17 @@ export default {
         if (this.$route.params.id === 'local') return data;
 
         const gameId = this.$route.params.id;
-
         const socket = Socket.connect(`game-${gameId}`);
+
+        const chatSocket = Socket.connect(`chat-${gameId}`);
+        const chat = ChatJs.getInstance();
+        chat.connectToSocket(chatSocket);
+        chat.gameId = gameId;
+
+        chatSocket.on('messageFromServer', (message) => {
+            chat.addMessage(message);
+            this.forceReload();
+        });
 
         socket.on('gameDoesNotExist', () => {
             window.location.href = '/game';
@@ -87,10 +97,15 @@ export default {
         board.initInfo().then(() => {
             this.forceReload();
         });
+        chat.initInfo().then(() => {
+            this.forceReload();
+        });
 
         onBeforeUnmount(() => {
             Socket.disconnect(`game-${gameId}`);
+            Socket.disconnect(`chat-${gameId}`);
             ChessBoard.destroyInstance();
+            ChatJs.destroyInstance();
         });
 
         return data;
