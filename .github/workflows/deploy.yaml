@@ -43,8 +43,8 @@ jobs:
           echo "JWT_ACCESS_EXPIRE=86400" >> .env
           echo "JWT_REFRESH_EXPIRE=2592000" >> .env
           echo "VITE_APP_NAME=Chess" >> .env
-          echo "VITE_ENDPOINT_BACK_URL=http://localhost:3000" >> .env
-          echo "VITE_ENDPOINT_FRONT_URL=http://localhost:5173" >> .env
+          echo "VITE_ENDPOINT_BACK_URL=https://mpb-dev.fr" >> .env
+          echo "VITE_ENDPOINT_FRONT_URL=https://mpb-dev.fr" >> .env
           echo "MODE_SERV=prod" >> .env
 
       - name: Install backend dependencies
