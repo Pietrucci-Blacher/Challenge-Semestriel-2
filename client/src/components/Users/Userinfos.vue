@@ -3,12 +3,23 @@ import { getUserData, userDataDelete, userDataUpdate } from '@/utils/user';
 import { onMounted, reactive, ref } from 'vue';
 import Notification from '@/components/Notification.vue';
 const showNotificationProfileUpdated = ref(false);
-// Create a reactive object to hold user data
+const showTestNotification = ref(false);
 const userInfos = reactive({
     id: '',
     email: '',
     username: '',
 });
+
+const handlePasswordChangeRequest = async () => {
+    await userPasswordUpdate(userInfos.id, userInfos);
+};
+
+const handleTestNotification = () => {
+    showTestNotification.value = true;
+    setTimeout(() => {
+        showTestNotification.value = false;
+    }, 5000);
+};
 
 // Fetch user data when the component is mounted
 onMounted(async () => {
@@ -284,7 +295,6 @@ async function deleteUserProfile() {
                         <div class="mt-6">
                             <button
                                 @click="updateUserProfile"
-                                type="button"
                                 class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
                                 Update Profile
@@ -350,22 +360,21 @@ async function deleteUserProfile() {
                                     </label>
                                     <div class="mt-1 flex items-start">
                                         <div class="flex items-center h-5">
-                                            <input
+                                            <button
                                                 id="triggerNotification"
-                                                type="checkbox"
-                                                class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
-                                            />
+                                                type="button"
+                                                class="h-6 w-6 rounded-full shadow-md text-white bg-black"
+                                                @click="handleTestNotification"
+                                            ></button>
                                         </div>
                                         <div class="ml-3 text-sm leading-5">
                                             <label
-                                                for="triggerNotification"
                                                 class="font-medium text-gray-700"
-                                                >Trigger a test
-                                                notification</label
-                                            >
+                                                >Trigger a test notification
+                                            </label>
                                             <p class="text-gray-500">
-                                                Check this box to trigger a test
-                                                notification.
+                                                Click on black button to trigger
+                                                a test notification.
                                             </p>
                                         </div>
                                     </div>
@@ -375,6 +384,12 @@ async function deleteUserProfile() {
                     </div>
                 </div>
             </div>
+            <Notification
+                v-if="showTestNotification"
+                type="success"
+                title="Test message"
+                message="This is a test notification."
+            />
 
             <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
                 <div
@@ -391,9 +406,7 @@ async function deleteUserProfile() {
                     </div>
                     <div class="mt-5 md:mt-0 md:col-span-2">
                         <form>
-                            <div
-                                class="grid grid-cols-1 gap-4 sm:grid-cols-2 shadow-md"
-                            >
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-">
                                 <div class="col-span-2">
                                     <label
                                         for="oldPassword"
@@ -404,12 +417,11 @@ async function deleteUserProfile() {
                                         <input
                                             id="oldPassword"
                                             type="password"
-                                            class="form-input block w-full sm:text-sm sm:leading-5"
+                                            class="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                                             placeholder="Enter your old password"
                                         />
                                     </div>
                                 </div>
-                                <br />
                                 <div class="col-span-2">
                                     <label
                                         for="newPassword"
@@ -420,10 +432,17 @@ async function deleteUserProfile() {
                                         <input
                                             id="newPassword"
                                             type="password"
-                                            class="form-input block w-full sm:text-sm sm:leading-5"
+                                            class="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-522"
                                             placeholder="Enter your new password"
                                         />
                                     </div>
+                                    <br />
+                                    <button
+                                        class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                        @click="handlePasswordChangeRequest"
+                                    >
+                                        Mettre à jour le mot de passe
+                                    </button>
                                 </div>
                             </div>
                         </form>
