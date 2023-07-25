@@ -21,6 +21,13 @@
     "check": "isAuthenticated"
   },
   {
+    "name": "Statistiques",
+    "icon": "chart-bar",
+    "route": "/stats",
+    "alt": "Statistiques",
+    "check": "isAuthenticated"
+  },
+  {
     "name": "Logout",
     "icon": "sign-out-alt",
     "route": "#",

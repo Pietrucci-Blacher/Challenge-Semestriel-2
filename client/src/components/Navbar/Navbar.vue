@@ -97,6 +97,7 @@ import {
     faUser,
     faUserShield,
     faSignInAlt,
+    faChartBar,
 } from '@fortawesome/free-solid-svg-icons';
 import menuContent from './navbar-content.json';
 import { RouterLink } from 'vue-router';
@@ -113,6 +114,7 @@ library.add(
     faUser,
     faUserShield,
     faSignInAlt,
+    faChartBar,
 );
 
 import {
