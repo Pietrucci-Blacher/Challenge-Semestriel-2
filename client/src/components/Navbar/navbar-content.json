@@ -1,17 +1,17 @@
 [
   {
-    "name": "Games",
-    "icon": "chess-board",
-    "route": "/game",
-    "alt": "Play",
-    "check": "isAuthenticated"
-  },
-  {
     "name": "Admin",
     "icon": "user-shield",
     "route": "/admin",
     "alt": "Admin",
     "check": "isAdmin"
+  },
+  {
+    "name": "Games",
+    "icon": "chess-board",
+    "route": "/game",
+    "alt": "Play",
+    "check": "isAuthenticated"
   },
   {
     "name": "Profile",
