@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import UserRouter from './routes/user.js';
 import AuthRouter from './routes/auth.js';
 import ChessRouter from './routes/chess.js';
+import ChatRouter from './routes/chat.js';
 import cors from 'cors';
 import SocketService from './services/socket.js';
 import ChatSocket from './socket/chat.js';
@@ -27,7 +28,7 @@ const io = new Server(server, {
         methods: ['GET', 'POST'],
     },
 });
-const { chatMessageEvent } = ChatSocket(io);
+const chatEvent = ChatSocket(io);
 const chessEvent = ChessSocket(io);
 
 app.use(
@@ -52,6 +53,7 @@ app.use(express.json());
 app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);
 app.use('/game', ChessRouter);
+app.use('/chat', ChatRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -72,7 +74,7 @@ io.use(isAuthenticatedForSocket).on('connection', async (socket) => {
     }
 
     SocketService.addSocket(socket.userId, socket.key, socket);
-    chatMessageEvent(socket);
+    chatEvent(socket);
     chessEvent(socket);
 
     console.log('Socket:', SocketService.sockets);

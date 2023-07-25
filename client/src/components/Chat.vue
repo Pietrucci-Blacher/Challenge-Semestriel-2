@@ -1,8 +1,8 @@
 <template>
     <div>
         <ul>
-            <li v-for="message in messages" :key="message.id">
-                {{ message.text }}
+            <li v-for="(message, i) in chat.messages" :key="i">
+                {{ message.sender || 'me' }}: {{ message.text }}
             </li>
         </ul>
 
@@ -18,42 +18,30 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import Socket from '@/utils/socket.js';
+import { ref } from 'vue';
+import ChatJs from '@/components/Chat.js';
+
+const newMessage = ref('');
 
 export default {
-    setup() {
-        const socket = Socket.connect('chat');
+    data() {
+        const chat = ChatJs.getInstance();
 
-        const messages = ref([]);
-        const newMessage = ref('');
-
-        const sendMessage = () => {
+        return {
+            newMessage,
+            chat,
+        };
+    },
+    methods: {
+        sendMessage() {
             if (newMessage.value.trim() !== '') {
                 const message = {
                     text: newMessage.value.trim(),
                 };
-                messages.value.push(message);
-                socket?.emit('chat message', message);
+                this.chat.sendMessage(message);
                 newMessage.value = '';
             }
-        };
-
-        onMounted(() => {
-            socket?.on('message', (message) => {
-                messages.value.push(message);
-            });
-        });
-
-        onBeforeUnmount(() => {
-            socket?.disconnect();
-        });
-
-        return {
-            messages,
-            newMessage,
-            sendMessage,
-        };
+        },
     },
 };
 </script>
