@@ -155,12 +155,10 @@ export default {
     },
     computed: {
         filteredMenuItems() {
-            const isAuthenticatedAndAdmin = isAuthenticated() && this.isAdmin;
-
             return this.menuItems.filter((item) => {
                 if (item.check === 'isAdmin') {
-                    return isAuthenticatedAndAdmin;
-                } else if (item.check === 'isAuthenticated') {
+                    return this.isAdmin;
+                } else if (item.check === 'isAuthenticated' && !this.isAdmin) {
                     return isAuthenticated();
                 }
                 return true;

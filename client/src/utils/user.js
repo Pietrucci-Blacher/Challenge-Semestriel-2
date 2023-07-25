@@ -1,8 +1,8 @@
 import { isAuthenticated } from '@/utils/misc';
 import Cookie from 'js-cookie';
 
-export const getUserData = async () => {
-    if (!isAuthenticated()) {
+export const getUserData = async (redirect = true) => {
+    if (redirect && !isAuthenticated()) {
         window.location.href = '/';
     }
     let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
@@ -17,7 +17,6 @@ export const getUserData = async () => {
     });
 
     if (!response.ok) {
-        console.error('Failed to fetch user data');
         throw new Error('Failed to fetch user data');
     }
 
@@ -62,10 +61,8 @@ export const userDataDelete = async (userId, reload = false) => {
 };
 
 export const isUserAdminRole = async () => {
-    let userinfos = await getUserData();
-    if (userinfos.role === 'admin') {
-        return true;
-    }
+    let userinfos = await getUserData(false);
+    return userinfos.role === 'admin';
 };
 
 export default { getUserData, userDataUpdate, userDataDelete, isUserAdminRole };
