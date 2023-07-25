@@ -1,5 +1,5 @@
-const getNbUsers = () => {
+export const getNbUsers = () => {
     return 5;
 };
 
-export default getNbUsers;
+export default { getNbUsers };
