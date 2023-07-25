@@ -1,10 +1,12 @@
-<script>
+<script setup>
 import UserItem from '@/components/Users/UserItem.vue';
 import Navbar from '@/components/Navbar/Navbar.vue';
 import { getUsers } from '@/utils/admin';
 import { defineComponent } from 'vue';
 
-export default defineComponent({
+defineProps(['isUserAuthenticated']);
+
+defineComponent({
     components: { Navbar, UserItem },
     methods: { getUsers },
 });
@@ -18,5 +20,3 @@ export default defineComponent({
         </main>
     </section>
 </template>
-
-<style scoped></style>

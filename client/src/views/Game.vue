@@ -8,7 +8,7 @@ import { ref, onBeforeUnmount } from 'vue';
 import Socket from '@/utils/socket.js';
 import Chat from '@/components/Chat.vue';
 
-const isUserAuthenticated = ref(false);
+defineProps(['isUserAuthenticated']);
 </script>
 
 <template>

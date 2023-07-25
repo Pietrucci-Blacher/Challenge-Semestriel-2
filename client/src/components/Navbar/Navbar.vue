@@ -155,17 +155,15 @@ export default {
     },
     computed: {
         filteredMenuItems() {
-            // Check if the user is authenticated and is an admin
             const isAuthenticatedAndAdmin = isAuthenticated() && this.isAdmin;
 
-            // Filter the menu items based on the user's authentication status and admin role
             return this.menuItems.filter((item) => {
                 if (item.check === 'isAdmin') {
                     return isAuthenticatedAndAdmin;
                 } else if (item.check === 'isAuthenticated') {
                     return isAuthenticated();
                 }
-                return true; // Show other items that don't require checks
+                return true;
             });
         },
     },

@@ -33,11 +33,6 @@ const isUserAuthenticated = ref(false);
     <section class="flex flex-row h-screen">
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <main class="w-full h-screen">
-            <Notification
-                type="success"
-                title="Success"
-                message="Your account was registered!"
-            />
             <Login />
             <br />
             <Register />

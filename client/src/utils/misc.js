@@ -1,6 +1,7 @@
 import Cookie from 'js-cookie';
 
 const logout = () => {
+    console.log('logout');
     if (!isAuthenticated()) {
         return;
     }
