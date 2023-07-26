@@ -129,3 +129,17 @@ jobs:
             sudo chmod -R 755 /var/www/html/client/
             sudo find /var/www/html/client/ -type d -exec chmod 755 {} \;
             sudo find /var/www/html/client/ -type f -exec chmod 644 {} \;
+            
+            export POSTGRES_HOST=${{ secrets.DB_HOST }}
+            export POSTGRES_USER=${{ secrets.DB_USER }}
+            export POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}
+            export POSTGRES_DB=${{ secrets.DB_NAME }}
+            export MONGO_USER=${{ secrets.MONGO_USER }}
+            export MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}
+            export MONGO_HOST=${{ secrets.MONGO_HOST }}
+            export MONGO_DB=${{ secrets.MONGO_DB }}
+            export JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}
+            export JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
+            export JWT_ACCESS_EXPIRE=86400
+            export JWT_REFRESH_EXPIRE=2592000
+            export MODE_SERV=prod
