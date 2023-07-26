@@ -4,7 +4,8 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 
 dotenv.config({ path: '../.env' });
 
-const { MONGO_USER, MONGO_PASSWORD, MONGO_DB, MONGO_HOST, MODE } = process.env;
+const { MONGO_USER, MONGO_PASSWORD, MONGO_DB, MONGO_HOST, MODE, MODE_SERV } =
+    process.env;
 let mongo;
 
 if (MODE === 'test') {
@@ -13,7 +14,12 @@ if (MODE === 'test') {
     mongo = await mongoose.connect(uri);
     console.log('Connected to mongoDB memory server');
 } else {
-    const uri = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DB}`;
+    let uri;
+    if (MODE_SERV === 'prod') {
+        uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}/?retryWrites=true&w=majority`;
+    } else {
+        uri = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DB}`;
+    }
     mongo = await mongoose.connect(uri);
     console.log('Connected to mongoDB');
 }
