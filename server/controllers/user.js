@@ -135,3 +135,27 @@ export const destroy = async (req, res) => {
         res.status(500).json(err);
     }
 };
+
+/**
+ * Get the stats of a user
+ *
+ * @route GET /users/:id/statsGame
+ * @group User - Operations about user
+ *
+ * @param {integer} id.path.required - id of the user ('me' for the current user)
+ *
+ * @returns {object} 200 - Stats of the user
+ * @returns {Error}  500 - Unexpected error
+ */
+export const getStatsPlayedGames = async (req, res) => {
+    const userId = parseInt(
+        req.params.id === 'me' ? req.userId : req.params.id,
+    );
+
+    try {
+        const result = await UserService.statsPlayedGames(userId);
+        return res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
