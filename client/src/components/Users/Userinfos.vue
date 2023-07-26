@@ -167,7 +167,7 @@ async function deleteUserProfile() {
                 </aside>
             </aside>
         </div>
-        <div class="flex flex-col overflow-auto">
+        <div class="flex flex-col overflow-auto w-screen">
             <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
                 <div id="#profil" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
