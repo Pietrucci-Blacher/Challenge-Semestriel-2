@@ -115,8 +115,12 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          workdir: /var/www/html/server
-          run: pnpm run prod
+          script: |
+            sudo pm2 stop all
+            sudo pm2 delete all
+            sudo ls -l /var/www/html/server
+            echo "Done"
+            
 
       - name: Deploy frontend to EC2
         uses: appleboy/scp-action@master
