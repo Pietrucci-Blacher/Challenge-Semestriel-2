@@ -6,6 +6,10 @@ export const findGameById = async (req, res) => {
 
     const game = await ChessService.findGameById(id);
 
+    if (!game) return res.status(404).json({ error: 'Game not found' });
+    if (req.userId !== game.whiteUserId && req.userId !== game.blackUserId)
+        return res.status(403).json({ error: 'Unauthorized' });
+
     res.status(200).json(game);
 };
 
@@ -14,6 +18,8 @@ export const findGameByUserId = async (req, res) => {
     if (!userId) return res.status(400).json({ error: 'Missing userId' });
 
     const game = await ChessService.findGameByUserId(userId);
+
+    if (!game) return res.status(404).json({ error: 'Game not found' });
 
     res.status(200).json(game);
 };

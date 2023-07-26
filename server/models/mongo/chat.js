@@ -4,15 +4,17 @@ const chatSchema = new db.Schema(
     {
         sender: {
             type: Number,
-            ref: 'User',
             required: true,
         },
         receiver: {
             type: Number,
-            ref: 'User',
             required: false,
         },
-        message: {
+        gameId: {
+            type: String,
+            required: false,
+        },
+        text: {
             type: String,
             required: true,
         },
