@@ -1,8 +1,8 @@
 import { isAuthenticated } from '@/utils/misc';
 import Cookie from 'js-cookie';
 
-export const getUserData = async () => {
-    if (!isAuthenticated()) {
+export const getUserData = async (redirect = true) => {
+    if (redirect && !isAuthenticated()) {
         window.location.href = '/';
     }
     let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
@@ -17,7 +17,6 @@ export const getUserData = async () => {
     });
 
     if (!response.ok) {
-        console.error('Failed to fetch user data');
         throw new Error('Failed to fetch user data');
     }
 
@@ -40,7 +39,7 @@ export const userDataUpdate = async (userId, userData) => {
     });
 };
 
-export const userDataDelete = async (userId) => {
+export const userDataDelete = async (userId, reload = false) => {
     if (!isAuthenticated()) {
         window.location.href = '/';
     }
@@ -54,16 +53,43 @@ export const userDataDelete = async (userId) => {
             Authorization: `Bearer ${userToken}`,
         },
     });
-    Cookie.remove('userAccessToken');
-    Cookie.remove('userRefreshToken');
-    window.location.href = '/';
-};
-
-export const isUserAdminRole = async () => {
-    let userinfos = await getUserData();
-    if (userinfos.role === 'admin') {
-        return true;
+    if (reload) {
+        Cookie.remove('userAccessToken');
+        Cookie.remove('userRefreshToken');
+        window.location.href = '/';
     }
 };
 
-export default { getUserData, userDataUpdate, userDataDelete, isUserAdminRole };
+export const isUserAdminRole = async () => {
+    let userinfos = await getUserData(false);
+    return userinfos.role === 'admin';
+};
+
+export const UserChangePassword = async (oldPassWord, newPassword) => {
+    if (!isAuthenticated()) {
+        window.location.href = '/';
+    }
+    let userToken = Cookie.get('userAccessToken');
+    let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
+    let endpoint = `${url}/users/me/password`;
+    const data = {
+        oldPassword: oldPassWord.value,
+        newPassword: newPassword.value,
+    };
+    await fetch(endpoint, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify(data),
+    });
+};
+
+export default {
+    getUserData,
+    userDataUpdate,
+    userDataDelete,
+    isUserAdminRole,
+    UserChangePassword,
+};

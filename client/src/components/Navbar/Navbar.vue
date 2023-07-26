@@ -139,20 +139,30 @@ export default {
         isDarkTheme.value = localStorage.getItem('themeMode') === 'dark';
         showMenu.value = localStorage.getItem('menuState') === 'open';
 
+        const isAdmin = ref(false);
+        (async () => {
+            isAdmin.value = await isUserAdminRole();
+        })();
+
         return {
             isDarkTheme,
             showMenu,
             menuItems,
             toggleTheme: () => toggleTheme(isDarkTheme),
             toggleMenu: () => toggleMenu(showMenu),
+            isAdmin,
         };
     },
     computed: {
         filteredMenuItems() {
-            if (!isAuthenticated()) {
-                return this.menuItems.filter((item) => !item.check);
-            }
-            return this.menuItems;
+            return this.menuItems.filter((item) => {
+                if (item.check === 'isAdmin') {
+                    return this.isAdmin;
+                } else if (item.check === 'isAuthenticated' && !this.isAdmin) {
+                    return isAuthenticated();
+                }
+                return true;
+            });
         },
     },
 

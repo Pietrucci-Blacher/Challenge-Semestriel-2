@@ -1,10 +1,10 @@
-<script>
-const isUserAuthenticated = ref(false);
-import { defineComponent, ref } from 'vue';
-import Userinfo from '@/components/Users/Userinfo.vue';
+<script setup>
+defineProps(['isUserAuthenticated']);
+import { defineComponent } from 'vue';
+import Userinfo from '@/components/Users/Userinfos.vue';
 import Navbar from '@/components/Navbar/Navbar.vue';
 
-export default defineComponent({
+defineComponent({
     components: { Navbar, Userinfo },
 });
 </script>
@@ -13,6 +13,5 @@ export default defineComponent({
     <section class="flex flex-row h-screen">
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <Userinfo />
-        <section></section>
     </section>
 </template>

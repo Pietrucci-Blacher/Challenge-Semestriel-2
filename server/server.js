@@ -13,22 +13,28 @@ import MatchMaking from './models/mongo/matchMaking.js';
 import { isAuthenticatedForSocket } from './middleware/middleware.js';
 import { gameIdRegex, gameExists } from './services/chess.js';
 import mongoose from 'mongoose';
-
 const ObjectId = mongoose.Types.ObjectId;
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        // origin: process.env.VITE_VUE_APP_SOCKET_ENDPOINT,
-        origin: '*',
+        origin:
+            process.env.MODE_SERV === 'prod'
+                ? process.env.VITE_VUE_APP_SOCKET_ENDPOINT
+                : '*',
         methods: ['GET', 'POST'],
     },
 });
 const { chatMessageEvent } = ChatSocket(io);
 const chessEvent = ChessSocket(io);
 
-app.use(cors());
+app.use(
+    cors({
+        origin: [process.env.VITE_ENDPOINT_FRONT_URL],
+        methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
+    }),
+);
 
 app.use((req, res, next) => {
     if (
@@ -77,7 +83,7 @@ io.use(isAuthenticatedForSocket).on('connection', async (socket) => {
     });
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     MatchMaking.deleteMany({}).then(() =>

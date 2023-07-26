@@ -1,3 +1,77 @@
+<script setup>
+import {
+    getUserData,
+    UserChangePassword,
+    userDataDelete,
+    userDataUpdate,
+} from '@/utils/user';
+import { onMounted, reactive, ref } from 'vue';
+import Notification from '@/components/Notification.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+    faCheck,
+    faUser,
+    faLock,
+    faTrash,
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add(faUser, faCheck, faLock, faTrash);
+
+const showNotificationProfileUpdated = ref(false);
+const showTestNotification = ref(false);
+const userInfos = reactive({
+    id: '',
+    email: '',
+    username: '',
+});
+const oldPassword = ref('');
+const newPassword = ref('');
+
+const handleTestNotification = () => {
+    showTestNotification.value = true;
+    setTimeout(() => {
+        showTestNotification.value = false;
+    }, 5000);
+};
+
+// Fetch user data when the component is mounted
+onMounted(async () => {
+    const userData = await getUserData();
+    userInfos.id = userData.id;
+    userInfos.firstname = userData.firstname;
+    userInfos.lastname = userData.lastname;
+    userInfos.email = userData.email;
+    userInfos.username = userData.username;
+});
+
+async function updateUserProfile() {
+    try {
+        await userDataUpdate(userInfos.id, userInfos);
+        showNotificationProfileUpdated.value = true;
+    } catch (error) {
+        console.error('Error updating profile:', error);
+    }
+}
+
+async function userPasswordUpdate(oldPassword, newPassword) {
+    try {
+        await UserChangePassword(oldPassword, newPassword);
+        showNotificationProfileUpdated.value = true;
+    } catch (error) {
+        console.error('Error updating password:', error);
+    }
+}
+
+async function deleteUserProfile() {
+    try {
+        await userDataDelete(userInfos.id, true);
+    } catch (error) {
+        console.error('Error deleting profile:', error);
+    }
+}
+</script>
+
 <template>
     <section class="flex overflow-hidden">
         <div>
@@ -39,20 +113,10 @@
                                     href="#"
                                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                                 >
-                                    <svg
-                                        class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 22 21"
-                                    >
-                                        <path
-                                            d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"
-                                        />
-                                        <path
-                                            d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"
-                                        />
-                                    </svg>
+                                    <font-awesome-icon
+                                        class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                        :icon="['fas', 'user']"
+                                    ></font-awesome-icon>
                                     <span class="ml-3">Mon profil</span>
                                 </a>
                             </li>
@@ -61,23 +125,10 @@
                                     href="#notifications"
                                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                                 >
-                                    <svg
+                                    <font-awesome-icon
                                         class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"
-                                        />
-                                        <path
-                                            d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"
-                                        />
-                                        <path
-                                            d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"
-                                        />
-                                    </svg>
+                                        :icon="['fas', 'check']"
+                                    ></font-awesome-icon>
                                     <span class="flex-1 ml-3 whitespace-nowrap"
                                         >Notifications</span
                                     >
@@ -88,23 +139,10 @@
                                     href="#password"
                                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                                 >
-                                    <svg
+                                    <font-awesome-icon
                                         class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"
-                                        />
-                                        <path
-                                            d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"
-                                        />
-                                        <path
-                                            d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"
-                                        />
-                                    </svg>
+                                        :icon="['fas', 'lock']"
+                                    ></font-awesome-icon>
                                     <span class="flex-1 ml-3 whitespace-nowrap"
                                         >Mot de passe</span
                                     >
@@ -115,23 +153,10 @@
                                     href="#deleteAccount"
                                     class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                                 >
-                                    <svg
+                                    <font-awesome-icon
                                         class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path
-                                            d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"
-                                        />
-                                        <path
-                                            d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z"
-                                        />
-                                        <path
-                                            d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"
-                                        />
-                                    </svg>
+                                        :icon="['fas', 'trash']"
+                                    ></font-awesome-icon>
                                     <span class="flex-1 ml-3 whitespace-nowrap"
                                         >Supression du compte</span
                                     >
@@ -142,7 +167,7 @@
                 </aside>
             </aside>
         </div>
-        <div class="flex flex-col overflow-auto">
+        <div class="flex flex-col overflow-auto w-screen">
             <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
                 <div id="#profil" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
@@ -244,12 +269,16 @@
                         <div class="mt-6">
                             <button
                                 @click="updateUserProfile"
-                                type="button"
                                 class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
                                 Update Profile
                             </button>
                         </div>
+                        <Notification
+                            v-if="showNotificationProfileUpdated"
+                            title="Profile message"
+                            message="Your profile has been updated successfully."
+                        />
                     </div>
                 </div>
             </div>
@@ -305,22 +334,21 @@
                                     </label>
                                     <div class="mt-1 flex items-start">
                                         <div class="flex items-center h-5">
-                                            <input
+                                            <button
                                                 id="triggerNotification"
-                                                type="checkbox"
-                                                class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
-                                            />
+                                                type="button"
+                                                class="h-6 w-6 rounded-full shadow-md text-white bg-black"
+                                                @click="handleTestNotification"
+                                            ></button>
                                         </div>
                                         <div class="ml-3 text-sm leading-5">
                                             <label
-                                                for="triggerNotification"
                                                 class="font-medium text-gray-700"
-                                                >Trigger a test
-                                                notification</label
-                                            >
+                                                >Trigger a test notification
+                                            </label>
                                             <p class="text-gray-500">
-                                                Check this box to trigger a test
-                                                notification.
+                                                Click on black button to trigger
+                                                a test notification.
                                             </p>
                                         </div>
                                     </div>
@@ -330,6 +358,12 @@
                     </div>
                 </div>
             </div>
+            <Notification
+                v-if="showTestNotification"
+                type="success"
+                title="Test message"
+                message="This is a test notification."
+            />
 
             <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
                 <div
@@ -346,7 +380,7 @@
                     </div>
                     <div class="mt-5 md:mt-0 md:col-span-2">
                         <form>
-                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-">
                                 <div class="col-span-2">
                                     <label
                                         for="oldPassword"
@@ -357,8 +391,9 @@
                                         <input
                                             id="oldPassword"
                                             type="password"
-                                            class="form-input block w-full sm:text-sm sm:leading-5"
+                                            class="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                                             placeholder="Enter your old password"
+                                            v-model="oldPassword"
                                         />
                                     </div>
                                 </div>
@@ -372,10 +407,23 @@
                                         <input
                                             id="newPassword"
                                             type="password"
-                                            class="form-input block w-full sm:text-sm sm:leading-5"
+                                            class="mt-1 form-input block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-522"
                                             placeholder="Enter your new password"
+                                            v-model="newPassword"
                                         />
                                     </div>
+                                    <br />
+                                    <button
+                                        class="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                        @click="
+                                            userPasswordUpdate(
+                                                oldPassword,
+                                                newPassword,
+                                            )
+                                        "
+                                    >
+                                        Mettre à jour le mot de passe
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -408,49 +456,3 @@
         </div>
     </section>
 </template>
-
-<script>
-import { getUserData, userDataDelete, userDataUpdate } from '@/utils/user';
-import { onMounted, reactive } from 'vue';
-
-export default {
-    setup() {
-        // Create a reactive object to hold user data
-        const userInfos = reactive({
-            id: '',
-            email: '',
-            username: '',
-        });
-
-        // Fetch user data when the component is mounted
-        onMounted(async () => {
-            const userData = await getUserData();
-            userInfos.id = userData.id;
-            userInfos.firstname = userData.firstname;
-            userInfos.lastname = userData.lastname;
-            userInfos.email = userData.email;
-            userInfos.username = userData.username;
-        });
-
-        async function updateUserProfile() {
-            try {
-                await userDataUpdate(userInfos.id, userInfos);
-                console.log('Profile updated successfully!');
-            } catch (error) {
-                console.error('Error updating profile:', error);
-            }
-        }
-
-        async function deleteUserProfile() {
-            try {
-                await userDataDelete(userInfos.id);
-                console.log('Profile deleted successfully!');
-            } catch (error) {
-                console.error('Error deleting profile:', error);
-            }
-        }
-
-        return { userInfos, updateUserProfile, deleteUserProfile };
-    },
-};
-</script>

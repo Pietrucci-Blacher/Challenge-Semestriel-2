@@ -1,0 +1,20 @@
+import Cookie from 'js-cookie';
+import { isAuthenticated } from '@/utils/misc';
+
+export const getUsers = async () => {
+    let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
+    let endpoint = `${url}/users/`;
+
+    let response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+    }
+    return response.json();
+};

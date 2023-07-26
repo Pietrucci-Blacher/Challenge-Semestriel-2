@@ -141,6 +141,7 @@ onMounted(() => {
     padding: 10px 20px 10px 15px;
     box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    background-color: #f5f5f5;
     transform: translateX(calc(100% + 30px));
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
 }

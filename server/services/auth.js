@@ -169,6 +169,7 @@ export const register = async (username, email, password) => {
 
 export const logout = async (userId) => {
     const foundedToken = await Token.findOne({ where: { userId } });
+    if (!foundedToken) return;
     foundedToken.destroy();
 };
 
