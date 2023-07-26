@@ -9,7 +9,6 @@
     "dev": "nodemon server.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write .",
-    "prod": "pm2 stop all && pm2 delete all && pm2 start server.js --name challenge-node",
     "migration": "node database/postgres/migration.js",
     "test:unit": "MODE=test vitest --config ./vitest.config.ts"
   },
