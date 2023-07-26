@@ -19,8 +19,7 @@ export const findAll = async (filters, options = {}) => {
 
 export const findOne = async (filters) => {
     const user = await UserModel.findOne({ where: filters });
-
-    if (user) delete user.password;
+    if (user) delete user.dataValues.password;
 
     return user;
 };
@@ -153,6 +152,7 @@ export const changePassword = async (id, oldPassword, newPassword) => {
     }
 
     await user.hashPassword(newPassword);
+    await user.save();
 };
 
 function compare(a, b, order, index = 0) {

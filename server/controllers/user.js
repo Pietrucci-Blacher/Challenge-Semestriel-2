@@ -4,8 +4,6 @@ import * as Authservice from '../services/auth.js';
 export const changePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body;
 
-    console.log('oldPassword', oldPassword, 'newPassword', newPassword);
-
     if (!oldPassword || !newPassword)
         return res.status(400).json({
             message: 'Missing required fields',
@@ -14,8 +12,6 @@ export const changePassword = async (req, res) => {
     const userId = parseInt(
         req.params.id === 'me' ? req.userId : req.params.id,
     );
-
-    console.log('userId', userId, 'req.userId', req.userId);
 
     if (userId !== req.userId)
         return res.status(403).json({
@@ -26,11 +22,8 @@ export const changePassword = async (req, res) => {
         await UserService.changePassword(userId, oldPassword, newPassword);
         res.sendStatus(201);
     } catch (err) {
-        if (err.name === 'ValidationError') {
-            res.status(422).json(err.message);
-        } else {
-            res.status(500).json(err);
-        }
+        if (err.name === 'ValidationError') res.status(422).json(err.errors);
+        else res.status(500).json(err);
     }
 };
 

@@ -7,12 +7,16 @@
                     :key="i"
                     :class="['flex', getMessageClass(message)]"
                 >
-                    <span v-if="message.sender === 'me'" class="text-green-600"
-                        >Me:</span
-                    >
-                    <span v-else class="text-gray-600"
-                        >{{ message.sender || 'me' }}:</span
-                    >
+                    <span class="text-gray-600">
+                        <button
+                            @click="reportMessage(message.id)"
+                            v-if="message.sender"
+                            class="text-red-600"
+                        >
+                            report
+                        </button>
+                        {{ message.sender || 'me' }}:
+                    </span>
                     {{ message.text }}
                 </li>
             </ul>
@@ -62,6 +66,9 @@ export default {
         },
         getMessageClass(message) {
             return !message.sender ? 'flex justify-end' : 'flex justify-start';
+        },
+        reportMessage(id) {
+            this.chat.reportMessage(id);
         },
     },
 };
