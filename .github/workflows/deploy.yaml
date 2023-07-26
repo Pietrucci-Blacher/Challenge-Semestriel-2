@@ -116,11 +116,10 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            sudo pm2 stop all
-            sudo pm2 delete all
-            sudo ls -l /var/www/html/server
-            echo "Done"
-            
+            pm2 stop all
+            pm2 delete all
+            cd /var/www/html/server/server
+            pm2 start server.js --name "server"
 
       - name: Deploy frontend to EC2
         uses: appleboy/scp-action@master
