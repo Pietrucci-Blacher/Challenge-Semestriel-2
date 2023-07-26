@@ -17,7 +17,14 @@ export default class Chat {
         Chat.instance = null;
     }
 
-    async initInfo() {
+    initEventListeners(vue) {
+        this.socket.on('messageFromServer', (message) => {
+            this.addMessage(message);
+            vue.forceReload();
+        });
+    }
+
+    async initData() {
         const url = import.meta.env.VITE_ENDPOINT_BACK_URL;
 
         const data = {
@@ -49,6 +56,9 @@ export default class Chat {
             whiteRes.json(),
             blackRes.json(),
         ]);
+
+        if (me.id !== gameData.whiteUserId && me.id !== gameData.blackUserId)
+            return;
 
         const opponent = gameData.whiteUserId === me.id ? black : white;
 

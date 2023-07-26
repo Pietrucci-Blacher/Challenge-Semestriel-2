@@ -3,8 +3,7 @@ import ChessBoard from '@/components/Chess/Board.js';
 </script>
 
 <template>
-    <!--<div class="history">-->
-    <div class="history" :style="{ height: height + 10 + 'px' }">
+    <div class="bg-grey-100 h-screen history">
         <div
             class="history-item"
             v-for="(move, index) in chessBoard.moveHistory"
@@ -26,21 +25,13 @@ export default {
             chessBoard: ChessBoard.getInstance(),
         };
     },
-    props: {
-        height: {
-            type: Number,
-            default: 600,
-        },
-    },
 };
 </script>
 
 <style scoped>
 .history {
-    border: 1px solid black;
-    width: 250px;
+    width: 100%;
     overflow-y: auto;
-    background-color: #f0d9b5;
 }
 
 .history-item {

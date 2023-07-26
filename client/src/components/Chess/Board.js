@@ -70,7 +70,40 @@ export default class ChessBoard {
         };
     }
 
-    async initInfo() {
+    initEventListeners(vue) {
+        this.socket.on('gameDoesNotExist', () => {
+            window.location.href = '/game';
+        });
+
+        this.socket.on('correction', (gameInfo) => {
+            this.import({
+                board: gameInfo.board,
+                moveHistory: gameInfo.moveHistory,
+                winner: gameInfo.winner || null,
+            });
+            vue.forceReload();
+        });
+
+        this.socket.on('chessMoveFromServer', (move) => {
+            this.movePiece(
+                move.fromRow,
+                move.fromCol,
+                move.toRow,
+                move.toCol,
+                false,
+            );
+            vue.forceReload();
+        });
+
+        this.socket.on('finish', (winner) => {
+            console.log('winner', winner);
+            this.winner = winner.winner;
+            vue.showModal = 1;
+            vue.forceReload();
+        });
+    }
+
+    async initData(vue) {
         const url = import.meta.env.VITE_ENDPOINT_BACK_URL;
 
         const data = {
@@ -84,6 +117,8 @@ export default class ChessBoard {
         const response = await fetch(`${url}/game/${this.gameId}`, data);
         const game = await response.json();
 
+        if (!game) return;
+
         const [meRes, whiteRes, blackRes] = await Promise.all([
             fetch(`${url}/users/me`, data),
             fetch(`${url}/users/${game.whiteUserId}`, data),
@@ -95,6 +130,23 @@ export default class ChessBoard {
             whiteRes.json(),
             blackRes.json(),
         ]);
+
+        if (!me || !whitePlayer || !blackPlayer) return;
+
+        if (me.id !== game.whiteUserId && me.id !== game.blackUserId) {
+            window.location.href = '/game';
+            return;
+        }
+
+        if (game.winner) {
+            if (game.winner === game.whiteUserId)
+                game.winner = whitePlayer.username;
+            else if (game.winner === game.blackUserId)
+                game.winner = blackPlayer.username;
+            else if (game.winner === 0) game.winner = 'draw';
+
+            vue.showModal = 1;
+        }
 
         this.import({
             board: game.board,

@@ -64,7 +64,6 @@ app.post('/', (req, res) => {
 });
 
 io.use(isAuthenticatedForSocket).on('connection', async (socket) => {
-    console.log('A user connected', socket.id, socket.userId, socket.key);
     if (gameIdRegex.test(socket.key)) {
         const gameId = socket.key.split('-')[1];
         if (!ObjectId.isValid(gameId) || !(await gameExists(gameId))) {
@@ -77,11 +76,8 @@ io.use(isAuthenticatedForSocket).on('connection', async (socket) => {
     chatEvent(socket);
     chessEvent(socket);
 
-    console.log('Socket:', SocketService.sockets);
-
     socket.on('disconnect', () => {
         SocketService.removeSocket(socket.userId, socket.key);
-        console.log('A user disconnected', socket.id);
     });
 });
 

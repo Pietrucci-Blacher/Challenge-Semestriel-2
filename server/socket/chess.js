@@ -8,12 +8,25 @@ import {
 } from '../services/chess.js';
 import SocketService from '../services/socket.js';
 import ChessBoard from '../services/chess/Board.js';
+import { findById as findUserById } from '../services/user.js';
 
 export default (io) => (socket) => {
     socket.on('chessMoveFromClient', async (move) => {
         const gameId = socket.key.split('-')[1];
         const gameData = await findGameById(gameId);
         if (!gameData) return;
+
+        if (gameData.winner) {
+            const winner = await findUserById(gameData.winner);
+            socket.emit('finish', { winner: winner.username });
+            return;
+        }
+
+        if (
+            socket.userId !== gameData.whiteUserId &&
+            socket.userId !== gameData.blackUserId
+        )
+            return;
 
         const game = new ChessBoard({
             board: gameData.board,

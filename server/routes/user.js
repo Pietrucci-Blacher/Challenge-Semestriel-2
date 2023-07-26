@@ -14,4 +14,10 @@ router.delete('/:id', isAuthenticated, UserController.destroy);
 
 router.patch('/:id/password', UserController.changePassword);
 
+router.get(
+    '/:id/statsGame',
+    isAuthenticated,
+    UserController.getStatsPlayedGames,
+);
+
 export default router;

@@ -8,6 +8,7 @@ import { ref, onBeforeUnmount } from 'vue';
 import Socket from '@/utils/socket.js';
 import Chat from '@/components/Chat.vue';
 import ChatJs from '@/components/Chat.js';
+import Modal from '@/components/Modal.vue';
 
 defineProps(['isUserAuthenticated']);
 </script>
@@ -17,7 +18,7 @@ defineProps(['isUserAuthenticated']);
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <main class="w-full h-screen">
             <div class="game">
-                <div v-if="$route.params.id !== 'local'" class="game-info">
+                <div v-if="$route.params.id !== 'local'" class="game-chat">
                     <Chat :key="reload" />
                 </div>
                 <div class="game-board">
@@ -26,7 +27,11 @@ defineProps(['isUserAuthenticated']);
                         :name="opponent()"
                         :color="opponentColor()"
                     />
-                    <Board :key="reload" :reverse="board.color !== 'white'" />
+                    <Board
+                        :key="reload"
+                        :reverse="board.color !== 'white'"
+                        :height="height"
+                    />
                     <PlayerInfo
                         :key="reload"
                         :name="player()"
@@ -39,6 +44,11 @@ defineProps(['isUserAuthenticated']);
             </div>
         </main>
     </section>
+    <Modal v-if="showModal === 1" title="Winner">
+        <p v-if="board.winner !== 'draw'">Winner is {{ board.winner }}</p>
+        <p v-else>It's a draw</p>
+        <button @click="hideModal">Retour</button>
+    </Modal>
 </template>
 
 <script>
@@ -50,54 +60,30 @@ export default {
         const data = {
             board,
             reload: 0,
+            showModal: 0,
+            height: window.innerHeight - 110,
         };
 
         if (this.$route.params.id === 'local') return data;
 
         const gameId = this.$route.params.id;
         const socket = Socket.connect(`game-${gameId}`);
-
-        const chatSocket = Socket.connect(`chat-${gameId}`);
-        const chat = ChatJs.getInstance();
-        chat.connectToSocket(chatSocket);
-        chat.gameId = gameId;
-
-        chatSocket.on('messageFromServer', (message) => {
-            chat.addMessage(message);
-            this.forceReload();
-        });
-
-        socket.on('gameDoesNotExist', () => {
-            window.location.href = '/game';
-        });
-
-        socket.on('correction', (gameInfo) => {
-            board.import({
-                board: gameInfo.board,
-                moveHistory: gameInfo.moveHistory,
-                winner: gameInfo.winner || null,
-            });
-            this.forceReload();
-        });
-
-        socket.on('chessMoveFromServer', (move) => {
-            board.movePiece(
-                move.fromRow,
-                move.fromCol,
-                move.toRow,
-                move.toCol,
-                false,
-            );
-            this.forceReload();
-        });
-
-        board.connectToSocket(socket);
+        if (!socket) window.location.href = '/game';
         board.gameId = gameId;
+        board.connectToSocket(socket);
+        board.initEventListeners(this);
 
-        board.initInfo().then(() => {
+        const chat = ChatJs.getInstance();
+        const chatSocket = Socket.connect(`chat-${gameId}`);
+        if (!chatSocket) window.location.href = '/game';
+        chat.gameId = gameId;
+        chat.connectToSocket(chatSocket);
+        chat.initEventListeners(this);
+
+        board.initData(this).then(() => {
             this.forceReload();
         });
-        chat.initInfo().then(() => {
+        chat.initData().then(() => {
             this.forceReload();
         });
 
@@ -130,6 +116,10 @@ export default {
         opponentColor() {
             return this.board.color === 'white' ? 'black' : 'white';
         },
+        hideModal() {
+            this.showModal = 0;
+            window.location.href = '/game';
+        },
     },
 };
 </script>
@@ -140,7 +130,11 @@ export default {
     flex-direction: row;
 }
 
+.game-chat {
+    width: 100%;
+}
+
 .game-info {
-    height: 100%;
+    width: 100%;
 }
 </style>
