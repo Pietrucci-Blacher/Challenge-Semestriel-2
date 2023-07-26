@@ -1,54 +1,26 @@
 import Chat from '../models/mongo/chat.js';
-// CREATE
-const createMessage = async (sender, message) => {
-    try {
-        const chat = new Chat({
-            sender,
-            message,
-        });
-        return await chat.save();
-    } catch (error) {
-        console.log(error);
-        throw new Error('Failed to create chat');
-    }
+
+export const createMessage = async (data) => {
+    const chat = new Chat(data);
+    return await chat.save();
 };
 
-// READ
-const getChatById = async (chatId) => {
-    try {
-        return await Chat.findById(chatId).populate('sender receiver');
-    } catch (error) {
-        throw new Error('Failed to retrieve chat');
-    }
+export const findChatById = (chatId) => {
+    return Chat.findById(chatId);
 };
 
-const getAllChats = async () => {
-    try {
-        return await Chat.find().populate('sender receiver');
-    } catch (error) {
-        throw new Error('Failed to retrieve chats');
-    }
+export const findChatByGameId = (gameId) => {
+    return Chat.find({ gameId });
 };
 
-// UPDATE
-const updateChat = async (chatId, updates) => {
-    try {
-        return await Chat.findByIdAndUpdate(chatId, updates, {
-            new: true,
-        });
-    } catch (error) {
-        throw new Error('Failed to update chat');
-    }
+export const findAllChats = () => {
+    return Chat.find();
 };
 
-// DELETE
-const deleteChat = async (chatId) => {
-    try {
-        await Chat.findByIdAndDelete(chatId);
-        return 'Chat deleted successfully';
-    } catch (error) {
-        throw new Error('Failed to delete chat');
-    }
+export const updateChat = (chatId, updates) => {
+    return Chat.findByIdAndUpdate(chatId, updates, { new: true });
 };
 
-export { createMessage, getChatById, getAllChats, updateChat, deleteChat };
+export const deleteChat = (chatId) => {
+    return Chat.findByIdAndDelete(chatId);
+};

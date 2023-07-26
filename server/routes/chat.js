@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import * as ChessController from '../controllers/chess.js';
+import * as ChatController from '../controllers/chat.js';
 import { isAuthenticated } from '../middleware/middleware.js';
 
 const router = new Router();
 
-router.get('/:id', isAuthenticated, ChessController.findGameById);
+router.get('/:gameId', isAuthenticated, ChatController.findChatByGameId);
 
 export default router;

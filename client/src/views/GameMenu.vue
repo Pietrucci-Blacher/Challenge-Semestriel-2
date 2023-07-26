@@ -31,7 +31,7 @@ onMounted(() => {
             </h1>
             <div class="flex justify-center h-4/5">
                 <div
-                    class="flex flex-col items-center md:flex-row gap-56 fade-in-down"
+                    class="flex flex-col items-center md:flex-row lg:gap-56 md:gap-20 sm:gap-y-8 fade-in-down"
                 >
                     <router-link
                         to="/game/local"

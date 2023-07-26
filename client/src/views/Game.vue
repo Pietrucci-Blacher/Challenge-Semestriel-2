@@ -7,9 +7,10 @@ import Navbar from '@/components/Navbar/Navbar.vue';
 import { ref, onBeforeUnmount } from 'vue';
 import Socket from '@/utils/socket.js';
 import Chat from '@/components/Chat.vue';
+import ChatJs from '@/components/Chat.js';
+import Modal from '@/components/Modal.vue';
 
 defineProps(['isUserAuthenticated']);
-
 </script>
 
 <template>
@@ -17,8 +18,8 @@ defineProps(['isUserAuthenticated']);
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <main class="w-full h-screen">
             <div class="game">
-                <div v-if="$route.params.id !== 'local'" class="game-info">
-                    <Chat />
+                <div v-if="$route.params.id !== 'local'" class="game-chat">
+                    <Chat :key="reload" />
                 </div>
                 <div class="game-board">
                     <PlayerInfo
@@ -26,7 +27,11 @@ defineProps(['isUserAuthenticated']);
                         :name="opponent()"
                         :color="opponentColor()"
                     />
-                    <Board :key="reload" :reverse="board.color !== 'white'" />
+                    <Board
+                        :key="reload"
+                        :reverse="board.color !== 'white'"
+                        :height="height"
+                    />
                     <PlayerInfo
                         :key="reload"
                         :name="player()"
@@ -39,6 +44,11 @@ defineProps(['isUserAuthenticated']);
             </div>
         </main>
     </section>
+    <Modal v-if="showModal === 1" title="Winner">
+        <p v-if="board.winner !== 'draw'">Winner is {{ board.winner }}</p>
+        <p v-else>It's a draw</p>
+        <button @click="hideModal">Retour</button>
+    </Modal>
 </template>
 
 <script>
@@ -46,43 +56,42 @@ export default {
     name: 'Game',
     data() {
         const board = ChessBoard.getInstance();
+
         const data = {
             board,
             reload: 0,
+            showModal: 0,
+            height: window.innerHeight - 110,
         };
 
         if (this.$route.params.id === 'local') return data;
 
         const gameId = this.$route.params.id;
-
         const socket = Socket.connect(`game-${gameId}`);
+        if (!socket) window.location.href = '/game';
+        board.gameId = gameId;
+        board.connectToSocket(socket);
+        board.initEventListeners(this);
 
-        socket.on('gameDoesNotExist', () => {
-            window.location.href = '/game';
-        });
+        const chat = ChatJs.getInstance();
+        const chatSocket = Socket.connect(`chat-${gameId}`);
+        if (!chatSocket) window.location.href = '/game';
+        chat.gameId = gameId;
+        chat.connectToSocket(chatSocket);
+        chat.initEventListeners(this);
 
-        socket.on('chessMoveFromServer', (move) => {
-            console.log('chessMoveFromServer', move);
-            board.movePiece(
-                move.fromRow,
-                move.fromCol,
-                move.toRow,
-                move.toCol,
-                false,
-            );
+        board.initData(this).then(() => {
             this.forceReload();
         });
-
-        board.connectToSocket(socket);
-        board.gameId = gameId;
-
-        board.initInfo().then(() => {
+        chat.initData().then(() => {
             this.forceReload();
         });
 
         onBeforeUnmount(() => {
             Socket.disconnect(`game-${gameId}`);
+            Socket.disconnect(`chat-${gameId}`);
             ChessBoard.destroyInstance();
+            ChatJs.destroyInstance();
         });
 
         return data;
@@ -107,19 +116,25 @@ export default {
         opponentColor() {
             return this.board.color === 'white' ? 'black' : 'white';
         },
+        hideModal() {
+            this.showModal = 0;
+            window.location.href = '/game';
+        },
     },
 };
 </script>
 
 <style scoped>
 .game {
-    padding: 10px;
     display: flex;
     flex-direction: row;
 }
 
+.game-chat {
+    width: 100%;
+}
+
 .game-info {
-    margin-left: 10px;
-    height: 100%;
+    width: 100%;
 }
 </style>
