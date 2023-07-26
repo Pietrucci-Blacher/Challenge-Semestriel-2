@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import UserRouter from './routes/user.js';
 import AuthRouter from './routes/auth.js';
 import ChessRouter from './routes/chess.js';
+import PaymentRouter from './routes/payment.js';
 import cors from 'cors';
 import SocketService from './services/socket.js';
 import ChatSocket from './socket/chat.js';
@@ -12,6 +13,7 @@ import MatchMaking from './models/mongo/matchMaking.js';
 import { isAuthenticatedForSocket } from './middleware/middleware.js';
 import { gameIdRegex, gameExists } from './services/chess.js';
 import mongoose from 'mongoose';
+
 const ObjectId = mongoose.Types.ObjectId;
 
 const app = express();
@@ -43,6 +45,7 @@ app.use(express.json());
 app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);
 app.use('/game', ChessRouter);
+app.use('/payment', PaymentRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');

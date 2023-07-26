@@ -33,5 +33,25 @@
     "path": "/:pathMatch(.*)*",
     "name": "404 Error",
     "component": "404"
+  },
+  {
+    "path": "/stripe",
+    "name": "Stripe",
+    "component": "Stripe"
+  },
+  {"path": "/error",
+    "name": "Error",
+    "component": "Error"
+  },
+  {
+    "path": "/shop",
+    "name": "Shop",
+    "component": "Shop"
+  },
+  {
+    "path": "/success/:priceId",
+    "name": "Success",
+    "component": "Success"
   }
+  
 ]

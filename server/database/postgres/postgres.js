@@ -13,9 +13,11 @@ const modelDir = path.join(dirname, '../../models/postgres');
 const files = fs.readdirSync(modelDir);
 
 for (const file of files) {
-    const { default: modelFile } = await import(path.join(modelDir, file));
-    const model = modelFile(connection);
-    db[model.name] = model;
+    if (file.endsWith('.js')) {
+        const modelFile = await import(path.join(modelDir, file));
+        const model = modelFile.default(connection);
+        db[model.name] = model;
+    }
 }
 
 if (MODE === 'test') await connection.sync();
