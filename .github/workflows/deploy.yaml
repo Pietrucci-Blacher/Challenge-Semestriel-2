@@ -109,14 +109,6 @@ jobs:
           script: |
             sudo rm -rf /var/www/html/client
 
-      - name: Restart back-end
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          run: sh /var/www/html/server/server/scripts/deploy.sh
-
       - name: Deploy frontend to EC2
         uses: appleboy/scp-action@master
         with:
