@@ -1,4 +1,5 @@
 import Cookie from 'js-cookie';
+import { isAuthenticated } from '@/utils/misc';
 
 export const getUsers = async () => {
     let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
