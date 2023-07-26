@@ -17,6 +17,6 @@ router.get(
     isAuthenticated,
     UserController.getStatsPlayedGames,
 );
-router.patch('/:id/password', UserController.changePassword);
+router.patch('/:id/password', isAuthenticated, UserController.changePassword);
 
 export default router;

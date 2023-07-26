@@ -117,6 +117,44 @@ export const statsPlayedGames = async (id) => {
     return games[0];
 };
 
+export const changePassword = async (id, oldPassword, newPassword) => {
+    const user = await findById(id);
+
+    console.log('user', user.id);
+
+    if (!user) {
+        const error = new Error();
+        error.name = 'NotFoundError';
+        error.errors = {
+            message: 'User not found',
+        };
+        throw error;
+    }
+
+    const isPasswordValid = await user.checkPassword(oldPassword);
+    console.log('isPasswordValid', isPasswordValid);
+    if (!isPasswordValid) {
+        const error = new Error();
+        error.name = 'ValidationError';
+        error.errors = {
+            message: 'Old password is not valid',
+        };
+        throw error;
+    }
+
+    if (!newPassword || newPassword.length < 8) {
+        console.log('newPassword');
+        const error = new Error();
+        error.name = 'ValidationError';
+        error.errors = {
+            message: 'Password must be at least 8 characters long',
+        };
+        throw error;
+    }
+
+    await user.hashPassword(newPassword);
+};
+
 function compare(a, b, order, index = 0) {
     const [key, direction] = Object.entries(order)[index];
     if (direction === 'ASC') {
