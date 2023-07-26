@@ -61,9 +61,7 @@ export default {
             }
         },
         getMessageClass(message) {
-            return message.sender === 'me'
-                ? 'flex justify-end'
-                : 'flex justify-start';
+            return !message.sender ? 'flex justify-end' : 'flex justify-start';
         },
     },
 };
