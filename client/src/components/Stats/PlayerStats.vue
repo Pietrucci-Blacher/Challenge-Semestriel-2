@@ -5,18 +5,22 @@
                 class="bg-white rounded-lg text-center shadow transform transition-all p-5"
             >
                 <h3 class="text-sm leading-6 font-medium text-gray-400">
-                    Total Players
+                    Total Played parties
                 </h3>
-                <p class="text-3xl font-bold text-black">{{ getNbUsers() }}</p>
+                <p class="text-3xl font-bold text-black">{{ parties.total }}</p>
             </div>
+
             <div
                 class="bg-white rounded-lg text-center shadow transform transition-all p-5"
             >
                 <h3 class="text-sm leading-6 font-medium text-gray-400">
-                    Avg. Open Rate
+                    Win Rate
                 </h3>
-                <p class="text-3xl font-bold text-black">58.16%</p>
+                <p class="text-3xl font-bold text-black">
+                    {{ formattedWinRate }}
+                </p>
             </div>
+
             <div
                 class="bg-white rounded-lg text-center shadow transform transition-all p-5"
             >
@@ -30,5 +34,25 @@
 </template>
 
 <script setup>
-import { getNbUsers } from '@/utils/stats';
+import { reactive, onMounted, computed } from 'vue';
+import { getInfosPlayedParties } from '@/utils/stats';
+
+// Define reactive object
+const parties = reactive({ total: 0, win: 0 });
+
+// Fetch the data after the component is mounted
+onMounted(async () => {
+    const data = await getInfosPlayedParties();
+    Object.assign(parties, data);
+});
+
+// Computed property to calculate and format the winRate
+const formattedWinRate = computed(() => {
+    if (!parties.win) {
+        return '0.00%';
+    }
+
+    const winRate = (parties.win / parties.total) * 100;
+    return winRate.toFixed(2) + '%';
+});
 </script>

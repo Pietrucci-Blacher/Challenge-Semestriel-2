@@ -5,36 +5,41 @@
 <script>
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'vue-chartjs';
+import { getInfosPlayedParties } from '@/utils/stats';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default {
-    name: 'PieChart', // Fixed the component name
+    name: 'PieChart',
     components: { Pie },
+    data() {
+        return {
+            blackCount: 0,
+            whiteCount: 0,
+        };
+    },
     computed: {
         chartData() {
             return {
-                // Added return statement to return the chartData object
-                labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'], // Fixed the labels array
+                labels: ['White Side', 'Black Side'],
                 datasets: [
                     {
-                        backgroundColor: [
-                            '#41B883',
-                            '#E46651',
-                            '#00D8FF',
-                            '#DD1B16',
-                        ],
-                        data: [40, 20, 80, 10],
+                        backgroundColor: ['#f5f5f5', '#000000'],
+                        data: [this.whiteCount, this.blackCount],
                     },
                 ],
             };
         },
         chartOptions() {
             return {
-                // Added return statement to return the chartOptions object
                 responsive: true,
             };
         },
+    },
+    async mounted() {
+        const data = await getInfosPlayedParties();
+        this.blackCount = data.black || 0;
+        this.whiteCount = data.white || 0;
     },
 };
 </script>
