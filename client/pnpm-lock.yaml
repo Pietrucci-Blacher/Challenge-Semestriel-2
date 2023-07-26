@@ -556,7 +556,11 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
+<<<<<<< HEAD
       '@types/node': 20.4.5
+=======
+      '@types/node': 20.4.4
+>>>>>>> 2e60c7091b815e02089b114d6320ce2fd14d22dd
       playwright-core: 1.36.2
     optionalDependencies:
       fsevents: 2.3.2
@@ -593,8 +597,13 @@ packages:
     resolution: {integrity: sha512-jfT7iTf/4kOQ9S7CHV9BIyRaQqHu67mOjsIQBC3BKZvzvUB6zLxEwJ6sBE3ozcvP8kF6Uk5PXN0Q+c0dfhGX0g==}
     dev: true
 
+<<<<<<< HEAD
   /@types/node@20.4.5:
     resolution: {integrity: sha512-rt40Nk13II9JwQBdeYqmbn2Q6IVTA5uPhvSO+JVqdXw/6/4glI6oR9ezty/A9Hg5u7JH4OmYmuQ+XvjKm0Datg==}
+=======
+  /@types/node@20.4.4:
+    resolution: {integrity: sha512-CukZhumInROvLq3+b5gLev+vgpsIqC2D0deQr/yS1WnxvmYLlJXZpaQrQiseMY+6xusl79E04UjWoqyr+t1/Ew==}
+>>>>>>> 2e60c7091b815e02089b114d6320ce2fd14d22dd
     dev: true
 
   /@vitejs/plugin-vue@4.2.3(vite@4.4.7)(vue@3.3.4):

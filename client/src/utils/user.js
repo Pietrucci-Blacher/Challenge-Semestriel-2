@@ -65,4 +65,31 @@ export const isUserAdminRole = async () => {
     return userinfos.role === 'admin';
 };
 
-export default { getUserData, userDataUpdate, userDataDelete, isUserAdminRole };
+export const UserChangePassword = async (oldPassWord, newPassword) => {
+    if (!isAuthenticated()) {
+        window.location.href = '/';
+    }
+    let userToken = Cookie.get('userAccessToken');
+    let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
+    let endpoint = `${url}/users/me/password`;
+    const data = {
+        oldPassword: oldPassWord.value,
+        newPassword: newPassword.value,
+    };
+    await fetch(endpoint, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify(data),
+    });
+};
+
+export default {
+    getUserData,
+    userDataUpdate,
+    userDataDelete,
+    isUserAdminRole,
+    UserChangePassword,
+};

@@ -43,8 +43,8 @@ jobs:
           echo "JWT_ACCESS_EXPIRE=86400" >> .env
           echo "JWT_REFRESH_EXPIRE=2592000" >> .env
           echo "VITE_APP_NAME=Chess" >> .env
-          echo "VITE_ENDPOINT_BACK_URL=http://localhost:3000" >> .env
-          echo "VITE_ENDPOINT_FRONT_URL=http://localhost:5173" >> .env
+          echo "VITE_ENDPOINT_BACK_URL=https://api.mpb-dev.fr" >> .env
+          echo "VITE_ENDPOINT_FRONT_URL=https://mpb-dev.fr" >> .env
           echo "MODE_SERV=prod" >> .env
 
       - name: Install backend dependencies
@@ -109,15 +109,6 @@ jobs:
           script: |
             sudo rm -rf /var/www/html/client
 
-      - name: Restart back-end
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          workdir: /var/www/html/server
-          run: pnpm run prod
-
       - name: Deploy frontend to EC2
         uses: appleboy/scp-action@master
         with:
@@ -138,3 +129,17 @@ jobs:
             sudo chmod -R 755 /var/www/html/client/
             sudo find /var/www/html/client/ -type d -exec chmod 755 {} \;
             sudo find /var/www/html/client/ -type f -exec chmod 644 {} \;
+            
+            export POSTGRES_HOST=${{ secrets.DB_HOST }}
+            export POSTGRES_USER=${{ secrets.DB_USER }}
+            export POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}
+            export POSTGRES_DB=${{ secrets.DB_NAME }}
+            export MONGO_USER=${{ secrets.MONGO_USER }}
+            export MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}
+            export MONGO_HOST=${{ secrets.MONGO_HOST }}
+            export MONGO_DB=${{ secrets.MONGO_DB }}
+            export JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}
+            export JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
+            export JWT_ACCESS_EXPIRE=86400
+            export JWT_REFRESH_EXPIRE=2592000
+            export MODE_SERV=prod
