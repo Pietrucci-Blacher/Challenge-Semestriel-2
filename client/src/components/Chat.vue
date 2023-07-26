@@ -1,6 +1,6 @@
 <template>
-    <div class="h-screen flex items-center justify-center">
-        <div class="bg-gray-100 p-4 h-full max-w-md overflow-y-auto mt-0">
+    <div class="h-screen flex items-center justify-center chat">
+        <div class="bg-gray-100 p-4 h-full overflow-y-auto">
             <ul class="space-y-2">
                 <li
                     v-for="(message, i) in chat.messages"
@@ -68,3 +68,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.chat {
+    width: 100%;
+}
+</style>

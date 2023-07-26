@@ -12,4 +12,10 @@ router.put('/:id', isAuthenticated, UserController.replace);
 router.patch('/:id', isAuthenticated, UserController.update);
 router.delete('/:id', isAuthenticated, UserController.destroy);
 
+router.get(
+    '/:id/statsGame',
+    isAuthenticated,
+    UserController.getStatsPlayedGames,
+);
+
 export default router;

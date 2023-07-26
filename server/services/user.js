@@ -2,6 +2,7 @@ import db from '../database/postgres/postgres.js';
 const UserModel = db.User;
 import bcrypt from 'bcrypt';
 import { checkEmail } from '../utils/utils.js';
+import ChessModel from '../models/mongo/chess.js';
 
 export const findAll = async (filters, options = {}) => {
     let users = await UserModel.findAll({ where: filters });
@@ -72,6 +73,48 @@ export const update = (newData, filters) => {
 
 export const destroy = (filters) => {
     return UserModel.destroy({ where: filters });
+};
+
+export const statsPlayedGames = async (id) => {
+    const group = [
+        {
+            $group: {
+                _id: null,
+                count: { $sum: 1 },
+            },
+        },
+        {
+            $project: {
+                _id: 0,
+            },
+        },
+    ];
+
+    const games = await ChessModel.aggregate([
+        {
+            $match: {
+                $or: [{ whiteUserId: id }, { blackUserId: id }],
+            },
+        },
+        {
+            $facet: {
+                total: group,
+                white: [{ $match: { whiteUserId: id } }, ...group],
+                black: [{ $match: { blackUserId: id } }, ...group],
+                win: [{ $match: { winner: id } }, ...group],
+            },
+        },
+        {
+            $project: {
+                total: { $arrayElemAt: ['$total.count', 0] },
+                white: { $arrayElemAt: ['$white.count', 0] },
+                black: { $arrayElemAt: ['$black.count', 0] },
+                win: { $arrayElemAt: ['$win.count', 0] },
+            },
+        },
+    ]);
+
+    return games[0];
 };
 
 function compare(a, b, order, index = 0) {

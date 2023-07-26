@@ -9,6 +9,12 @@ export default (io) => (socket) => {
         const gameData = await findGameById(gameId);
         if (!gameData) return;
 
+        if (
+            socket.userId !== gameData.whiteUserId &&
+            socket.userId !== gameData.blackUserId
+        )
+            return;
+
         await createMessage({
             sender: socket.userId,
             gameId,
