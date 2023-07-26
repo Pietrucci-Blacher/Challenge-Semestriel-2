@@ -6,10 +6,10 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
+    "dev": "nodemon server.js",g
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write .",
-    "prod": "cd server/ && pm2 stop all && pm2 delete all && pm2 start server.js --name challenge-node --cwd /var/www/html/server/server",
+    "prod": "cd server/ && pm2 stop all && pm2 delete all && pm2 start ecosystem.config.js --env production",
     "migration": "node database/postgres/migration.js",
     "test:unit": "MODE=test vitest --config ./vitest.config.ts"
   },
