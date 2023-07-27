@@ -25,6 +25,11 @@
     "component": "DashboardAdmin"
   },
   {
+    "path": "/stats",
+    "name": "Stats",
+    "component": "Stats"
+  },
+  {
     "path": "/404",
     "name": "404 Error",
     "component": "404"
