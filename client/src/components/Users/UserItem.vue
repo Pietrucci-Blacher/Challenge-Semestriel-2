@@ -166,7 +166,7 @@
     <nav v-if="totalPages > 1" class="flex items-center justify-between mt-4">
         <div>
             <button
-                class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="px-3 mr-5 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 :disabled="currentPage === 1"
                 @click="goToPage(currentPage - 1)"
             >

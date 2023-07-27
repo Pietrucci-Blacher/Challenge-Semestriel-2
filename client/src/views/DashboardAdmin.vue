@@ -15,7 +15,7 @@ defineComponent({
 <template>
     <section class="flex flex-row h-screen">
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
-        <main class="w-full h-screen">
+        <main class="w-full h-screen overflow-y-auto">
             <UserItem />
             <br />
             <UserReportedComments />

@@ -35,3 +35,8 @@ export const getReportedComments = async () => {
     }
     return response.json();
 };
+
+export default {
+    getUsers,
+    getReportedComments,
+};

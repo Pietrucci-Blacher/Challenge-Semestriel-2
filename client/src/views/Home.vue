@@ -6,7 +6,7 @@ import VueTypedJs from 'vue-typed-js';
 import VueWriter from 'vue-writer';
 
 import Navbar from '@/components/Navbar/Navbar.vue';
-import { ref } from 'vue';
+import { onMounted, ref, toRefs } from 'vue';
 
 const clientIdDiscord = import.meta.env.VITE_DISCORD_CLIENT_ID;
 const redirectUriDiscord = import.meta.env.VITE_DISCORD_REDIRECT_URI;
@@ -28,12 +28,20 @@ const LoginUrlGoogle = `https://accounts.google.com/o/oauth2/v2/auth/userinfo.pr
     scopeGoogle,
 )}`;
 
-const props = defineProps(['email', 'password']);
-
 const isUserAuthenticated = ref(false);
-/*const showLoginModal = ref(
-    defineProps({ showLoginModal: Boolean }).showLoginModal,
-);*/
+const showLoginModal = ref(false);
+
+onMounted(() => {
+    document.addEventListener('click', closeModalOnBackgroundClick);
+});
+
+function closeModalOnBackgroundClick(event) {
+    console.log('event', event);
+    const modalBg = document.querySelector('.modal-bg');
+    if (modalBg && !modalBg.contains(event.target)) {
+        showLoginModal.value = false;
+    }
+}
 </script>
 
 <template>
@@ -114,9 +122,11 @@ const isUserAuthenticated = ref(false);
                 </div>
             </section>
         </main>
-        <!--
-        <Login :showModal="showLoginModal" />
--->
+        <!--        <Login
+                    :showModal="showLoginModal"
+                    @closeModal="showLoginModal = false"
+                />-->
+
         <!--        <Register />-->
     </section>
 </template>
