@@ -11,7 +11,6 @@ import ChatJs from '@/components/Chat.js';
 import Modal from '@/components/Modal.vue';
 
 defineProps(['isUserAuthenticated']);
-
 </script>
 
 <template>

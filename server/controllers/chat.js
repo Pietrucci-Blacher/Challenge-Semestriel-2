@@ -1,5 +1,11 @@
 import * as ChatService from '../services/chat.js';
 
+export const findReportedChats = async (req, res) => {
+    const chats = await ChatService.findReportedChats();
+
+    res.status(200).json(chats);
+};
+
 export const findChatById = async (req, res) => {
     const { id } = req.params;
     if (!id) return res.status(400).json({ message: 'Invalid id' });
