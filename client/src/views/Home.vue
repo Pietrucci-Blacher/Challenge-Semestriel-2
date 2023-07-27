@@ -2,7 +2,6 @@
 import Login from '@/components/Login.vue';
 import Register from '@/components/Register.vue';
 import Chat from '@/components/Chat.vue';
-import VueTypedJs from 'vue-typed-js';
 import VueWriter from 'vue-writer';
 
 import Navbar from '@/components/Navbar/Navbar.vue';
