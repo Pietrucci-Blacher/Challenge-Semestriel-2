@@ -48,7 +48,7 @@ export const getOne = async (req, res) => {
     );
 
     try {
-        const result = await UserService.findOne({ id: userId });
+        const result = await UserService.findOne({ id: userId }, true);
         if (result) res.json(result);
         else res.sendStatus(404);
     } catch (err) {

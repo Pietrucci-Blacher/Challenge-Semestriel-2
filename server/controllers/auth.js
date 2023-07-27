@@ -48,15 +48,18 @@ export const discordLogin = async (req, res) => {
  */
 export const login = async (req, res) => {
     const { email, password } = req.body;
+    console.log('email', email, 'password', password);
 
     if (!email || !password)
         return res.status(400).json({ message: 'Invalid data' });
 
     try {
+        console.log('test');
         const { accessToken, refreshToken } = await AuthService.login(
             email,
             password,
         );
+        console.log('accessToken', accessToken, 'refreshToken', refreshToken);
         if (!accessToken || !refreshToken) return res.status(400);
         res.status(200).json({ accessToken, refreshToken });
     } catch (err) {

@@ -7,7 +7,8 @@ import ChessModel from '../models/mongo/chess.js';
 export const findAll = async (filters, options = {}) => {
     let users = await UserModel.findAll({ where: filters });
 
-    for (const user of users) delete user.dataValues.password;
+    if (!options.reomvePass)
+        for (const user of users) delete user.dataValues.password;
 
     if (options.order)
         users = users.sort((a, b) => compare(a, b, options.order));
@@ -17,15 +18,15 @@ export const findAll = async (filters, options = {}) => {
     return users;
 };
 
-export const findOne = async (filters) => {
+export const findOne = async (filters, removePass = false) => {
     const user = await UserModel.findOne({ where: filters });
-    if (user) delete user.dataValues.password;
+    if (removePass && user) delete user.dataValues.password;
 
     return user;
 };
 
-export const findById = (id) => {
-    return UserModel.findOne({ where: { id } });
+export const findById = (id, showPass = false) => {
+    return UserModel.findOne({ where: { id } }, showPass);
 };
 
 export const create = async (data) => {
