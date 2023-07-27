@@ -68,8 +68,32 @@ export default (io) => (socket) => {
                 checkmate === 'white'
                     ? gameData.blackUserId
                     : gameData.whiteUserId;
+
             const winner = await findUserById(game.winner);
-            socket.emit('finish', { winner: winner.username });
+            const looser = await findUserById(
+                game.winner === gameData.whiteUserId
+                    ? gameData.blackUserId
+                    : gameData.whiteUserId,
+            );
+
+            const winnerElo = winner.elo;
+            const looserElo = looser.elo;
+            winner.calculateElo(looserElo, 1);
+            looser.calculateElo(winnerElo, 0);
+            winner.save();
+            looser.save();
+
+            const winnerSocket = SocketService.getSocket(winner.id, socket.key);
+            const looserSocket = SocketService.getSocket(looser.id, socket.key);
+
+            winnerSocket.emit('win', {
+                player: winner.username,
+                elo: winner.elo,
+            });
+            looserSocket.emit('loose', {
+                player: looser.username,
+                elo: looser.elo,
+            });
         }
 
         const gameExport = game.export();
@@ -88,10 +112,6 @@ export default (io) => (socket) => {
         const opponentSocket = SocketService.getSocket(opponentId, socket.key);
 
         opponentSocket.emit('chessMoveFromServer', move);
-
-        // for (const sock of [socket, opponentSocket]) {
-        //     sock.emit('finish', { winner: gameExport.winner });
-        // }
     });
 
     socket.on('addToQueue', async () => {
