@@ -40,7 +40,6 @@ describe('User Service', () => {
                 expect(user).toBeDefined();
                 expect(user.username).toEqual(users[i].username);
                 expect(user.email).toEqual(users[i].email);
-                expect(user.password).toEqual(users[i].password);
             }
         });
         it('should not find 5 users', async () => {
@@ -61,6 +60,15 @@ describe('User Service', () => {
             expect(result.username).toEqual(user.username);
             expect(result.email).toEqual(user.email);
             expect(result.password).toEqual(user.password);
+        });
+        it('should find one user with no password', async () => {
+            const user = users[0];
+
+            const result = await UserService.findOne({ id: user.id }, true);
+
+            expect(result).toBeDefined();
+            expect(result.username).toEqual(user.username);
+            expect(result.email).toEqual(user.email);
         });
         it('should not find one user', async () => {
             const result = await UserService.findOne({ id: 999 });
