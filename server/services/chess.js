@@ -24,6 +24,7 @@ export const updateGame = async (id, data) => {
             $set: {
                 board: data.board,
                 moveHistory: data.moveHistory,
+                winner: data.winner,
             },
         },
     );
