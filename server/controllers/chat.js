@@ -19,3 +19,14 @@ export const findChatByGameId = async (req, res) => {
 
     res.status(200).json(chat);
 };
+
+export const reportChat = async (req, res) => {
+    const { id } = req.params;
+    if (!id) return res.status(400).json({ message: 'Invalid id' });
+
+    const reportedChat = await ChatService.reportChat(id);
+    if (!reportedChat)
+        return res.status(500).json({ message: 'Error reporting chat' });
+
+    res.status(200).json(reportedChat);
+};

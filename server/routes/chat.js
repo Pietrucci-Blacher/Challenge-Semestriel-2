@@ -4,6 +4,9 @@ import { isAuthenticated } from '../middleware/middleware.js';
 
 const router = new Router();
 
-router.get('/:gameId', isAuthenticated, ChatController.findChatByGameId);
+router.get('/:id', isAuthenticated, ChatController.findChatById);
+router.get('/game/:gameId', isAuthenticated, ChatController.findChatByGameId);
+
+router.post('/:id/report', isAuthenticated, ChatController.reportChat);
 
 export default router;

@@ -11,6 +11,7 @@ import ChatJs from '@/components/Chat.js';
 import Modal from '@/components/Modal.vue';
 
 defineProps(['isUserAuthenticated']);
+
 </script>
 
 <template>
@@ -56,7 +57,6 @@ export default {
     name: 'Game',
     data() {
         const board = ChessBoard.getInstance();
-
         const data = {
             board,
             reload: 0,
