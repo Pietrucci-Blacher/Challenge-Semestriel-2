@@ -21,19 +21,19 @@ export default (sequelize) => {
             },
             image: {
                 type: DataTypes.STRING(50),
-                allowNull: false,
+                allowNull: true,
             },
             description: {
                 type: DataTypes.STRING(100),
-                allowNull: false,
+                allowNull: true,
             },
             createdAt: {
                 type: DataTypes.DATE,
-                allowNull: false,
+                allowNull: true,
             },
             updatedAt: {
                 type: DataTypes.DATE,
-                allowNull: false,
+                allowNull: true,
             }
         },
         {

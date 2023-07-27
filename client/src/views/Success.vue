@@ -1,5 +1,4 @@
-<!-- <h1>Payement is successful</h1>
-    <a href="/stripe"> Buy again</a> -->
+
 <template>
     <div class="success-page">
         <div class="success-content">
@@ -14,12 +13,58 @@
                 Vous serez redirigé vers la boutique dans
                 {{ countdown }} secondes.
             </p>
-            <!-- Vous pouvez ajouter d'autres éléments ici en fonction de vos besoins -->
         </div>
     </div>
 </template>
 
+
 <script>
+import Cookie from 'js-cookie';
+
+export default {
+  name: 'Success',
+  data() {
+    return {
+      logs: [],
+      countdown: 5,
+      priceId: null,
+      articleId: null,
+    };
+  },
+  created() {
+    const urlParams = new URLSearchParams(window.location.search);
+    this.priceId = urlParams.get('priceId');
+    this.articleId = urlParams.get('articleId');
+
+    this.verifyPayment();
+  },
+  methods: {
+    verifyPayment() {
+      const paymentVerificationURL = 'http://localhost:3000/payment/verify'; 
+
+      fetch(paymentVerificationURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Données reçues depuis le back-end:', data);
+          const paymentIntent = data.paymentIntent;
+          console.log('Informations de paiement:', paymentIntent);
+        })
+        .catch((error) => {
+          console.error('Erreur lors de la requête fetch:', error);
+        });
+    },
+  },
+};
+</script>
+
+<!-- <script>
+  import Cookie from 'js-cookie';
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
     name: 'Success',
@@ -37,24 +82,27 @@ export default {
         this.articleId = urlParams.get('articleId');
         console.log('Price ID:', this.priceId);
         console.log('Article ID:', this.articleId);
-        // Appeler le back-end en utilisant fetch
-        fetch('http://localhost:3001/payment/verify', {
+        fetch('http://localhost:3000/payment/verify', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json', 
+                Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
             },
         })
             .then((response) => response.json())
             .then((data) => {
                 console.log('Données reçues depuis le back-end:', data);
+                const paymentIntent = data.paymentIntent;
+                console.log('Informations de paiement:', paymentIntent);
             })
+            
             .catch((error) => {
                 console.error('Erreur lors de la requête fetch:', error);
             });
         // this.startCountdown();
     },
 };
-</script>
+</script> -->
 
 <style>
 .success-page {

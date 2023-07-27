@@ -8,6 +8,12 @@ overrides:
   eslint-plugin-prettier: ^5.0.0-alpha.2
 
 dependencies:
+  '@stripe/stripe-js':
+    specifier: ^1.54.1
+    version: 1.54.1
+  '@vue-stripe/vue-stripe':
+    specifier: ^4.5.0
+    version: 4.5.0
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
@@ -26,6 +32,9 @@ dependencies:
   vue-router:
     specifier: ^4.2.4
     version: 4.2.4(vue@3.3.4)
+  vue3-carousel:
+    specifier: ^0.3.1
+    version: 0.3.1(vue@3.3.4)
 
 devDependencies:
   '@fortawesome/fontawesome-svg-core':
@@ -574,6 +583,10 @@ packages:
     resolution: {integrity: sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==}
     dev: false
 
+  /@stripe/stripe-js@1.54.1:
+    resolution: {integrity: sha512-smEXPu1GKMcAj9g2luT16+oXfg2jAwyc68t2Dm5wdtYl3p8PqQaZEiI8tQmboaQAjgF8pIGma6byz1T1vgmpbA==}
+    dev: false
+
   /@tootallnate/once@2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
@@ -645,6 +658,13 @@ packages:
       loupe: 2.3.6
       pretty-format: 29.6.1
     dev: true
+
+  /@vue-stripe/vue-stripe@4.5.0:
+    resolution: {integrity: sha512-BU449XT5zegjNQirl+SSztbzGIvPjhxlHv8ybomSZcI1jB6qEpLgpk2eHMFDKnOGZZRhqtg4C5FiErwSJ/yuRw==}
+    dependencies:
+      '@stripe/stripe-js': 1.54.1
+      vue-coerce-props: 1.0.0
+    dev: false
 
   /@vue/compiler-core@3.3.4:
     resolution: {integrity: sha512-cquyDNvZ6jTbf/+x+AgM2Arrp6G4Dzbb0R64jiG804HRMfRiFXWI6kqUVqZ6ZR0bQhIoQjB4+2bhNtVwndW15g==}
@@ -2881,6 +2901,10 @@ packages:
       - terser
     dev: true
 
+  /vue-coerce-props@1.0.0:
+    resolution: {integrity: sha512-4fdRMXO6FHzmE7H4soAph6QmPg3sL/RiGdd+axuxuU07f02LNMns0jMM88fmt1bvSbN+2Wyd8raho6p6nXUzag==}
+    dev: false
+
   /vue-component-type-helpers@1.8.4:
     resolution: {integrity: sha512-6bnLkn8O0JJyiFSIF0EfCogzeqNXpnjJ0vW/SZzNHfe6sPx30lTtTXlE5TFs2qhJlAtDFybStVNpL73cPe3OMQ==}
     dev: true
@@ -2937,6 +2961,14 @@ packages:
       vue: ^3.2.0
     dependencies:
       '@vue/devtools-api': 6.5.0
+      vue: 3.3.4
+    dev: false
+
+  /vue3-carousel@0.3.1(vue@3.3.4):
+    resolution: {integrity: sha512-86vUkNPBzL2PVuR9w6hUsI90ccFjLp+K8cSFpRTISf+SjUQY3fMHc5CFF5MUL62v1xYYm27zEBmQupO9VQx9Kw==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
       vue: 3.3.4
     dev: false
 

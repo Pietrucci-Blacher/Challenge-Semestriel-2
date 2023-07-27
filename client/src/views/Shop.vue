@@ -139,7 +139,6 @@
             priceId: 'price_1NVZuVJ6Q5BZS72KNeuFlNmK', 
           }
         ],
-        // successURL: 'http://localhost:5173/success', 
         successURL: import.meta.env.VITE_ENDPOINT_FRONT_URL + routesData.find(route => route.name === 'Success').path,
         cancelURL: 'http://localhost:5173/error', 
       };
@@ -154,6 +153,9 @@ methods: {
       const articleId = article.id;
       const stripe = await loadStripe(this.publishableKey);
 
+      const paymentVerificationURL = 'http://localhost:3000/payment/verify';
+      
+
       stripe.redirectToCheckout({
         lineItems: [{ price: priceId, quantity: 1 }],
         mode: 'payment',
@@ -163,14 +165,14 @@ methods: {
         if (result.error) {
           this.loading = false;
           console.log("error");
-        } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
-          // Le paiement a été effectué avec succès, maintenant envoyez la réponse au serveur
+        } 
+        else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
           fetch(paymentVerificationURL, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(result), 
+            body: JSON.stringify(result.paymentIntent), 
           })
           .then(response => response.json())
           .then(data => {

@@ -4,19 +4,27 @@ export const verifyPayment = async (req, res) => {
     try {
         const { paymentIntent } = req.body;
 
+        if (!paymentIntent || !paymentIntent.id || !paymentIntent.amount) {
+            throw new Error('Invalid payment data');
+        }
+        const paymentId = paymentIntent.id;
+        console.log(paymentId);
         const newPayment = await PaymentService.create({
-            userId: req.user.id,
-            date: new Date(),
-            amount: paymentIntent.amount,
-            status: true,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            skinId: paymentIntent.metadata.skinId,
-            priceId: paymentIntent.metadata.priceId,
+
+            paymentId,
+            // userId: req.userId,
+            // date: new Date(),
+            // amount: paymentIntent.amount,
+            // status: true,
+            // skinId: paymentIntent.metadata.skinId,
+            // priceId: paymentIntent.metadata.priceId,
+
         });
 
         res.json({ message: 'Payment successful', payment: newPayment });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to process payment' });
+        // res.status(500).json({ error: 'Failed to process payment' });
+        res.status(500).json(error);
+        res.status(500).json({ error: error.message });
     }
 };

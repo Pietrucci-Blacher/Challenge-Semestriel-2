@@ -1,6 +1,8 @@
 import { DataTypes, Model } from 'sequelize';
+import SkinFunc from './skin.js';
 
 export default (sequelize) => {
+    const Skin = SkinFunc(sequelize);
     class Payment extends Model {}
 
     Payment.init(
@@ -11,12 +13,12 @@ export default (sequelize) => {
                 autoIncrement: true,
                 allowNull: false,
             },
-            userId: {
-                type: DataTypes.INTEGER,
+            paymentId: {
+                type: DataTypes.STRING(50),
                 allowNull: false,
             },
-            date: {
-                type: DataTypes.DATE,
+            userId: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             amount: {
@@ -27,27 +29,16 @@ export default (sequelize) => {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
             },
-            createdAt: {
-                type: DataTypes.DATE,
-                allowNull: false,
-            },
-            updatedAt: {
-                type: DataTypes.DATE,
-                allowNull: false,
-            },
             skinId: {
                 type: DataTypes.INTEGER,
                 references: {
-                    model: 'Skin',
+                    model: Skin,
                     key: 'id',
                 },
             },
             priceId: {
-                type: DataTypes.INTEGER,
-                references: {
-                    model: 'Skin',
-                    key: 'id',
-                },
+                type: DataTypes.STRING(50),
+                allowNull: false,
             },
         },
         {
