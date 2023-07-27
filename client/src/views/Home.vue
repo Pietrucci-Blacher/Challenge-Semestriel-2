@@ -1,4 +1,10 @@
 <script setup>
+import { isAuthenticated } from '@/utils/misc';
+
+if (isAuthenticated()) {
+    window.location.href = '/game';
+}
+
 import Login from '@/components/Login.vue';
 import Register from '@/components/Register.vue';
 import Chat from '@/components/Chat.vue';
@@ -35,10 +41,11 @@ onMounted(() => {
 });
 
 function closeModalOnBackgroundClick(event) {
-    console.log('event', event);
-    const modalBg = document.querySelector('.modal-bg');
-    if (modalBg && !modalBg.contains(event.target)) {
-        showLoginModal.value = false;
+    if (showLoginModal.value) {
+        const modalBg = document.querySelector('.modal-bg');
+        if (modalBg && !modalBg.contains(event.target)) {
+            showLoginModal.value = false;
+        }
     }
 }
 </script>
@@ -121,11 +128,11 @@ function closeModalOnBackgroundClick(event) {
                 </div>
             </section>
         </main>
-        <!--        <Login
-                    :showModal="showLoginModal"
-                    @closeModal="showLoginModal = false"
-                />-->
+        <Login
+            :showModal="showLoginModal"
+            @closeModal="showLoginModal = false"
+        />
 
-        <!--        <Register />-->
+        <Register />
     </section>
 </template>

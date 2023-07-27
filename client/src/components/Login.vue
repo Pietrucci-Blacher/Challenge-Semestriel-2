@@ -1,5 +1,5 @@
 <template>
-    <Modal title="">
+    <Modal :showModal="showModal" title="" @click="handleModalClick">
         <div
             class="flex flex-col justify-center py-12 sm:px-6 lg:px-8 h-[50vh]"
         >
@@ -80,7 +80,10 @@ import Modal from '@/components/Modal.vue';
 
 export default {
     components: { Modal },
-    setup() {
+    props: {
+        showModal: Boolean,
+    },
+    setup(props, { emit }) {
         const email = ref('');
         const password = ref('');
 
@@ -137,7 +140,19 @@ export default {
             email,
             password,
             submitForm,
+            closeModal: () => emit('closeModal'),
         };
+    },
+    methods: {
+        handleModalClick(event) {
+            if (
+                event.target === this.$refs.modal ||
+                this.$refs.modal.contains(event.target)
+            ) {
+                return;
+            }
+            this.closeModal();
+        },
     },
 };
 </script>
