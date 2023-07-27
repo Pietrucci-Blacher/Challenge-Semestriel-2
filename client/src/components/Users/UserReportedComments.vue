@@ -78,4 +78,12 @@
         </table>
     </div>
 </template>
-<script setup></script>
+<script setup>
+import { ref, watch } from 'vue';
+import { getReportedComments } from '@/utils/admin';
+let reportedComments = ref([]);
+let sortProperty = ref('id');
+
+reportedComments.value = await getReportedComments();
+console.log(reportedComments);
+</script>
