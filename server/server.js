@@ -6,6 +6,7 @@ import AuthRouter from './routes/auth.js';
 import ChessRouter from './routes/chess.js';
 import PaymentRouter from './routes/payment.js';
 import ChatRouter from './routes/chat.js';
+import WebhookRouter from './routes/webhook.js';
 import cors from 'cors';
 import SocketService from './services/socket.js';
 import ChatSocket from './socket/chat.js';
@@ -14,6 +15,8 @@ import MatchMaking from './models/mongo/matchMaking.js';
 import { isAuthenticatedForSocket } from './middleware/middleware.js';
 import { gameIdRegex, gameExists } from './services/chess.js';
 import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+
 const ObjectId = mongoose.Types.ObjectId;
 
 const app = express();
@@ -48,11 +51,13 @@ app.use((req, res, next) => {
     }
 });
 
+app.use(express.raw({ type: 'application/json' }));
 app.use(express.json());
 app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);
 app.use('/game', ChessRouter);
 app.use('/payment', PaymentRouter);
+app.use(WebhookRouter);
 app.use('/chat', ChatRouter);
 
 app.get('/', (req, res) => {

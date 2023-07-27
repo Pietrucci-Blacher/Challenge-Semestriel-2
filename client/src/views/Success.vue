@@ -8,7 +8,7 @@
             </p>
             <p class="success-message">Merci pour votre achat !</p>
             <p>Price ID: {{ priceId }}</p>
-            <p>Article ID: {{ articleId }}</p>
+            <p>Skin ID: {{ skinId }}</p>
             <p class="redirect-message">
                 Vous serez redirigé vers la boutique dans
                 {{ countdown }} secondes.
@@ -19,7 +19,6 @@
 
 
 <script>
-import Cookie from 'js-cookie';
 
 export default {
   name: 'Success',
@@ -28,81 +27,30 @@ export default {
       logs: [],
       countdown: 5,
       priceId: null,
-      articleId: null,
+      skinId: null,
     };
   },
   created() {
     const urlParams = new URLSearchParams(window.location.search);
+    
     this.priceId = urlParams.get('priceId');
-    this.articleId = urlParams.get('articleId');
-
-    this.verifyPayment();
+    this.skinId = urlParams.get('skinId');
   },
   methods: {
-    verifyPayment() {
-      const paymentVerificationURL = 'http://localhost:3000/payment/verify'; 
-
-      fetch(paymentVerificationURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Données reçues depuis le back-end:', data);
-          const paymentIntent = data.paymentIntent;
-          console.log('Informations de paiement:', paymentIntent);
-        })
-        .catch((error) => {
-          console.error('Erreur lors de la requête fetch:', error);
-        });
-    },
+    // redirect() {
+    //   if (this.countdown > 0) {
+    //     setTimeout(() => {
+    //       this.countdown -= 1;
+    //       this.redirect();
+    //     }, 1000);
+    //   } else {
+    //     this.$router.push({ name: 'Shop' });
+    //   }
+    // },
   },
 };
 </script>
 
-<!-- <script>
-  import Cookie from 'js-cookie';
-export default {
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: 'Success',
-    data() {
-        return {
-            logs: [],
-            countdown: 5,
-            priceId: null,
-            articleId: null,
-        };
-    },
-    created() {
-        const urlParams = new URLSearchParams(window.location.search);
-        this.priceId = urlParams.get('priceId');
-        this.articleId = urlParams.get('articleId');
-        console.log('Price ID:', this.priceId);
-        console.log('Article ID:', this.articleId);
-        fetch('http://localhost:3000/payment/verify', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', 
-                Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('Données reçues depuis le back-end:', data);
-                const paymentIntent = data.paymentIntent;
-                console.log('Informations de paiement:', paymentIntent);
-            })
-            
-            .catch((error) => {
-                console.error('Erreur lors de la requête fetch:', error);
-            });
-        // this.startCountdown();
-    },
-};
-</script> -->
 
 <style>
 .success-page {

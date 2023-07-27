@@ -19,7 +19,7 @@ export default (sequelize) => {
             },
             userId: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             amount: {
                 type: DataTypes.INTEGER,
@@ -27,7 +27,7 @@ export default (sequelize) => {
             },
             status: {
                 type: DataTypes.BOOLEAN,
-                allowNull: false,
+                defaultValue: false,
             },
             skinId: {
                 type: DataTypes.INTEGER,
@@ -38,7 +38,10 @@ export default (sequelize) => {
             },
             priceId: {
                 type: DataTypes.STRING(50),
-                allowNull: false,
+                references: {
+                    model: Skin,
+                    key: 'priceId',
+                },
             },
         },
         {
