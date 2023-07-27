@@ -108,35 +108,35 @@ export default {
           image: '/images/chess-piece-color/image-2.jpg',
           title: 'Pions Rouge',
           description: 'Changez votre skin de pion',
-          priceId: 'price_1NV8rIJ6Q5BZS72KIOlLzSNt', 
+          priceId: 'price_1NYdKyJ6Q5BZS72KZRlbNVgx', 
         },
         {
           id: 3,
           image: '/images/chess-piece-color/image-3.jpg',
           title: 'Pions Vert',
           description: 'Changez votre skin de pion',
-          priceId: 'price_1NVZsWJ6Q5BZS72KrYf52jgK', 
+          priceId: 'price_1NYdLbJ6Q5BZS72KhSiPuPfX', 
         },
         {
           id: 4,
           image: '/images/chess-piece-color/image-4.jpg',
           title: 'Pions Violet',
           description: 'Changez votre skin de pion',
-          priceId: 'price_1NVZsyJ6Q5BZS72KovmNciHY', 
+          priceId: 'price_1NYdLyJ6Q5BZS72K8ht4DUZD', 
         },
               {
           id: 5,
           image: '/images/chess-piece-color/image-5.jpg',
           title: 'Pions Orange',
           description: 'Changez votre skin de pion',
-          priceId: 'price_1NVZtWJ6Q5BZS72Krs67ECV6', 
+          priceId: 'price_1NYdMTJ6Q5BZS72K6pJPHmvf', 
         },
         {
           id: 6,
           image: '/images/chess-piece-color/image-6.jpg',
           title: 'Pions Jaune',
           description: 'Changez votre skin de pion',
-          priceId: 'price_1NVZuVJ6Q5BZS72KNeuFlNmK', 
+          priceId: 'price_1NYdMuJ6Q5BZS72KYCWsSu0N', 
         }
       ],
       successURL: import.meta.env.VITE_ENDPOINT_FRONT_URL + routesData.find(route => route.name === 'Success').path,
@@ -164,6 +164,7 @@ export default {
        alert(JSON.stringify(result));
 
       });
+      
 
       },
     },
@@ -187,7 +188,7 @@ export default {
 //       method: 'POST',
 //       headers: {
 //         'Content-Type': 'application/json',
-//       },
+//       }, 
 //       body: JSON.stringify({
 //         skinId: skinId,
 //       }),

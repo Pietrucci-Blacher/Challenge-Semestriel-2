@@ -7,8 +7,6 @@
                 Votre paiement a été effectué avec succès.
             </p>
             <p class="success-message">Merci pour votre achat !</p>
-            <p>Price ID: {{ priceId }}</p>
-            <p>Skin ID: {{ skinId }}</p>
             <p class="redirect-message">
                 Vous serez redirigé vers la boutique dans
                 {{ countdown }} secondes.
@@ -31,12 +29,44 @@ export default {
     };
   },
   created() {
+    this.startCountdown();
     const urlParams = new URLSearchParams(window.location.search);
     
     this.priceId = urlParams.get('priceId');
     this.skinId = urlParams.get('skinId');
   },
   methods: {
+
+    startCountdown() {
+        const timer = setInterval(() => {
+          this.countdown--;
+          if (this.countdown === 0) {
+            clearInterval(timer);
+            this.$router.push({ name: 'Shop' });
+          }
+        }, 1000);
+      },
+    // verifyPayment() {
+    //   const paymentVerificationURL = 'http://localhost:3000/payment/verify'; 
+
+    //   fetch(paymentVerificationURL, {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
+    //     },
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       console.log('Données reçues depuis le back-end:', data);
+    //       const paymentIntent = data.paymentIntent;
+    //       console.log('Informations de paiement:', paymentIntent);
+    //     })
+    //     .catch((error) => {
+    //       console.error('Erreur lors de la requête fetch:', error);
+    //     });
+    // },
+
+
     // redirect() {
     //   if (this.countdown > 0) {
     //     setTimeout(() => {
