@@ -30,8 +30,8 @@ export default (sequelize) => {
          *
          * @async
          */
-        async hashPassword() {
-            this.password = await bcrypt.hash(this.password, 10);
+        async hashPassword(password) {
+            this.password = await bcrypt.hash(password, 10);
         }
 
         /**
