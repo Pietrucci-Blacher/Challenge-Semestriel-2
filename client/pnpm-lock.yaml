@@ -32,6 +32,9 @@ dependencies:
   vue-router:
     specifier: ^4.2.4
     version: 4.2.4(vue@3.3.4)
+  vue-writer:
+    specifier: ^1.2.0
+    version: 1.2.0(vue@3.3.4)
 
 devDependencies:
   '@fortawesome/fontawesome-svg-core':
@@ -2964,6 +2967,15 @@ packages:
       vue: ^3.2.0
     dependencies:
       '@vue/devtools-api': 6.5.0
+      vue: 3.3.4
+    dev: false
+
+  /vue-writer@1.2.0(vue@3.3.4):
+    resolution: {integrity: sha512-EtunS6F12cyhXkKgIKDQxr6QEJpSmj4rUSqE149XZN5vbPQuX7PIbWovA1oPvGYUxrlq5HHobdZAzOzSeNAG7g==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      vue: ^3.0.5
+    dependencies:
       vue: 3.3.4
     dev: false
 
