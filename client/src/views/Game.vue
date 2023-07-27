@@ -11,6 +11,7 @@ import ChatJs from '@/components/Chat.js';
 import Modal from '@/components/Modal.vue';
 
 defineProps(['isUserAuthenticated']);
+
 </script>
 
 <template>
@@ -44,11 +45,6 @@ defineProps(['isUserAuthenticated']);
             </div>
         </main>
     </section>
-    <Modal v-if="showModal === 1" title="Winner">
-        <p v-if="board.winner !== 'draw'">Winner is {{ board.winner }}</p>
-        <p v-else>It's a draw</p>
-        <button @click="hideModal">Retour</button>
-    </Modal>
 </template>
 
 <script>
@@ -56,12 +52,9 @@ export default {
     name: 'Game',
     data() {
         const board = ChessBoard.getInstance();
-
         const data = {
             board,
             reload: 0,
-            showModal: 0,
-            height: window.innerHeight - 110,
         };
 
         if (this.$route.params.id === 'local') return data;
