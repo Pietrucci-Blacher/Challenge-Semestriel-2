@@ -5,6 +5,7 @@ import UserRouter from './routes/user.js';
 import AuthRouter from './routes/auth.js';
 import ChessRouter from './routes/chess.js';
 import PaymentRouter from './routes/payment.js';
+import ChatRouter from './routes/chat.js';
 import cors from 'cors';
 import SocketService from './services/socket.js';
 import ChatSocket from './socket/chat.js';
@@ -26,7 +27,7 @@ const io = new Server(server, {
         methods: ['GET', 'POST'],
     },
 });
-const { chatMessageEvent } = ChatSocket(io);
+const chatEvent = ChatSocket(io);
 const chessEvent = ChessSocket(io);
 
 app.use(
@@ -52,6 +53,7 @@ app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);
 app.use('/game', ChessRouter);
 app.use('/payment', PaymentRouter);
+app.use('/chat', ChatRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
@@ -62,7 +64,6 @@ app.post('/', (req, res) => {
 });
 
 io.use(isAuthenticatedForSocket).on('connection', async (socket) => {
-    console.log('A user connected', socket.id, socket.userId, socket.key);
     if (gameIdRegex.test(socket.key)) {
         const gameId = socket.key.split('-')[1];
         if (!ObjectId.isValid(gameId) || !(await gameExists(gameId))) {
@@ -72,14 +73,11 @@ io.use(isAuthenticatedForSocket).on('connection', async (socket) => {
     }
 
     SocketService.addSocket(socket.userId, socket.key, socket);
-    chatMessageEvent(socket);
+    chatEvent(socket);
     chessEvent(socket);
-
-    console.log('Socket:', SocketService.sockets);
 
     socket.on('disconnect', () => {
         SocketService.removeSocket(socket.userId, socket.key);
-        console.log('A user disconnected', socket.id);
     });
 });
 

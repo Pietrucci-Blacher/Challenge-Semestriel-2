@@ -4,7 +4,8 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 
 dotenv.config({ path: '../.env' });
 
-const { MONGO_USER, MONGO_PASSWORD, MONGO_DB, MONGO_HOST, MODE } = process.env;
+const { MONGO_USER, MONGO_PASSWORD, MONGO_DB, MONGO_HOST, MODE, MODE_SERV } =
+    process.env;
 let mongo;
 
 if (MODE === 'test') {
