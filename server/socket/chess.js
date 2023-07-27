@@ -62,11 +62,22 @@ export default (io) => (socket) => {
             return;
         }
 
+        const checkmate = game.whoIsCheckmated();
+        if (checkmate) {
+            game.winner =
+                checkmate === 'white'
+                    ? gameData.blackUserId
+                    : gameData.whiteUserId;
+            const winner = await findUserById(game.winner);
+            socket.emit('finish', { winner: winner.username });
+        }
+
         const gameExport = game.export();
 
         await updateGame(gameId, {
             board: gameExport.board,
             moveHistory: gameExport.moveHistory,
+            winner: gameExport.winner,
         });
 
         const opponentId =
@@ -77,6 +88,10 @@ export default (io) => (socket) => {
         const opponentSocket = SocketService.getSocket(opponentId, socket.key);
 
         opponentSocket.emit('chessMoveFromServer', move);
+
+        // for (const sock of [socket, opponentSocket]) {
+        //     sock.emit('finish', { winner: gameExport.winner });
+        // }
     });
 
     socket.on('addToQueue', async () => {
@@ -98,9 +113,8 @@ export default (io) => (socket) => {
         const game = await createGame(playerId[0], playerId[1]);
 
         const data = { gameId: game._id.toString() };
-        for (const sock of [socket, opponentSocket]) {
+        for (const sock of [socket, opponentSocket])
             sock.emit('gameFound', data);
-        }
     });
 
     socket.on('removeFromQueue', async () => {
