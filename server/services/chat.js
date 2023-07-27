@@ -29,28 +29,6 @@ export const reportChat = (chatId) => {
     return updateChat(chatId, { reported: true });
 };
 
-export const findReportedChats = async () => {
-    const chats = await Chat.aggregate([
-        { $match: { reported: true } },
-        {
-            $group: {
-                _id: '$gameId',
-                data: { $addToSet: '$$ROOT' },
-            },
-        },
-        {
-            $project: {
-                _id: 0,
-                gameId: '$_id',
-                data: 1,
-            },
-        },
-    ]);
-
-    const result = chats.reduce(
-        (acc, chat) => ({ ...acc, [chat.gameId]: chat.data }),
-        {},
-    );
-
-    return result;
+export const findReportedChats = () => {
+    return Chat.find({ reported: true });
 };
