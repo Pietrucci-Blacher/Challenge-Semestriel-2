@@ -10,7 +10,7 @@ import ChessBoard from '@/components/Chess/Board.js';
         >
             {{ name }}
         </div>
-        <button v-if="getTurn() === color" class="giveup-btn" @click="giveUp()">
+        <button v-if="color === board.color" class="giveup-btn" @click="giveUp()">
             Give up
         </button>
         <div class="player-info-taken">
