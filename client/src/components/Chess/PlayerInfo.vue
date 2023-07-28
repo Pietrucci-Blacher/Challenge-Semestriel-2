@@ -10,6 +10,9 @@ import ChessBoard from '@/components/Chess/Board.js';
         >
             {{ name }}
         </div>
+        <button v-if="getTurn() === color" class="giveup-btn" @click="giveUp()">
+            Give up
+        </button>
         <div class="player-info-taken">
             <img
                 v-for="piece in getTakenPiece(color)"
@@ -46,6 +49,9 @@ export default {
         getTurn() {
             return this.board.getTurn();
         },
+        giveUp() {
+            this.board.giveUp();
+        },
     },
 };
 </script>
@@ -79,5 +85,12 @@ export default {
 .player-info-taken-piece {
     width: 20px;
     height: 20px;
+}
+
+.giveup-btn {
+    margin-left: 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
 }
 </style>
