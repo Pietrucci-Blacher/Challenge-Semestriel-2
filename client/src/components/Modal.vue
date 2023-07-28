@@ -24,7 +24,6 @@ export default {
     },
     methods: {
         closeModalOnBackgroundClick() {
-            // Emit an event to the parent component to close the modal
             this.$emit('closeModal');
         },
     },

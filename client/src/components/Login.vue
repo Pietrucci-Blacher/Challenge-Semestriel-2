@@ -1,5 +1,5 @@
 <template>
-    <Modal title="">
+    <Modal title="" @click="handleModalClick">
         <div
             class="flex flex-col justify-center py-12 sm:px-6 lg:px-8 h-[50vh]"
         >
@@ -80,7 +80,10 @@ import Modal from '@/components/Modal.vue';
 
 export default {
     components: { Modal },
-    setup() {
+    props: {
+        showModal: Boolean,
+    },
+    setup(props) {
         const email = ref('');
         const password = ref('');
 
@@ -133,10 +136,18 @@ export default {
             password.value = '';
         }
 
+        function handleModalClick(event) {
+            if (props.showModal) {
+                console.log('Clicked on the modal');
+                // ... rest of the code ...
+            }
+        }
+
         return {
             email,
             password,
             submitForm,
+            handleModalClick,
         };
     },
 };
