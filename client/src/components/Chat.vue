@@ -1,6 +1,6 @@
 <template>
     <div class="h-screen flex items-center justify-center chat">
-        <div class="bg-gray-100 p-4 h-full max-w-md flex flex-col">
+        <div class="bg-gray-100 p-4 h-full flex flex-col">
             <div ref="messageContainer" class="flex-grow overflow-y-auto">
                 <ul class="space-y-2">
                     <li
@@ -9,17 +9,19 @@
                         :class="['flex', getMessageClass(message)]"
                         ref="messages"
                     >
-                        <span class="text-gray-600">
-                            <button
-                                @click="reportMessage(message.id)"
-                                v-if="message.sender"
-                                class="text-red-600"
-                            >
-                                report
-                            </button>
-                            {{ message.sender || 'me' }}:
-                        </span>
-                        {{ message.text }}
+                        <div class="flex flex-col bg-gray-900 message">
+                            <div class="text-gray-400">
+                                <button
+                                    @click="reportMessage(message.id)"
+                                    v-if="message.sender"
+                                    class="text-red-600"
+                                >
+                                    <font-awesome-icon icon="flag" />
+                                </button>
+                                {{ message.sender || 'me' }}
+                            </div>
+                            <div>{{ message.text }}</div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -47,10 +49,18 @@
 <script>
 import { ref, watch } from 'vue';
 import ChatJs from '@/components/Chat.js';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faFlag } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faFlag);
 
 const newMessage = ref('');
 
 export default {
+    components: {
+        FontAwesomeIcon,
+    },
     data() {
         const chat = ChatJs.getInstance();
 
@@ -100,5 +110,13 @@ export default {
 <style scoped>
 .chat {
     width: 100%;
+}
+
+.message {
+    width: 80%;
+    border-radius: 5px;
+    color: white;
+    padding: 10px;
+    word-break: break-word;
 }
 </style>

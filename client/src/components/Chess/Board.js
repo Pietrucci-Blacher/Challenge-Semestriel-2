@@ -105,22 +105,14 @@ export default class ChessBoard {
             vue.forceReload();
         });
 
-        // this.socket.on('finish', (winner) => {
-        //     console.log('winner', winner);
-        //     this.winner = winner.winner;
-        //     vue.showModal = 1;
-        //     vue.forceReload();
-        // });
-
         this.socket.on('win', (data) => {
-            console.log('win', data);
             vue.player = data.player;
             vue.elo = data.elo;
             vue.showModal = 1;
             vue.forceReload();
         });
+
         this.socket.on('loose', (data) => {
-            console.log('loose', data);
             vue.player = data.player;
             vue.elo = data.elo;
             vue.showModal = 2;
@@ -422,6 +414,10 @@ export default class ChessBoard {
             toRow,
             toCol,
         });
+    }
+
+    giveUp() {
+        this.socket?.emit('giveUp');
     }
 
     static convertToAlgebraic(row, col) {

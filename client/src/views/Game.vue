@@ -18,7 +18,7 @@ defineProps(['isUserAuthenticated']);
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <main class="w-full h-screen">
             <div class="game">
-                <div v-if="$route.params.id !== 'local'">
+                <div class="game-chat" v-if="$route.params.id !== 'local'">
                     <Chat :key="reload" />
                 </div>
                 <div class="game-board">
@@ -135,6 +135,10 @@ export default {
 }
 
 .game-info {
+    width: 100%;
+}
+
+.game-chat {
     width: 100%;
 }
 </style>
