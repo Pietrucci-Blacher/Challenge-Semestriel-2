@@ -18,7 +18,7 @@ defineProps(['isUserAuthenticated']);
         <Navbar :isUserAuthenticated="isUserAuthenticated" />
         <main class="w-full h-screen">
             <div class="game">
-                <div v-if="$route.params.id !== 'local'">
+                <div class="game-chat" v-if="$route.params.id !== 'local'">
                     <Chat :key="reload" />
                 </div>
                 <div class="game-board">
@@ -34,7 +34,7 @@ defineProps(['isUserAuthenticated']);
                     />
                     <PlayerInfo
                         :key="reload"
-                        :name="player()"
+                        :name="playerName()"
                         :color="playerColor()"
                     />
                 </div>
@@ -44,9 +44,12 @@ defineProps(['isUserAuthenticated']);
             </div>
         </main>
     </section>
-    <Modal v-if="showModal === 1" title="Winner">
-        <p v-if="board.winner !== 'draw'">Winner is {{ board.winner }}</p>
-        <p v-else>It's a draw</p>
+    <Modal v-if="showModal === 1" title="You Win">
+        <p>Your elo is {{ elo }}</p>
+        <button @click="hideModal">Retour</button>
+    </Modal>
+    <Modal v-if="showModal === 2" title="You Loose">
+        <p>Your elo is {{ elo }}</p>
         <button @click="hideModal">Retour</button>
     </Modal>
 </template>
@@ -61,6 +64,8 @@ export default {
             reload: 0,
             showModal: 0,
             height: window.innerHeight - 110,
+            player: '',
+            elo: 0,
         };
 
         if (this.$route.params.id === 'local') return data;
@@ -99,7 +104,7 @@ export default {
         forceReload() {
             this.reload += 1;
         },
-        player() {
+        playerName() {
             return this.board.color === 'white'
                 ? this.board.whitePlayer
                 : this.board.blackPlayer;
@@ -132,4 +137,8 @@ export default {
 .game-info {
     width: 100%;
 }
+
+/* .game-chat { */
+/*     width: 100%; */
+/* } */
 </style>

@@ -105,10 +105,17 @@ export default class ChessBoard {
             vue.forceReload();
         });
 
-        this.socket.on('finish', (winner) => {
-            console.log('winner', winner);
-            this.winner = winner.winner;
+        this.socket.on('win', (data) => {
+            vue.player = data.player;
+            vue.elo = data.elo;
             vue.showModal = 1;
+            vue.forceReload();
+        });
+
+        this.socket.on('loose', (data) => {
+            vue.player = data.player;
+            vue.elo = data.elo;
+            vue.showModal = 2;
             vue.forceReload();
         });
     }
@@ -148,15 +155,7 @@ export default class ChessBoard {
             return;
         }
 
-        if (game.winner) {
-            if (game.winner === game.whiteUserId)
-                game.winner = whitePlayer.username;
-            else if (game.winner === game.blackUserId)
-                game.winner = blackPlayer.username;
-            else if (game.winner === 0) game.winner = 'draw';
-
-            vue.showModal = 1;
-        }
+        if (game.winner) window.location.href = '/game';
 
         this.import({
             board: game.board,
@@ -415,6 +414,10 @@ export default class ChessBoard {
             toRow,
             toCol,
         });
+    }
+
+    giveUp() {
+        this.socket?.emit('giveUp');
     }
 
     static convertToAlgebraic(row, col) {

@@ -116,8 +116,8 @@ export default {
         reverseCoord(coord, rev = false) {
             return rev ? 7 - coord : coord;
         },
-        chessPiece(piece) {
-            return `/images/chess-piece-classic/${piece}`;
+        chessPiece(piece, collection = 'classic') {
+            return `/images/chess-piece-${collection}/${piece}`;
         },
         onSquareClick(x, y) {
             if (this.clicked) {
