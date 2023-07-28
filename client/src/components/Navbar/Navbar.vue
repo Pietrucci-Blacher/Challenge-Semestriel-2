@@ -98,6 +98,7 @@ import {
     faUserShield,
     faSignInAlt,
     faChartBar,
+    faShoppingCart,
 } from '@fortawesome/free-solid-svg-icons';
 import menuContent from './navbar-content.json';
 import { RouterLink } from 'vue-router';
@@ -115,6 +116,7 @@ library.add(
     faUserShield,
     faSignInAlt,
     faChartBar,
+    faShoppingCart,
 );
 
 import {

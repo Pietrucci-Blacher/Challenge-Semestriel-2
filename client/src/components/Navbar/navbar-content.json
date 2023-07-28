@@ -21,6 +21,13 @@
     "check": "isAuthenticated"
   },
   {
+    "name": "Shop",
+    "icon": "shopping-cart",
+    "route": "/shop",
+    "alt": "Shop",
+    "check": "isAuthenticated"
+  },
+  {
     "name": "Statistiques",
     "icon": "chart-bar",
     "route": "/stats",

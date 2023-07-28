@@ -1,3 +1,70 @@
+<script setup>
+import { computed, onMounted, ref } from 'vue';
+import { getReportedComments } from '@/utils/admin';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+library.add(faArrowUp, faArrowDown);
+
+const reportedComments = ref([]);
+
+onMounted(async () => {
+    reportedComments.value = await getReportedComments();
+});
+
+const sortProperty = ref('_id');
+const sortOrder = ref(1);
+
+const sortComments = (property) => {
+    if (sortProperty.value === property) {
+        sortOrder.value *= -1;
+    } else {
+        sortProperty.value = property;
+        sortOrder.value = 1;
+    }
+};
+
+const sortIcon = (property) => {
+    if (sortProperty.value === property) {
+        return sortOrder.value === 1 ? 'fa fa-arrow-up' : 'fa fa-arrow-down';
+    }
+    return '';
+};
+
+const itemsPerPage = 10;
+const currentPage = ref(1);
+
+const totalItems = computed(() => reportedComments.value.length);
+const totalPages = computed(() => Math.ceil(totalItems.value / itemsPerPage));
+
+const paginatedComments = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const sorted = sortCommentsArray(
+        reportedComments.value,
+        sortProperty.value,
+        sortOrder.value,
+    );
+    return sorted.slice(start, end);
+});
+
+const goToPage = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages.value) {
+        currentPage.value = pageNumber;
+    }
+};
+
+const sortCommentsArray = (comments, property, order) => {
+    const sorted = [...comments];
+    sorted.sort((a, b) => {
+        if (a[property] < b[property]) return -1 * order;
+        if (a[property] > b[property]) return order;
+        return 0;
+    });
+    return sorted;
+};
+</script>
+
 <template>
     <h2 class="text-2xl font-semibold p-3">Liste des commentaires signalés</h2>
     <div class="overflow-x-auto shadow-md sm:rounded-lg">
@@ -9,29 +76,38 @@
             >
                 <tr>
                     <th scope="col" class="px-3 py-3">
-                        <button @click="sortUsers('id')">
+                        <button @click="sortComments('_id')">
                             Id signalement
                             <font-awesome-icon
-                                v-if="sortProperty === 'id'"
-                                :icon="sortIcon"
+                                v-if="sortProperty === '_id'"
+                                :icon="sortIcon('_id')"
                             />
                         </button>
                     </th>
                     <th scope="col" class="px-3 py-3">
-                        <button @click="sortUsers('email')">
+                        <button @click="sortComments('gameId')">
+                            Id Game
+                            <font-awesome-icon
+                                v-if="sortProperty === 'gameId'"
+                                :icon="sortIcon('gameId')"
+                            />
+                        </button>
+                    </th>
+                    <th scope="col" class="px-3 py-3">
+                        <button @click="sortComments('sender')">
                             Username
                             <font-awesome-icon
-                                v-if="sortProperty === 'email'"
-                                :icon="sortIcon"
+                                v-if="sortProperty === 'sender'"
+                                :icon="sortIcon('sender')"
                             />
                         </button>
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        <button @click="sortUsers('username')">
+                        <button @click="sortComments('text')">
                             Message
                             <font-awesome-icon
-                                v-if="sortProperty === 'username'"
-                                :icon="sortIcon"
+                                v-if="sortProperty === 'text'"
+                                :icon="sortIcon('text')"
                             />
                         </button>
                     </th>
@@ -40,42 +116,55 @@
             </thead>
             <tbody>
                 <tr
-                    v-for="user in sortedUsers"
-                    :key="user.id"
+                    v-for="reportedComment in paginatedComments"
+                    :key="reportedComment._id"
                     class="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
                 >
-                    <th
-                        scope="row"
-                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                        {{ user.id }}
-                    </th>
                     <td class="px-6 py-4">
-                        {{ user.email }}
+                        {{ reportedComment._id }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ user.username }}
+                        {{ reportedComment.gameId }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ user.role }}
+                        {{ reportedComment.sender }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ reportedComment.text }}
                     </td>
                     <td class="px-6 py-4">
                         <a
                             href="#"
                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                            @click="handleEdit(user)"
-                            >Edit</a
+                            @click="handleEdit(reportedComment.sender)"
+                            >Bannir</a
                         >
-                        <button
-                            class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4"
-                            @click="handleDelete(user.id)"
-                        >
-                            Delete
-                        </button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+    <nav v-if="totalPages > 1" class="flex items-center justify-between mt-4">
+        <div>
+            <button
+                class="px-3 mr-5 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                :disabled="currentPage === 1"
+                @click="goToPage(currentPage - 1)"
+            >
+                Précédent
+            </button>
+
+            <button
+                class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                :disabled="currentPage === totalPages"
+                @click="goToPage(currentPage + 1)"
+            >
+                Suivant
+            </button>
+        </div>
+
+        <div class="text-sm font-semibold text-gray-700">
+            Page {{ currentPage }} sur {{ totalPages }}
+        </div>
+    </nav>
 </template>
-<script setup></script>
