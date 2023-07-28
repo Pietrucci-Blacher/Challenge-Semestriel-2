@@ -7,11 +7,10 @@ if (isAuthenticated()) {
 
 import Login from '@/components/Login.vue';
 import Register from '@/components/Register.vue';
-import Chat from '@/components/Chat.vue';
 import VueWriter from 'vue-writer';
 
 import Navbar from '@/components/Navbar/Navbar.vue';
-import { onMounted, ref, toRefs } from 'vue';
+import { ref } from 'vue';
 
 const clientIdDiscord = import.meta.env.VITE_DISCORD_CLIENT_ID;
 const redirectUriDiscord = import.meta.env.VITE_DISCORD_REDIRECT_URI;
@@ -35,18 +34,13 @@ const LoginUrlGoogle = `https://accounts.google.com/o/oauth2/v2/auth/userinfo.pr
 
 const isUserAuthenticated = ref(false);
 const showLoginModal = ref(false);
+const showRegisterModal = ref(false);
 
-onMounted(() => {
-    document.addEventListener('click', closeModalOnBackgroundClick);
-});
-
-function closeModalOnBackgroundClick(event) {
-    if (showLoginModal.value) {
-        const modalBg = document.querySelector('.modal-bg');
-        if (modalBg && !modalBg.contains(event.target)) {
-            showLoginModal.value = false;
-        }
-    }
+function handleLogin() {
+    showLoginModal.value = true;
+}
+function handleRegister() {
+    showRegisterModal.value = true;
 }
 </script>
 
@@ -110,13 +104,14 @@ function closeModalOnBackgroundClick(event) {
                                 <div class="mt-3 rounded-lg sm:mt-0">
                                     <button
                                         class="items-center block px-10 py-4 text-base font-medium text-center text-black transition duration-500 ease-in-out transform bg-white shadow-md rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                                        @click="handleRegister()"
                                     >
                                         Register
                                     </button>
                                 </div>
                                 <div class="mt-3 rounded-lg sm:mt-0 sm:ml-3">
                                     <button
-                                        @click="showLoginModal = true"
+                                        @click="handleLogin()"
                                         class="items-center block px-10 py-4 text-base font-medium text-center text-blue-600 transition duration-500 ease-in-out transform bg-white shadow-md rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                                     >
                                         Login
@@ -128,11 +123,7 @@ function closeModalOnBackgroundClick(event) {
                 </div>
             </section>
         </main>
-        <Login
-            :showModal="showLoginModal"
-            @closeModal="showLoginModal = false"
-        />
-
-        <Register />
+        <Login v-if="showLoginModal" />
+        <Register v-if="showRegisterModal" />
     </section>
 </template>

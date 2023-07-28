@@ -1,5 +1,5 @@
 <template>
-    <Modal :showModal="showModal" title="" @click="handleModalClick">
+    <Modal title="" @click="handleModalClick">
         <div
             class="flex flex-col justify-center py-12 sm:px-6 lg:px-8 h-[50vh]"
         >
@@ -83,7 +83,7 @@ export default {
     props: {
         showModal: Boolean,
     },
-    setup(props, { emit }) {
+    setup(props) {
         const email = ref('');
         const password = ref('');
 
@@ -136,23 +136,19 @@ export default {
             password.value = '';
         }
 
+        function handleModalClick(event) {
+            if (props.showModal) {
+                console.log('Clicked on the modal');
+                // ... rest of the code ...
+            }
+        }
+
         return {
             email,
             password,
             submitForm,
-            closeModal: () => emit('closeModal'),
+            handleModalClick,
         };
-    },
-    methods: {
-        handleModalClick(event) {
-            if (
-                event.target === this.$refs.modal ||
-                this.$refs.modal.contains(event.target)
-            ) {
-                return;
-            }
-            this.closeModal();
-        },
     },
 };
 </script>
