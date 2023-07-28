@@ -14,14 +14,20 @@ export const findGameById = async (req, res) => {
 };
 
 export const findGameByUserId = async (req, res) => {
-    const { userId } = req.params;
-    if (!userId) return res.status(400).json({ message: 'Missing userId' });
+    const { id } = req.params;
+    if (!id) return res.status(400).json({ message: 'Missing userId' });
 
-    const game = await ChessService.findGameByUserId(userId);
+    const userId = parseInt(id === 'me' ? req.userId : id);
+    const game = await ChessService.findGameByUserId(userId).select('-board');
 
     if (!game) return res.status(404).json({ message: 'Game not found' });
 
-    res.status(200).json(game);
+    const result = {
+        userId: req.userId,
+        game,
+    };
+
+    res.status(200).json(result);
 };
 
 export const createGame = async (req, res) => {

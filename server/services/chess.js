@@ -12,7 +12,7 @@ export const findGameById = (id) => {
 };
 
 export const findGameByUserId = (userId) => {
-    return Chess.findOne({
+    return Chess.find({
         $or: [{ whiteUserId: userId }, { blackUserId: userId }],
     });
 };
