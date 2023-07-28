@@ -138,7 +138,7 @@ export default {
     width: 100%;
 }
 
-.game-chat {
-    width: 100%;
-}
+/* .game-chat { */
+/*     width: 100%; */
+/* } */
 </style>
