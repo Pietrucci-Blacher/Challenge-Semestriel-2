@@ -132,7 +132,6 @@ async function submitForm() {
         error.value = 'Password and Confirm Password do not match.';
         return;
     }
-
     try {
         let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
         let endpoint = `${url}/auth/register`;
