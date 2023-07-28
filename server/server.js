@@ -25,7 +25,7 @@ const io = new Server(server, {
     cors: {
         origin:
             process.env.MODE_SERV === 'prod'
-                ? process.env.VITE_VUE_APP_SOCKET_ENDPOINT
+                ? process.env.VITE_ENDPOINT_FRONT_URL
                 : '*',
         methods: ['GET', 'POST'],
     },

@@ -86,6 +86,30 @@ export const UserChangePassword = async (oldPassWord, newPassword) => {
     });
 };
 
+export const getGameForUserId = async () => {
+    if (!isAuthenticated()) {
+        window.location.href = '/';
+    }
+
+    let userToken = Cookie.get('userAccessToken');
+    let url = import.meta.env.VITE_ENDPOINT_BACK_URL;
+    let endpoint = `${url}/game/user/me`;
+
+    const response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userToken}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+    }
+
+    return await response.json();
+};
+
 export default {
     getUserData,
     userDataUpdate,

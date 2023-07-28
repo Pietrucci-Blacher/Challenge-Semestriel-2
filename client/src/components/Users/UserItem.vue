@@ -1,5 +1,6 @@
 <template>
-    <h2 class="text-2xl font-semibold">Liste des Utilisateurs</h2>
+    <h2 class="text-2xl p-3 font-semibold">Liste des Utilisateurs</h2>
+    <br />
     <div class="overflow-x-auto shadow-md sm:rounded-lg">
         <table
             class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
@@ -49,7 +50,7 @@
             </thead>
             <tbody>
                 <tr
-                    v-for="user in sortedUsers"
+                    v-for="user in paginatedUsers"
                     :key="user.id"
                     class="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
                 >
@@ -134,6 +135,11 @@
                                 <label class="font-bold" for="email"
                                     >Email</label
                                 >
+                                <input
+                                    type="text"
+                                    v-model="userEdit.email"
+                                    class="border border-gray-300 p-2 rounded-lg w-31"
+                                />
                             </div>
                             <br />
                             <div class="flex flex-row justify-end space-x-4">
@@ -157,6 +163,29 @@
             </tbody>
         </table>
     </div>
+    <nav v-if="totalPages > 1" class="flex items-center justify-between mt-4">
+        <div>
+            <button
+                class="px-3 mr-5 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                :disabled="currentPage === 1"
+                @click="goToPage(currentPage - 1)"
+            >
+                Précédent
+            </button>
+
+            <button
+                class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                :disabled="currentPage === totalPages"
+                @click="goToPage(currentPage + 1)"
+            >
+                Suivant
+            </button>
+        </div>
+
+        <div class="text-sm font-semibold text-gray-700">
+            Page {{ currentPage }} sur {{ totalPages }}
+        </div>
+    </nav>
     <Notification
         v-if="showNotificationUpdateDatas"
         title="Update"
@@ -171,7 +200,6 @@
         message="User deleted"
         @close="showNotificationUserDelete = false"
     />
-    <h2 class="text-2xl font-semibold">Liste des commentaires</h2>
 </template>
 
 <script setup>
@@ -251,4 +279,22 @@ const sortedUsers = computed(() => {
 
     return sorted;
 });
+
+const itemsPerPage = 8;
+const currentPage = ref(1);
+
+const totalItems = computed(() => users.value.length);
+const totalPages = computed(() => Math.ceil(totalItems.value / itemsPerPage));
+
+const paginatedUsers = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return sortedUsers.value.slice(start, end);
+});
+
+const goToPage = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages.value) {
+        currentPage.value = pageNumber;
+    }
+};
 </script>
