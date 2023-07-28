@@ -1,5 +1,5 @@
 <template>
-    <Modal title="" @click="handleModalClick">
+    <Modal title="">
         <div
             class="flex flex-col justify-center py-12 sm:px-6 lg:px-8 h-[60vh]"
         >
@@ -92,6 +92,7 @@
 
                         <div>
                             <button
+                                @submit="$emit('closeModal')"
                                 type="submit"
                                 class="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-blue-600 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
@@ -115,6 +116,7 @@
 import Notification from '@/components/Notification.vue';
 import { ref } from 'vue';
 import Modal from '@/components/Modal.vue';
+const { emit } = defineEmits(['registrationSuccessful', 'closeModal']);
 
 const registrationSuccessful = ref(false);
 const form = ref({
@@ -151,6 +153,9 @@ async function submitForm() {
             form.value.email = '';
             form.value.password = '';
             form.value.confirmPassword = '';
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         } else {
             const errorData = await response.json();
             error.value = errorData.message || 'Registration failed';

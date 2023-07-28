@@ -42,6 +42,14 @@ function handleLogin() {
 function handleRegister() {
     showRegisterModal.value = true;
 }
+
+function handleModalClose() {
+    showRegisterModal.value = false;
+}
+
+function handleRegistrationSuccessful() {
+    showRegisterModal.value = false;
+}
 </script>
 
 <template>
@@ -123,7 +131,10 @@ function handleRegister() {
                 </div>
             </section>
         </main>
-        <Login v-if="showLoginModal" />
-        <Register v-if="showRegisterModal" />
+        <Login v-if="showLoginModal" @closeModal="handleModalClose" />
+        <Register
+            v-if="showRegisterModal"
+            @registrationSuccessful="handleRegistrationSuccessful"
+        />
     </section>
 </template>
