@@ -3,11 +3,11 @@
 </template>
 
 <script>
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Title, Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'vue-chartjs';
 import { getInfosPlayedParties } from '@/utils/stats';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(Title, ArcElement, Tooltip, Legend);
 
 export default {
     name: 'PieChart',
@@ -33,6 +33,16 @@ export default {
         chartOptions() {
             return {
                 responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Played Parties By Side',
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                    },
+                },
             };
         },
     },

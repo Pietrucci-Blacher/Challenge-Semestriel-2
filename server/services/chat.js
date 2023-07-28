@@ -28,3 +28,7 @@ export const deleteChat = (chatId) => {
 export const reportChat = (chatId) => {
     return updateChat(chatId, { reported: true });
 };
+
+export const findReportedChats = () => {
+    return Chat.find({ reported: true });
+};

@@ -20,6 +20,11 @@
     "component": "Profile"
   },
   {
+    "path": "/shop",
+    "name": "Shop",
+    "component": "Shop"
+  },
+  {
     "path": "/admin",
     "name": "Admin",
     "component": "DashboardAdmin"

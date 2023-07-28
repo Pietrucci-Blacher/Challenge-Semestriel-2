@@ -13,6 +13,16 @@ export default class ChessBoard {
     color;
     whitePlayer;
     blackPlayer;
+    static moveAround = [
+        { row: 1, col: 0 },
+        { row: 1, col: 1 },
+        { row: 0, col: 1 },
+        { row: -1, col: 1 },
+        { row: -1, col: 0 },
+        { row: -1, col: -1 },
+        { row: 0, col: -1 },
+        { row: 1, col: -1 },
+    ];
 
     constructor() {
         this.gameId = null;
@@ -95,10 +105,17 @@ export default class ChessBoard {
             vue.forceReload();
         });
 
-        this.socket.on('finish', (winner) => {
-            console.log('winner', winner);
-            this.winner = winner.winner;
+        this.socket.on('win', (data) => {
+            vue.player = data.player;
+            vue.elo = data.elo;
             vue.showModal = 1;
+            vue.forceReload();
+        });
+
+        this.socket.on('loose', (data) => {
+            vue.player = data.player;
+            vue.elo = data.elo;
+            vue.showModal = 2;
             vue.forceReload();
         });
     }
@@ -138,15 +155,7 @@ export default class ChessBoard {
             return;
         }
 
-        if (game.winner) {
-            if (game.winner === game.whiteUserId)
-                game.winner = whitePlayer.username;
-            else if (game.winner === game.blackUserId)
-                game.winner = blackPlayer.username;
-            else if (game.winner === 0) game.winner = 'draw';
-
-            vue.showModal = 1;
-        }
+        if (game.winner) window.location.href = '/game';
 
         this.import({
             board: game.board,
@@ -280,6 +289,14 @@ export default class ChessBoard {
             takenPieceName: destPiece?.name || null,
         };
 
+        if (!sendToServer) {
+            const checkmate = this.whoIsCheckmated();
+            if (checkmate) {
+                move.notation += '#';
+                this.winner = checkmate;
+            }
+        }
+
         this.addMoveToHistory(move);
         if (sendToServer) this.sendMoveToSocket(fromRow, fromCol, toRow, toCol);
         this.move++;
@@ -344,8 +361,49 @@ export default class ChessBoard {
         return false;
     }
 
+    isCheckmate(color) {
+        if (!this.isInCheck(color)) return false;
+        const king = this.getKing(color);
+
+        for (const move of ChessBoard.moveAround) {
+            const row = king.row + move.row;
+            const col = king.col + move.col;
+            const kingRow = king.row;
+            const kingCol = king.col;
+
+            if (row < 0 || row > 7 || col < 0 || col > 7) continue;
+
+            const piece = this.getPieceAt(row, col);
+
+            if (piece && piece.color === color) continue;
+
+            king.setCoords(row, col);
+
+            if (!this.isInCheck(color)) {
+                king.setCoords(kingRow, kingCol);
+                piece?.setCoords(row, col, false);
+                return false;
+            }
+
+            king.setCoords(kingRow, kingCol);
+            piece?.setCoords(row, col, false);
+        }
+
+        return true;
+    }
+
+    whoIsCheckmated() {
+        if (this.isCheckmate('white')) return 'white';
+        else if (this.isCheckmate('black')) return 'black';
+        else return null;
+    }
+
     getTurn() {
         return this.move % 2 === 0 ? 'white' : 'black';
+    }
+
+    setWinner(color) {
+        this.winner = color === 'white' ? this.whitePlayer : this.blackPlayer;
     }
 
     sendMoveToSocket(fromRow, fromCol, toRow, toCol) {
@@ -356,6 +414,10 @@ export default class ChessBoard {
             toRow,
             toCol,
         });
+    }
+
+    giveUp() {
+        this.socket?.emit('giveUp');
     }
 
     static convertToAlgebraic(row, col) {

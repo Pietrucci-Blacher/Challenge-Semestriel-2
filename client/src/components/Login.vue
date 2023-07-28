@@ -1,44 +1,89 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 mt-5 mx-auto">
-                <form novalidate @submit.prevent="submitForm">
-                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                    <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input
-                            type="email"
-                            class="form-control"
-                            name="email"
-                            placeholder="Enter email"
-                            v-model="email"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input
-                            type="password"
-                            class="form-control"
-                            name="password"
-                            placeholder="Password"
-                            v-model="password"
-                        />
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">
-                        Sign in
-                    </button>
-                </form>
+    <Modal title="" @click="handleModalClick">
+        <div
+            class="flex flex-col justify-center py-12 sm:px-6 lg:px-8 h-[50vh]"
+        >
+            <div class="sm:mx-auto sm:w-full sm:max-w-md">
+                <h2
+                    class="mt-6 text-3xl font-extrabold text-center text-neutral-600"
+                >
+                    Sign in to your account
+                </h2>
+            </div>
+
+            <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+                <div class="px-4 py-8 sm:px-10">
+                    <form
+                        novalidate
+                        class="space-y-6"
+                        @submit.prevent="submitForm"
+                    >
+                        <div>
+                            <label
+                                for="email"
+                                class="block text-sm font-medium text-gray-700"
+                            >
+                                Email address
+                            </label>
+                            <div class="mt-1">
+                                <input
+                                    v-model="email"
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    autocomplete="email"
+                                    required
+                                    class="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label
+                                for="password"
+                                class="block text-sm font-medium text-gray-700"
+                            >
+                                Password
+                            </label>
+                            <div class="mt-1">
+                                <input
+                                    v-model="password"
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    autocomplete="current-password"
+                                    required
+                                    class="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out transform border border-transparent rounded-lg bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <button
+                                type="submit"
+                                class="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-blue-600 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            >
+                                Sign in
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    </Modal>
 </template>
 
 <script>
 import { ref } from 'vue';
 import Cookie from 'js-cookie';
+import Modal from '@/components/Modal.vue';
 
 export default {
-    setup() {
+    components: { Modal },
+    props: {
+        showModal: Boolean,
+    },
+    setup(props) {
         const email = ref('');
         const password = ref('');
 
@@ -91,10 +136,18 @@ export default {
             password.value = '';
         }
 
+        function handleModalClick(event) {
+            if (props.showModal) {
+                console.log('Clicked on the modal');
+                // ... rest of the code ...
+            }
+        }
+
         return {
             email,
             password,
             submitForm,
+            handleModalClick,
         };
     },
 };
