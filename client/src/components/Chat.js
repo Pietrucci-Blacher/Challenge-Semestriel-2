@@ -36,7 +36,7 @@ export default class Chat {
         };
 
         const [chatRes, gameRes] = await Promise.all([
-            fetch(`${url}/chat/${this.gameId}`, data),
+            fetch(`${url}/chat/game/${this.gameId}`, data),
             fetch(`${url}/game/${this.gameId}`, data),
         ]);
 
@@ -67,7 +67,10 @@ export default class Chat {
                 text: message.text,
             };
 
-            if (message.sender !== me.id) data.sender = opponent.username;
+            if (message.sender !== me.id) {
+                data.id = message._id.toString();
+                data.sender = opponent.username;
+            }
 
             this.addMessage(data);
         }
@@ -91,5 +94,29 @@ export default class Chat {
 
     addMessage(message) {
         this.messages.push(message);
+    }
+
+    deleteMessage(messageId) {
+        if (!messageId) return;
+        this.messages = this.messages.filter(
+            (message) => message.id !== messageId,
+        );
+    }
+
+    reportMessage(messageId) {
+        if (!messageId) return;
+        const url = import.meta.env.VITE_ENDPOINT_BACK_URL;
+
+        const data = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${Cookie.get('userAccessToken')}`,
+            },
+        };
+
+        this.deleteMessage(messageId);
+
+        fetch(`${url}/chat/${messageId}/report`, data);
     }
 }

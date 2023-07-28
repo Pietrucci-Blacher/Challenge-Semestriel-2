@@ -10,7 +10,7 @@ export const findChatById = (chatId) => {
 };
 
 export const findChatByGameId = (gameId) => {
-    return Chat.find({ gameId });
+    return Chat.find({ gameId, reported: false });
 };
 
 export const findAllChats = () => {
@@ -23,4 +23,12 @@ export const updateChat = (chatId, updates) => {
 
 export const deleteChat = (chatId) => {
     return Chat.findByIdAndDelete(chatId);
+};
+
+export const reportChat = (chatId) => {
+    return updateChat(chatId, { reported: true });
+};
+
+export const findReportedChats = () => {
+    return Chat.find({ reported: true });
 };

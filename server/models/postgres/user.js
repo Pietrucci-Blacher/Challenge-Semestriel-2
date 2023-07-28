@@ -30,8 +30,8 @@ export default (sequelize) => {
          *
          * @async
          */
-        async hashPassword() {
-            this.password = await bcrypt.hash(this.password, 10);
+        async hashPassword(password) {
+            this.password = await bcrypt.hash(password, 10);
         }
 
         /**
@@ -50,6 +50,24 @@ export default (sequelize) => {
             });
 
             return { accessToken, refreshToken };
+        }
+
+        /**
+         * calculate elo
+         *
+         * @param {number} opponentElo - opponent elo
+         * @param {number} result - 1 if win, 0 if lose, 0.5 if draw
+         *
+         * @returns {void}
+         *
+         * @see https://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details
+         */
+        calculateElo(opponentElo, result) {
+            const expectedScore =
+                1 / (1 + 10 ** ((opponentElo - this.elo) / 400));
+            const k = 32;
+
+            this.elo = Math.round(this.elo + k * (result - expectedScore));
         }
     }
 
