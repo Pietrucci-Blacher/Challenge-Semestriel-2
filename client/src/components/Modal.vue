@@ -1,6 +1,6 @@
 <template>
-    <div class="modal-bg">
-        <div class="modal">
+    <div class="modal-bg" @click="closeModalOnBackgroundClick">
+        <div class="modal" @click.stop>
             <div class="modal-header">
                 <h2 class="model-title text-2xl font-semibold text-black">
                     {{ title }}
@@ -20,6 +20,11 @@ export default {
         title: {
             type: String,
             default: 'Modal Title',
+        },
+    },
+    methods: {
+        closeModalOnBackgroundClick() {
+            this.$emit('closeModal');
         },
     },
 };

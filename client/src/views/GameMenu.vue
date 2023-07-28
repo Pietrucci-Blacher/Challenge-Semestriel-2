@@ -75,11 +75,11 @@ onMounted(() => {
             </div>
         </div>
     </section>
-    <Modal v-if="showModal === 1" title="Match making">
+    <Modal v-if="showModal === 1" title="Matchmaking">
         <p>Recherche de partie ...</p>
         <button @click="hideModal">Annuler</button>
     </Modal>
-    <Modal v-if="showModal === 2" title="Match making">
+    <Modal v-if="showModal === 2" title="Matchmaking">
         <p>Aucun joueur n'a été trouver</p>
         <button @click="hideModal">Fermer</button>
     </Modal>

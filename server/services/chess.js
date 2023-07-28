@@ -12,7 +12,7 @@ export const findGameById = (id) => {
 };
 
 export const findGameByUserId = (userId) => {
-    return Chess.findOne({
+    return Chess.find({
         $or: [{ whiteUserId: userId }, { blackUserId: userId }],
     });
 };
@@ -24,6 +24,7 @@ export const updateGame = async (id, data) => {
             $set: {
                 board: data.board,
                 moveHistory: data.moveHistory,
+                winner: data.winner,
             },
         },
     );

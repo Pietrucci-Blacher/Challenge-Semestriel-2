@@ -169,52 +169,10 @@ export default {
       },
     },
   };
-  
-
-
-
-// methods: {
-//   async slideTo(val) {
-//     this.currentSlide = val;
-//   },
-//   async submit(article) {
-//     this.loading = true;
-//     // const priceId = article.priceId;
-//     const skinId = article.id;
-//     // const access_token = Cookie.get('userAccessToken');
-//     const stripe = await loadStripe(this.publishableKey);
-
-//     const response = await fetch('http://localhost:3000/create-payment-intent', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       }, 
-//       body: JSON.stringify({
-//         skinId: skinId,
-//       }),
-//     });
-
-//     const data = await response.json();
-
-//     stripe.redirectToCheckout({
-//       lineItems: [{ price: priceId, quantity: 1}],
-//       mode: 'payment',
-//       clientReferenceId: JSON.stringify({ 
-//         skinId: skinId, 
-//       }),
-//       successUrl: `${this.successURL}?priceId=${priceId}&skinId=${skinId}&access_token=${Cookie.get('userAccessToken')}`,
-//       cancelUrl: this.cancelURL,
-//     }).then((result) => {
-//      alert(JSON.stringify(result));
-
-//     });
-
-//     },
-//   },
 
 </script>
   
-<style>
+<style scoped>
 body {
   background: url(/images/chess-piece-color/beams-home@95.jpg), lightgray 50% / cover no-repeat;
 }

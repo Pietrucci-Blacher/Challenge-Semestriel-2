@@ -1,28 +1,30 @@
 import * as UserService from '../services/user.js';
 import * as Authservice from '../services/auth.js';
 
-export let changePassword = async (req, res) => {
-    const { body } = req;
-    console.log(body);
-    console.log(req.userId);
-    console.log(req.params.id);
-    const id = parseInt(req.params.id);
+export const changePassword = async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
 
-    if (id !== req.userId)
+    if (!oldPassword || !newPassword)
+        return res.status(400).json({
+            message: 'Missing required fields',
+        });
+
+    const userId = parseInt(
+        req.params.id === 'me' ? req.userId : req.params.id,
+    );
+
+    if (userId !== req.userId)
         return res.status(403).json({
             message: "You don't have the permission to modify this resource",
         });
 
-    /*    try {
-        const result = await UserService.checkPassword();
-        res.status(201).json(result);
+    try {
+        await UserService.changePassword(userId, oldPassword, newPassword);
+        res.sendStatus(201);
     } catch (err) {
-        if (err.name === 'ValidationError') {
-            res.status(422).json(err.errors);
-        } else {
-            res.status(500).json(err);
-        }
-    }*/
+        if (err.name === 'ValidationError') res.status(422).json(err.errors);
+        else res.status(500).json(err);
+    }
 };
 
 export const getAll = async (req, res) => {
@@ -46,7 +48,7 @@ export const getOne = async (req, res) => {
     );
 
     try {
-        const result = await UserService.findOne({ id: userId });
+        const result = await UserService.findOne({ id: userId }, true);
         if (result) res.json(result);
         else res.sendStatus(404);
     } catch (err) {

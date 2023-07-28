@@ -27,6 +27,10 @@ const chatSchema = new db.Schema(
             default: true,
             required: false,
         },
+        reported: {
+            type: Boolean,
+            default: false,
+        },
     },
     { timestamps: true },
 );
