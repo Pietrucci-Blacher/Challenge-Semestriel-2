@@ -15,7 +15,6 @@ import MatchMaking from './models/mongo/matchMaking.js';
 import { isAuthenticatedForSocket } from './middleware/middleware.js';
 import { gameIdRegex, gameExists } from './services/chess.js';
 import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -51,7 +50,7 @@ app.use((req, res, next) => {
     }
 });
 
-app.use(express.raw({ type: 'application/json' }));
+// app.use(express.raw({ type: 'application/json' }));
 app.use(express.json());
 app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);

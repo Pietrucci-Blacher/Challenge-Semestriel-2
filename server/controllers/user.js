@@ -74,6 +74,10 @@ export const replace = async (req, res) => {
     const id = parseInt(req.params.id);
     const { body } = req;
 
+    delete body.password;
+    delete body.role;
+    delete body.id;
+
     if (id !== req.userId)
         return res.status(403).json({
             message: "You don't have the permission to modify this resource",
@@ -98,6 +102,10 @@ export const replace = async (req, res) => {
 export const update = async (req, res) => {
     const id = parseInt(req.params.id);
     const { body } = req;
+
+    delete body.password;
+    delete body.role;
+    delete body.id;
 
     if (id !== req.userId)
         return res.status(403).json({

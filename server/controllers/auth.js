@@ -90,7 +90,7 @@ export const register = async (req, res) => {
 
     try {
         await AuthService.register(username, email, password);
-        res.status(201).json({});
+        res.sendStatus(201);
     } catch (err) {
         if (err.name === 'ValidationError') res.status(422).json(err.errors);
         else res.status(500).json(err);
@@ -113,7 +113,7 @@ export const logout = async (req, res) => {
     if (!req.userId) return res.status(400).json({ message: 'Invalid data' });
     try {
         await AuthService.logout(req.userId);
-        res.status(200).json({});
+        res.sendStatus(200);
     } catch (err) {
         res.status(500).json(err);
     }

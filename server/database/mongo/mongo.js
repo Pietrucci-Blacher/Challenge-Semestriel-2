@@ -14,7 +14,7 @@ if (MODE === 'test') {
     mongo = await mongoose.connect(uri);
     console.log('Connected to mongoDB memory server');
 } else {
-    const uri = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DB}?authSource=admin`;
+    const uri = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DB}`;
     mongo = await mongoose.connect(uri);
     console.log('Connected to mongoDB');
 }
