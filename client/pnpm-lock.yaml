@@ -9,8 +9,8 @@ overrides:
 
 dependencies:
   '@stripe/stripe-js':
-    specifier: ^1.54.1
-    version: 1.54.1
+    specifier: ^2.0.0
+    version: 2.0.0
   '@vue-stripe/vue-stripe':
     specifier: ^4.5.0
     version: 4.5.0
@@ -598,6 +598,10 @@ packages:
 
   /@stripe/stripe-js@1.54.1:
     resolution: {integrity: sha512-smEXPu1GKMcAj9g2luT16+oXfg2jAwyc68t2Dm5wdtYl3p8PqQaZEiI8tQmboaQAjgF8pIGma6byz1T1vgmpbA==}
+    dev: false
+
+  /@stripe/stripe-js@2.0.0:
+    resolution: {integrity: sha512-SxZnf192En0uAfgbigUIj7oJYaXgGc5AI1aos59YXvO8DPeLI0AtT4oMg/Wuk17wbpquEv73+akyCe7xdEjGlA==}
     dev: false
 
   /@tootallnate/once@2.0.0:
