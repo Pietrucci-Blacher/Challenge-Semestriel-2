@@ -60,8 +60,8 @@ dependencies:
     specifier: ^5.1.6
     version: 5.1.6
   stripe:
-    specifier: ^13.0.0
-    version: 13.0.0
+    specifier: ^14.0.0
+    version: 14.0.0
 
 devDependencies:
   '@faker-js/faker':
@@ -3703,8 +3703,8 @@ packages:
       acorn: 8.10.0
     dev: true
 
-  /stripe@13.0.0:
-    resolution: {integrity: sha512-b840YPFBqeOO3Gd3FPXx0WoE9r4hb4CvMaJZhSYsgbmAETCsdomXcMvmSYWoHt3OrnFXmwW/Ix17DbZ+zTVGZw==}
+  /stripe@14.0.0:
+    resolution: {integrity: sha512-F2bTdawnv2WEPBpB+R6YJ9R//68o7uzcs95A2MJQ7CB48MbqT4DN0TwrDMnWgcoOFT4NYUAScbUiisZ04ybBBQ==}
     engines: {node: '>=12.*'}
     dependencies:
       '@types/node': 20.3.3
