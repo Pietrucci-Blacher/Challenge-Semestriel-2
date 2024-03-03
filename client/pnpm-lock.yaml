@@ -10,7 +10,7 @@ overrides:
 dependencies:
   '@stripe/stripe-js':
     specifier: ^3.0.0
-    version: 3.0.0
+    version: 3.0.6
   '@vue-stripe/vue-stripe':
     specifier: ^4.5.0
     version: 4.5.0
@@ -711,12 +711,12 @@ packages:
     resolution: {integrity: sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==}
     dev: false
 
-  /@stripe/stripe-js@1.54.1:
-    resolution: {integrity: sha512-smEXPu1GKMcAj9g2luT16+oXfg2jAwyc68t2Dm5wdtYl3p8PqQaZEiI8tQmboaQAjgF8pIGma6byz1T1vgmpbA==}
+  /@stripe/stripe-js@1.54.2:
+    resolution: {integrity: sha512-R1PwtDvUfs99cAjfuQ/WpwJ3c92+DAMy9xGApjqlWQMj0FKQabUAys2swfTRNzuYAYJh7NqK2dzcYVNkKLEKUg==}
     dev: false
 
-  /@stripe/stripe-js@3.0.0:
-    resolution: {integrity: sha512-xcuFxWP4jl3dN40+UbOr/SW7SeNrb8ZE+h5vLmKiOo0HUcW9gvz4Ny9SsfWWD2NI6CZmxi+oQw7KkZX8NmSxAA==}
+  /@stripe/stripe-js@3.0.6:
+    resolution: {integrity: sha512-Ef3A0/zvgKbiMdCPT+rZgQBQqhNZ66wuR6Eg2w9YUuqykcIFFKU4nYApBr05WTvInrge8GuOqY5acSDiv6DOjA==}
     engines: {node: '>=12.16'}
     dev: false
 
@@ -776,7 +776,7 @@ packages:
   /@vue-stripe/vue-stripe@4.5.0:
     resolution: {integrity: sha512-BU449XT5zegjNQirl+SSztbzGIvPjhxlHv8ybomSZcI1jB6qEpLgpk2eHMFDKnOGZZRhqtg4C5FiErwSJ/yuRw==}
     dependencies:
-      '@stripe/stripe-js': 1.54.1
+      '@stripe/stripe-js': 1.54.2
       vue-coerce-props: 1.0.0
     dev: false
 
