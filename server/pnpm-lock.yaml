@@ -34,7 +34,7 @@ dependencies:
     version: 9.0.2
   mongodb:
     specifier: ^6.0.0
-    version: 6.4.0
+    version: 6.5.0
   mongoose:
     specifier: ^8.0.0
     version: 8.2.1
@@ -404,13 +404,6 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
-    dev: false
-
-  /@mongodb-js/saslprep@1.1.4:
-    resolution: {integrity: sha512-8zJ8N1x51xo9hwPh6AWnKdLGEC5N3lDa6kms1YHmFBoRhTpJR6HG8wWk0td1MVCu9cD4YBrvjZEtd5Obw0Fbnw==}
-    requiresBuild: true
-    dependencies:
-      sparse-bitfield: 3.0.3
     dev: false
 
   /@mongodb-js/saslprep@1.1.5:
@@ -2791,8 +2784,8 @@ packages:
       mongodb-connection-string-url: 3.0.0
     dev: false
 
-  /mongodb@6.4.0:
-    resolution: {integrity: sha512-MdFHsyb1a/Ee0H3NmzWTSLqchacDV/APF0H6BNQvraWrOiIocys2EmTFZPgHxWhcfO94c1F34I9MACU7x0hHKA==}
+  /mongodb@6.5.0:
+    resolution: {integrity: sha512-Fozq68InT+JKABGLqctgtb8P56pRrJFkbhW0ux+x1mdHeyinor8oNzJqwLjV/t5X5nJGfTlluxfyMnOXNggIUA==}
     engines: {node: '>=16.20.1'}
     peerDependencies:
       '@aws-sdk/credential-providers': ^3.188.0
@@ -2818,7 +2811,7 @@ packages:
       socks:
         optional: true
     dependencies:
-      '@mongodb-js/saslprep': 1.1.4
+      '@mongodb-js/saslprep': 1.1.5
       bson: 6.4.0
       mongodb-connection-string-url: 3.0.0
     dev: false
