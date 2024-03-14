@@ -10,7 +10,7 @@ overrides:
 dependencies:
   '@stripe/stripe-js':
     specifier: ^3.0.0
-    version: 3.0.8
+    version: 3.0.9
   '@vue-stripe/vue-stripe':
     specifier: ^4.5.0
     version: 4.5.0
@@ -701,8 +701,8 @@ packages:
     resolution: {integrity: sha512-R1PwtDvUfs99cAjfuQ/WpwJ3c92+DAMy9xGApjqlWQMj0FKQabUAys2swfTRNzuYAYJh7NqK2dzcYVNkKLEKUg==}
     dev: false
 
-  /@stripe/stripe-js@3.0.8:
-    resolution: {integrity: sha512-nEDZjCSrGI5GICqr2DsV7gPnEjmt5Y61Uj/z/UuWu3WR/ZyyskbEW/3ziVZdnnvFcoNCfpV2wA2ar1C1W//+Vg==}
+  /@stripe/stripe-js@3.0.9:
+    resolution: {integrity: sha512-gd6MeFPqVuUSkEeaeMatHBiZZau+/f3lXdXeLmmetNyxeW2IireHHi2IWly3BYSiSOOs5LOvo9P4Hs2au3D2rA==}
     engines: {node: '>=12.16'}
     dev: false
 
