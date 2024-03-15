@@ -37,7 +37,7 @@ dependencies:
     version: 6.5.0
   mongoose:
     specifier: ^8.0.0
-    version: 8.2.1
+    version: 8.2.2
   passport:
     specifier: ^0.7.0
     version: 0.7.0
@@ -1037,6 +1037,11 @@ packages:
 
   /bson@6.4.0:
     resolution: {integrity: sha512-6/gSSEdbkuFlSb+ufj5jUSU4+wo8xQOwm2bDSqwmxiPE17JTpsP63eAwoN8iF8Oy4gJYj+PAL3zdRCTdaw5Y1g==}
+    engines: {node: '>=16.20.1'}
+    dev: false
+
+  /bson@6.5.0:
+    resolution: {integrity: sha512-DXf1BTAS8vKyR90BO4x5v3rKVarmkdkzwOrnYDFdjAY694ILNDkmA3uRh1xXJEl+C1DAh8XCvAQ+Gh3kzubtpg==}
     engines: {node: '>=16.20.1'}
     dev: false
 
@@ -2775,7 +2780,7 @@ packages:
         optional: true
     dependencies:
       '@mongodb-js/saslprep': 1.1.5
-      bson: 6.4.0
+      bson: 6.5.0
       mongodb-connection-string-url: 3.0.0
     dev: false
 
@@ -2811,11 +2816,11 @@ packages:
       mongodb-connection-string-url: 3.0.0
     dev: false
 
-  /mongoose@8.2.1:
-    resolution: {integrity: sha512-UgZZbXSJH0pdU936qj3FyVI+sBsMoGowFnL5R/RYrA50ayn6+ZYdVr8ehsRgNxRcMYwoNld5XzHIfkFRJTePEw==}
+  /mongoose@8.2.2:
+    resolution: {integrity: sha512-6sMxe1d3k/dBjiOX4ExNTNOP0g1x0iq8eXyg+ttgIXM3HLnQ0IUyXRwVVAPFFY6O4/8uYN5dB0Ec72FrexbPpw==}
     engines: {node: '>=16.20.1'}
     dependencies:
-      bson: 6.4.0
+      bson: 6.5.0
       kareem: 2.5.1
       mongodb: 6.3.0
       mpath: 0.9.0
