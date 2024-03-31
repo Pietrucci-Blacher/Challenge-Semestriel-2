@@ -1,15 +1,25 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    ":disableDependencyDashboard"
-  ],
   "baseBranches": [
     "develop"
   ],
+  "commitBody": "For further details, refer to the linked pull request.",
+  "extends": [
+    "config:recommended",
+    ":disableDependencyDashboard",
+    ":semanticCommits"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "packageRules": [
-      {
-        "matchPaths": ["**/package.json"]
-      }
-  ]
+    {
+      "matchPaths": ["**/package.json"]
+    }
+  ],
+  "rangeStrategy": "replace",
+  "timezone": "Europe/Paris"
 }
