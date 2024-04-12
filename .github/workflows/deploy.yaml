@@ -1,146 +1,141 @@
 name: Deployment
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+    deploy:
+        runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        backend-path: [server]
-        frontend-path: [client]
+        strategy:
+            matrix:
+                backend-path: [server]
+                frontend-path: [client]
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: latest
 
-      - name: Install Node.js 20.x
-        run: |
-          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-          sudo apt-get install -y nodejs
+            - name: Make envfile
+              run: |
+                  echo "POSTGRES_HOST=${{ secrets.DB_HOST }}" >> .env
+                  echo "POSTGRES_USER=${{ secrets.DB_USER }}" >> .env
+                  echo "POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+                  echo "POSTGRES_DB=${{ secrets.DB_NAME }}" >> .env
+                  echo "MONGO_USER=${{ secrets.MONGO_USER }}" >> .env
+                  echo "MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}" >> .env
+                  echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> .env
+                  echo "MONGO_DB=${{ secrets.MONGO_DB }}" >> .env
+                  echo "JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}" >> .env
+                  echo "JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}" >> .env
+                  echo "JWT_ACCESS_EXPIRE=86400" >> .env
+                  echo "JWT_REFRESH_EXPIRE=2592000" >> .env
+                  echo "VITE_APP_NAME=Chess" >> .env
+                  echo "VITE_VUE_APP_SOCKET_ENDPOINT=https://api.mpb-dev.fr" >> .env
+                  echo "VITE_ENDPOINT_BACK_URL=https://api.mpb-dev.fr" >> .env
+                  echo "VITE_ENDPOINT_FRONT_URL=https://mpb-dev.fr" >> .env
+                  echo "MODE_SERV=prod" >> .env
 
-      - name: Make envfile
-        run: |
-          echo "POSTGRES_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "POSTGRES_USER=${{ secrets.DB_USER }}" >> .env
-          echo "POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "POSTGRES_DB=${{ secrets.DB_NAME }}" >> .env
-          echo "MONGO_USER=${{ secrets.MONGO_USER }}" >> .env
-          echo "MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}" >> .env
-          echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> .env
-          echo "MONGO_DB=${{ secrets.MONGO_DB }}" >> .env
-          echo "JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}" >> .env
-          echo "JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}" >> .env
-          echo "JWT_ACCESS_EXPIRE=86400" >> .env
-          echo "JWT_REFRESH_EXPIRE=2592000" >> .env
-          echo "VITE_APP_NAME=Chess" >> .env
-          echo "VITE_VUE_APP_SOCKET_ENDPOINT=https://api.mpb-dev.fr" >> .env
-          echo "VITE_ENDPOINT_BACK_URL=https://api.mpb-dev.fr" >> .env
-          echo "VITE_ENDPOINT_FRONT_URL=https://mpb-dev.fr" >> .env
-          echo "MODE_SERV=prod" >> .env
+            - name: Install backend dependencies
+              working-directory: ${{ matrix.backend-path }}
+              run: pnpm install
 
-      - name: Install backend dependencies
-        working-directory: ${{ matrix.backend-path }}
-        run: pnpm install
+            - name: Run migrations
+              working-directory: ${{ matrix.backend-path }}
+              run: pnpm run migration
 
-      - name: Run migrations
-        working-directory: ${{ matrix.backend-path }}
-        run: pnpm run migration
+            - name: Install frontend dependencies
+              working-directory: ${{ matrix.frontend-path }}
+              run: pnpm install
 
-      - name: Install frontend dependencies
-        working-directory: ${{ matrix.frontend-path }}
-        run: pnpm install
+            - name: Build front-end
+              working-directory: ${{ matrix.frontend-path }}
+              run: pnpm run build
 
-      - name: Build front-end
-        working-directory: ${{ matrix.frontend-path }}
-        run: pnpm run build
+            - name: Remove existing backend files
+              run: sudo rm -rf /var/www/html/server/*
 
-      - name: Remove existing backend files
-        run: sudo rm -rf /var/www/html/server/*
+            - name: Remove existing frontend files
+              run: sudo rm -rf /var/www/html/client/*
 
-      - name: Remove existing frontend files
-        run: sudo rm -rf /var/www/html/client/*
+            - name: Remove previous backend files
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.EC2_HOST }}
+                  username: ${{ secrets.EC2_USERNAME }}
+                  key: ${{ secrets.EC2_PRIVATE_KEY }}
+                  script: |
+                      sudo rm -rf /var/www/html/server
 
-      - name: Remove previous backend files
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script: |
-            sudo rm -rf /var/www/html/server
+            - name: Deploy backend to EC2
+              uses: appleboy/scp-action@master
+              with:
+                  host: ${{ secrets.EC2_HOST }}
+                  username: ${{ secrets.EC2_USERNAME }}
+                  key: ${{ secrets.EC2_PRIVATE_KEY }}
+                  source: ${{ matrix.backend-path }}
+                  target: '/var/www/html/server'
+                  overwrite: true
 
-      - name: Deploy backend to EC2
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: ${{ matrix.backend-path }}
-          target: '/var/www/html/server'
-          overwrite: true
+            - name: Set backend permissions
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.EC2_HOST }}
+                  username: ${{ secrets.EC2_USERNAME }}
+                  key: ${{ secrets.EC2_PRIVATE_KEY }}
+                  script: |
+                      sudo chown -R $USER:$USER /var/www/html/server/
+                      sudo chmod -R 755 /var/www/html/server/
+                      sudo find /var/www/html/server/ -type d -exec chmod 755 {} \;
+                      sudo find /var/www/html/server/ -type f -exec chmod 644 {} \;
 
-      - name: Set backend permissions
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script: |
-            sudo chown -R $USER:$USER /var/www/html/server/
-            sudo chmod -R 755 /var/www/html/server/
-            sudo find /var/www/html/server/ -type d -exec chmod 755 {} \;
-            sudo find /var/www/html/server/ -type f -exec chmod 644 {} \;
+            - name: Remove previous frontend files
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.EC2_HOST }}
+                  username: ${{ secrets.EC2_USERNAME }}
+                  key: ${{ secrets.EC2_PRIVATE_KEY }}
+                  script: |
+                      sudo rm -rf /var/www/html/client
 
-      - name: Remove previous frontend files
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script: |
-            sudo rm -rf /var/www/html/client
+            - name: Deploy frontend to EC2
+              uses: appleboy/scp-action@master
+              with:
+                  host: ${{ secrets.EC2_HOST }}
+                  username: ${{ secrets.EC2_USERNAME }}
+                  key: ${{ secrets.EC2_PRIVATE_KEY }}
+                  source: ${{ matrix.frontend-path }}/dist
+                  target: '/var/www/html/client'
 
-      - name: Deploy frontend to EC2
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: ${{ matrix.frontend-path }}/dist
-          target: '/var/www/html/client'
+            - name: Set frontend permissions
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.EC2_HOST }}
+                  username: ${{ secrets.EC2_USERNAME }}
+                  key: ${{ secrets.EC2_PRIVATE_KEY }}
+                  script: |
+                      sudo chown -R $USER:$USER /var/www/html/client/
+                      sudo chmod -R 755 /var/www/html/client/
+                      sudo find /var/www/html/client/ -type d -exec chmod 755 {} \;
+                      sudo find /var/www/html/client/ -type f -exec chmod 644 {} \;
 
-      - name: Set frontend permissions
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script: |
-            sudo chown -R $USER:$USER /var/www/html/client/
-            sudo chmod -R 755 /var/www/html/client/
-            sudo find /var/www/html/client/ -type d -exec chmod 755 {} \;
-            sudo find /var/www/html/client/ -type f -exec chmod 644 {} \;
-            
-            export POSTGRES_HOST=${{ secrets.DB_HOST }}
-            export POSTGRES_USER=${{ secrets.DB_USER }}
-            export POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}
-            export POSTGRES_DB=${{ secrets.DB_NAME }}
-            export MONGO_USER=${{ secrets.MONGO_USER }}
-            export MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}
-            export MONGO_HOST=${{ secrets.MONGO_HOST }}
-            export MONGO_DB=${{ secrets.MONGO_DB }}
-            export JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}
-            export JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
-            export JWT_ACCESS_EXPIRE=86400
-            export JWT_REFRESH_EXPIRE=2592000
-            export MODE_SERV=prod
+                      export POSTGRES_HOST=${{ secrets.DB_HOST }}
+                      export POSTGRES_USER=${{ secrets.DB_USER }}
+                      export POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}
+                      export POSTGRES_DB=${{ secrets.DB_NAME }}
+                      export MONGO_USER=${{ secrets.MONGO_USER }}
+                      export MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}
+                      export MONGO_HOST=${{ secrets.MONGO_HOST }}
+                      export MONGO_DB=${{ secrets.MONGO_DB }}
+                      export JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}
+                      export JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}
+                      export JWT_ACCESS_EXPIRE=86400
+                      export JWT_REFRESH_EXPIRE=2592000
+                      export MODE_SERV=prod

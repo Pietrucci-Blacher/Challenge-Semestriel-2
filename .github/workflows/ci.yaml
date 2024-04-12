@@ -1,51 +1,46 @@
 on:
-  pull_request:
+    pull_request:
 
 jobs:
-  CI:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        directory: [client, server]
+    CI:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                directory: [client, server]
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: latest
 
-      - name: Install Node.js 20.x
-        run: |
-          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-          sudo apt-get install -y nodejs
+            - name: Build front-end
+              if: matrix.directory == 'client'
+              working-directory: client
+              run: |
+                  echo "Building front-end"
+                  pnpm install
+                  pnpm run build
+                  echo "Installing Playwright deps"
+                  npx playwright install --with-deps
 
-      - name: Build front-end
-        if: matrix.directory == 'client'
-        working-directory: client
-        run: |
-          echo "Building front-end"
-          pnpm install
-          pnpm run build
-          echo "Installing Playwright deps"
-          npx playwright install --with-deps
-
-      - name: Run tests
-        working-directory: ${{ matrix.directory }}
-        env:
-          JWT_ACCESS_SECRET: somethingsecret
-          JWT_REFRESH_SECRET: somethingsecret
-          JWT_ACCESS_EXPIRE: 86400
-          JWT_REFRESH_EXPIRE: 2592000
-          MONGOMS_DOWNLOAD_URL: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1804-4.2.8.tgz
-          MONGOMS_VERSION: 4.2.8
-        run: |
-          echo "Testing ${{ matrix.directory }}"
-          pnpm install
-          pnpm test:unit
-          if [[ "${{ matrix.directory }}" == "client" ]]; then
-            echo "Running e2e tests"
-            pnpm run test:e2e
-          fi
+            - name: Run tests
+              working-directory: ${{ matrix.directory }}
+              env:
+                  JWT_ACCESS_SECRET: somethingsecret
+                  JWT_REFRESH_SECRET: somethingsecret
+                  JWT_ACCESS_EXPIRE: 86400
+                  JWT_REFRESH_EXPIRE: 2592000
+                  MONGOMS_DOWNLOAD_URL: https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1804-4.2.8.tgz
+                  MONGOMS_VERSION: 4.2.8
+              run: |
+                  echo "Testing ${{ matrix.directory }}"
+                  pnpm install
+                  pnpm test:unit
+                  if [[ "${{ matrix.directory }}" == "client" ]]; then
+                    echo "Running e2e tests"
+                    pnpm run test:e2e
+                  fi
