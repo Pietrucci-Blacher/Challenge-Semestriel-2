@@ -60,6 +60,6 @@
     "vue-chartjs": "^5.2.0",
     "vue-router": "^4.2.4",
     "vue-writer": "^2.0.0",
-    "vue3-carousel": "^0.8.0"
+    "vue3-carousel": "^0.10.0"
   }
 }
