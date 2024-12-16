@@ -71,8 +71,8 @@ devDependencies:
     specifier: ^5.0.0
     version: 5.2.1(vite@5.4.11)(vue@3.5.13)
   '@vue/eslint-config-prettier':
-    specifier: ^9.0.0
-    version: 9.0.0(eslint@9.17.0)(prettier@3.4.2)
+    specifier: ^10.0.0
+    version: 10.1.0(eslint@9.17.0)(prettier@3.4.2)
   '@vue/test-utils':
     specifier: ^2.4.1
     version: 2.4.6
@@ -894,10 +894,10 @@ packages:
   /@vue/devtools-api@6.6.4:
     resolution: {integrity: sha512-sGhTPMuXqZ1rVOk32RylztWkfXTRhuS7vgAKv0zjqk8gbsHkJ7xfFf+jbySxt7tWObEJwyKaHMikV/WGDiQm8g==}
 
-  /@vue/eslint-config-prettier@9.0.0(eslint@9.17.0)(prettier@3.4.2):
-    resolution: {integrity: sha512-z1ZIAAUS9pKzo/ANEfd2sO+v2IUalz7cM/cTLOZ7vRFOPk5/xuRKQteOu1DErFLAh/lYGXMVZ0IfYKlyInuDVg==}
+  /@vue/eslint-config-prettier@10.1.0(eslint@9.17.0)(prettier@3.4.2):
+    resolution: {integrity: sha512-J6wV91y2pXc0Phha01k0WOHBTPsoSTf4xlmMjoKaeSxBpAdsgTppGF5RZRdOHM7OA74zAXD+VLANrtYXpiPKkQ==}
     peerDependencies:
-      eslint: '>= 8.0.0'
+      eslint: '>= 8.21.0'
       prettier: '>= 3.0.0'
     dependencies:
       eslint: 9.17.0
