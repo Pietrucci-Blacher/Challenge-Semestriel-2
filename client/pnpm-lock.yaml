@@ -42,8 +42,8 @@ dependencies:
     specifier: ^2.0.0
     version: 2.0.2(vue@3.5.13)
   vue3-carousel:
-    specifier: ^0.8.0
-    version: 0.8.1(vue@3.5.13)
+    specifier: ^0.10.0
+    version: 0.10.0(vue@3.5.13)
 
 devDependencies:
   '@fortawesome/fontawesome-svg-core':
@@ -2898,8 +2898,8 @@ packages:
       vue: 3.5.13
     dev: false
 
-  /vue3-carousel@0.8.1(vue@3.5.13):
-    resolution: {integrity: sha512-e48zxvKQCOfJByaKEQY5o6U5Y7eTibQlL1ZY0OUtCxJrpcWh5wuPuH7Utwm1u5sx8Bne9G2so6gZazQ4wnNtdQ==}
+  /vue3-carousel@0.10.0(vue@3.5.13):
+    resolution: {integrity: sha512-CyaN0SV15iE0eYZlGnzrPuyIv0LowKOaLo1jZ4942DVi+xM+bEJ6j2CNB+ywNtcaqLc9CFDAm9/PbqvV8REcvw==}
     peerDependencies:
       vue: ^3.2.0
     dependencies:
