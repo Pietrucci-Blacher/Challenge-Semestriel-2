@@ -43,7 +43,7 @@
     "tailwindcss": "^3.3.3",
     "vite": "^4.5.5",
     "vitest": "^0.33.0",
-    "vue-i18n": "^9.2.2"
+    "vue-i18n": "^9.14.3"
   },
   "resolutions": {
     "eslint-plugin-prettier": "^5.0.0-alpha.2"
