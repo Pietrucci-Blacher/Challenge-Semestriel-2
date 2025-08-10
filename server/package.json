@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/Pietrucci-Blacher/Challenge-Semestriel-2#readme",
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2",
+    "@faker-js/faker": "^9.0.0",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",

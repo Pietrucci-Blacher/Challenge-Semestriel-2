@@ -67,8 +67,8 @@ importers:
         version: 16.12.0
     devDependencies:
       '@faker-js/faker':
-        specifier: ^8.0.2
-        version: 8.4.1
+        specifier: ^9.0.0
+        version: 9.9.0
       eslint:
         specifier: ^9.0.0
         version: 9.18.0
@@ -302,9 +302,9 @@ packages:
     resolution: {integrity: sha512-lB05FkqEdUg2AA0xEbUz0SnkXT1LcCTa438W4IWTUh4hdOnVbQyOJ81OrDXsJk/LSiJHubgGEFoR5EHq1NsH1A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@faker-js/faker@8.4.1':
-    resolution: {integrity: sha512-XQ3cU+Q8Uqmrbf2e0cIC/QN43sTBSC8KF12u29Mb47tWrt2hAgBXSgpZMj4Ao8Uk0iJcU99QsOCaIL8934obCg==}
-    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
+  '@faker-js/faker@9.9.0':
+    resolution: {integrity: sha512-OEl393iCOoo/z8bMezRlJu+GlRGlsKbUAN7jKB6LhnKoqKve5DXRpalbItIIcwnCjs1k/FOPjFzcA6Qn+H+YbA==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   '@gar/promisify@1.1.3':
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
@@ -697,6 +697,7 @@ packages:
   bson@6.10.1:
     resolution: {integrity: sha512-P92xmHDQjSKPLHqFxefqMxASNq/aWJMEZugpCjf+AF/pgcUpMMQCg7t7+ewko0/u8AapvF3luf/FoehddEK+sA==}
     engines: {node: '>=16.20.1'}
+    deprecated: a critical bug affecting only useBigInt64=true deserialization usage is fixed in bson@6.10.3
 
   buffer-crc32@0.2.13:
     resolution: {integrity: sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==}
@@ -2576,7 +2577,7 @@ snapshots:
       '@eslint/core': 0.10.0
       levn: 0.4.1
 
-  '@faker-js/faker@8.4.1': {}
+  '@faker-js/faker@9.9.0': {}
 
   '@gar/promisify@1.1.3':
     optional: true
